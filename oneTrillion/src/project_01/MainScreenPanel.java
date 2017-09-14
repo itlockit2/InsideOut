@@ -2,15 +2,18 @@ package project_01;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-public class MainScreenPanel extends JPanel implements Runnable{
+public class MainScreenPanel extends JPanel implements Runnable {
 
 	// 배경 이미지를 담을 수 있는 객체
 	private Image introBackground;
@@ -22,7 +25,15 @@ public class MainScreenPanel extends JPanel implements Runnable{
 	private ImageIcon startButtonImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/startButton.png"));
 
-	// 버튼
+	// 마우스가 버튼에 진입했을때 이미지
+	private ImageIcon startEnteredButtonImage = new ImageIcon(
+			getClass().getClassLoader().getResource("images/startButtonEntered.png"));
+	private ImageIcon helpEnteredButtonImage = new ImageIcon(
+			getClass().getClassLoader().getResource("images/helpButtonEntered.png"));
+	private ImageIcon exitEnteredButtonImage = new ImageIcon(
+			getClass().getClassLoader().getResource("images/exitButtonEntered.png"));
+
+	// JButton 구현
 	private JButton exitButton = new JButton(exitButtonImage);
 	private JButton helpButton = new JButton(helpButtonImage);
 	private JButton startButton = new JButton(startButtonImage);
@@ -32,19 +43,17 @@ public class MainScreenPanel extends JPanel implements Runnable{
 
 	// fadeIn과 fadeOut 을 위한 변수
 	private float fadeValue;
-	
+
 	// Thread 객체
 	private Thread thread;
 
 	public MainScreenPanel() {
 		/**
-		 *  Music의 매개변수로 mp3파일 이름과 루프유무를 넣어준다.
-		 *  시작화면에서 인트로뮤직이 무한 반복
-		 *  게임이 시작함과 동시에 음악이 무한 재생
+		 * Music의 매개변수로 mp3파일 이름과 루프유무를 넣어준다. 시작화면에서 인트로뮤직이 무한 반복 게임이 시작함과 동시에 음악이 무한 재생
 		 */
 		introMusic = new Music("introMusic.mp3", true);
 		introMusic.start();
-		
+
 		// 컨테이너의 크기가 변경될때 컴포넌트들의 크기와 위치가 자동적으로 변경되는데 그걸 해제한다
 		setLayout(null);
 		// 게임창 크기 설정
@@ -54,7 +63,6 @@ public class MainScreenPanel extends JPanel implements Runnable{
 		setBackground(Color.BLACK);
 		// 화면 출력 설정 기본값은 false 이므로 설정 해줘야한다.
 		setVisible(true);
-		
 
 		// Main 클래스의 위치를 기반으로 해서 Resource를 얻어서 그것의 이미지값을 변수에 대입시켜준다.
 		// 배경이미지
@@ -62,17 +70,104 @@ public class MainScreenPanel extends JPanel implements Runnable{
 				.getImage();
 		introBackgroundCircle = new ImageIcon(
 				getClass().getClassLoader().getResource("images/MainBackGroundCircle.gif")).getImage();
-		buttonSet(startButton, 120, 450, 218, 38);
-		buttonSet(helpButton, 95, 505, 218, 38);
-		buttonSet(exitButton, 80, 565, 218, 38);
-		
+		buttonSet(startButton, 110, 450, 228, 57);
+		buttonSet(helpButton, 110, 515, 183, 55);
+		buttonSet(exitButton, 110, 575, 148, 53);
+
 		// 쓰레드를 만들고 실행시켜준다.
 		thread = new Thread(this);
 		thread.start();
-		
+
 		// fadeIn 효과를 넣어준다.
 		fadeIn();
-		
+
+		// startButton의 마우스 이벤트를 처리해준다.
+		startButton.addMouseListener(new MouseAdapter() {
+
+			// 마우스가 아이콘 위에 있을때 이벤트 처리
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// 아이콘 이미지를 Entered 이미지로 변경
+				startButton.setIcon(startEnteredButtonImage);
+				// 커서 이미지도 HAND_CURSOR로 변경해서 좀더 알아보기 쉽게한다.
+				startButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+
+			// 마우스가 아이콘을 벗어 났을때 이벤트 처리
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// 아이콘 이미지를 기본이미졸 변경
+				startButton.setIcon(startButtonImage);
+				startButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			// 마우스가 startButton 아이콘 눌렀을때 이벤트 처리
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// 노래선택 화면 변경 이벤트
+			}
+		});
+
+		/**
+		 * helpButton의 마우스 이벤트를 처리해준다.
+		 */
+		helpButton.addMouseListener(new MouseAdapter() {
+			/**
+			 * 마우스가 아이콘 위에 있을때 이벤트 처리
+			 */
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// 아이콘 이미지를 Entered 이미지로 변경
+				helpButton.setIcon(helpEnteredButtonImage);
+				// 커서 이미지도 HAND_CURSOR로 변경해서 좀더 알아보기 쉽게한다.
+				helpButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+
+			// 마우스가 아이콘을 벗어 났을때 이벤트 처리
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// 아이콘 이미지를 기본이미졸 변경
+				helpButton.setIcon(helpButtonImage);
+				helpButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			// 마우스가 startButton 아이콘 눌렀을때 이벤트 처리
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// 도움말 화면 변경 이벤트
+			}
+		});
+
+		/**
+		 * startButton의 마우스 이벤트를 처리해준다.
+		 */
+		exitButton.addMouseListener(new MouseAdapter() {
+			/**
+			 * 마우스가 아이콘 위에 있을때 이벤트 처리
+			 */
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// 아이콘 이미지를 Entered 이미지로 변경
+				exitButton.setIcon(exitEnteredButtonImage);
+				// 커서 이미지도 HAND_CURSOR로 변경해서 좀더 알아보기 쉽게한다.
+				exitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+
+			// 마우스가 아이콘을 벗어 났을때 이벤트 처리
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// 아이콘 이미지를 기본이미졸 변경
+				exitButton.setIcon(exitButtonImage);
+				exitButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			// 마우스가 startButton 아이콘 눌렀을때 이벤트 처리
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// 게임종료 이벤트
+			}
+		});
+
 	}
 
 	/**
@@ -134,13 +229,12 @@ public class MainScreenPanel extends JPanel implements Runnable{
 			}
 		}
 	}
-	
 
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		// graphics를 2D로 변경
-		Graphics2D g2 = (Graphics2D) g;	
+		Graphics2D g2 = (Graphics2D) g;
 		// 투명도를 조절하기 위한 부분 fadeValue 가 1.0이면 불투명도 100%, 0.1이면 불투명도가 10% 이다.
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, fadeValue));
 		g2.drawImage(introBackgroundCircle, 275, 30, 1200, 676, null);
@@ -149,7 +243,7 @@ public class MainScreenPanel extends JPanel implements Runnable{
 
 	@Override
 	public void run() {
-		while(true) {
+		while (true) {
 			repaint();
 			try {
 				Thread.sleep(10);
@@ -158,6 +252,5 @@ public class MainScreenPanel extends JPanel implements Runnable{
 			}
 		}
 	}
-
 
 }

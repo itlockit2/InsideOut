@@ -16,8 +16,10 @@ import javax.swing.JFrame;
  *
  */
 public class InsideOut extends JFrame {
-
+	
+	// MainScreenPanel 객체이다.
 	private MainScreenPanel mainScreenPanel;
+	// 필요한 정보를 출력하는 부분이 contentpane 이다.
 	private Container contentpane;
 
 	public InsideOut() {
@@ -25,7 +27,7 @@ public class InsideOut extends JFrame {
 		setTitle("Inside Out");
 		// 게임을 끄면 완전히 종료, 반드시 필요한 함수
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		// 필요한 정보를 출력하는 부분이 contentpane 이다.
+		// getContentPane 으로 contentpane 정보를 얻어온다.
 		contentpane = getContentPane();
 		// 게임창 크기 설정
 		setSize(Main.SCREENT_WIDTH, Main.SCREENT_HEIGHT);
