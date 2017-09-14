@@ -41,11 +41,13 @@ public class InsideOut extends JFrame {
 		setUndecorated(true);
 		// 사용자가 게임창을 임의로 줄이고 하는게 불가능, true로 하면 가능
 		setResizable(false);
-		// 화면 출력 설정 기본값은 false 이므로 설정 해줘야한다.
-		setVisible(true);
 		// 메인 패널 생성
 		mainScreenPanel = new MainScreenPanel();
 		// 패널을 추가해준다.
 		contentpane.add(mainScreenPanel);
+		// MainPanel의 쓰레드 실행
+		mainScreenPanel.getThread().start();
+		// 화면 출력 설정 기본값은 false 이므로 설정 해줘야한다.
+		setVisible(true);
 	}
 }

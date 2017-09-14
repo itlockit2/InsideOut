@@ -75,11 +75,7 @@ public class MainScreenPanel extends JPanel implements Runnable {
 		buttonSet(exitButton, 110, 575, 148, 53);
 
 		// 쓰레드를 만들고 실행시켜준다.
-		thread = new Thread(this);
-		thread.start();
-
-		// fadeIn 효과를 넣어준다.
-		fadeIn();
+		setThread(new Thread(this));
 
 		// startButton의 마우스 이벤트를 처리해준다.
 		startButton.addMouseListener(new MouseAdapter() {
@@ -165,6 +161,7 @@ public class MainScreenPanel extends JPanel implements Runnable {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				// 게임종료 이벤트
+				System.exit(0);
 			}
 		});
 
@@ -197,36 +194,39 @@ public class MainScreenPanel extends JPanel implements Runnable {
 	 * 방식을 사용한다. 여기서 temp가 1보다 커지면 temp를 1로 설정하고 대입시켜준다.
 	 */
 	public void fadeIn() {
-		float temp = 0;
-		fadeValue = 0;
-		while (fadeValue < 1) {
-			temp += 0.1;
-			if (temp > 1) {
-				temp = 1.0f;
-			}
-			fadeValue = temp;
-			try {
+		try {
+			float temp = 0;
+			fadeValue = 0;
+			while (fadeValue < 1) {
+				temp += 0.1;
+				if (temp > 1) {
+					temp = 1.0f;
+				}
+				fadeValue = temp;
+				repaint();
+
 				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
 			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 
 	public void fadeOut() {
-		float temp = 1.0f;
-		fadeValue = 1.0f;
-		while (fadeValue > 0) {
-			temp -= 0.1;
-			if (temp < 0) {
-				temp = 0;
-			}
-			fadeValue = temp;
-			try {
+		try {
+			float temp = 1.0f;
+			fadeValue = 1.0f;
+			while (fadeValue > 0) {
+				temp -= 0.1;
+				if (temp < 0) {
+					temp = 0;
+				}
+				fadeValue = temp;
+
 				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
 			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -243,6 +243,8 @@ public class MainScreenPanel extends JPanel implements Runnable {
 
 	@Override
 	public void run() {
+		// fadeIn 효과를 넣어준다.
+		fadeIn();
 		while (true) {
 			repaint();
 			try {
@@ -251,6 +253,14 @@ public class MainScreenPanel extends JPanel implements Runnable {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public Thread getThread() {
+		return thread;
+	}
+
+	public void setThread(Thread thread) {
+		this.thread = thread;
 	}
 
 }
