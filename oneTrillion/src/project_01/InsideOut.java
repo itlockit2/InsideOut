@@ -50,6 +50,6 @@ public class InsideOut extends JFrame {
 		// MainPanel의 쓰레드 실행
 		mainScreenPanel.getThread().start();
 		// 화면 출력 설정 기본값은 false 이므로 설정 해줘야한다.
-		setVisible(true);
+		setVisible(false);
 	}
 }
