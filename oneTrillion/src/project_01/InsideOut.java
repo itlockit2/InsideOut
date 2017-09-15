@@ -21,6 +21,8 @@ public class InsideOut extends JFrame {
 	private MainScreenPanel mainScreenPanel;
 	// 필요한 정보를 출력하는 부분이 contentpane 이다.
 	private Container contentpane;
+	
+	private int test;
 
 	public InsideOut() {
 		// 게임이름 설정
@@ -48,6 +50,6 @@ public class InsideOut extends JFrame {
 		// MainPanel의 쓰레드 실행
 		mainScreenPanel.getThread().start();
 		// 화면 출력 설정 기본값은 false 이므로 설정 해줘야한다.
-		setVisible(true);
+		setVisible(false);
 	}
 }
