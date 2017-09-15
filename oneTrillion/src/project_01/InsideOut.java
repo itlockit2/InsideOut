@@ -22,7 +22,7 @@ public class InsideOut extends JFrame {
 	// 필요한 정보를 출력하는 부분이 contentpane 이다.
 	private Container contentpane;
 	
-	private int testtest1111;
+	private int testtest11111;
 
 	public InsideOut() {
 		// 게임이름 설정
