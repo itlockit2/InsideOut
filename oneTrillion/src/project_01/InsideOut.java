@@ -21,8 +21,6 @@ public class InsideOut extends JFrame {
 	private MainScreenPanel mainScreenPanel;
 	// 필요한 정보를 출력하는 부분이 contentpane 이다.
 	private Container contentpane;
-	
-	private int test;
 
 	public InsideOut() {
 		// 게임이름 설정
