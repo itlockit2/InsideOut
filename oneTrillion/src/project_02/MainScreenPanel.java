@@ -137,7 +137,7 @@ public class MainScreenPanel extends JPanel implements Runnable {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				introMusic.close(); // 메인화면으로 넘어 가므로 introMusic을 종료 시켜주어야 함 
-				
+				selectTrack(nowSelected); // 메인화면으로 넘어갔을 때 첫 번째 곡을 선택되게 하기 위함 
 				startButton.setVisible(false); // 화면이 넘어 갓을 때 시작버튼 , 도움말 버튼 , exit 버튼을 보이지 않게 해줌
 				helpButton.setVisible(false);
 				exitButton.setVisible(false);
@@ -147,9 +147,7 @@ public class MainScreenPanel extends JPanel implements Runnable {
 						.getImage();  // 화면이 넘어 갔을 때 배경을 startImage로 변경 , 일단, 이거 쓰고 Image는 나중에 다른 걸로 변경합시다. 
      			introBackgroundCircle = null; // startImage에선 돌아가는 원도 필요 없으므로 null값을 통해 지워줌 
      			isMainScreen = true; // start 버튼을 통해 메인화면으로 넘어가므로 true로 변경 
-     			selectTrack(nowSelected); // 메인화면으로 넘어갔을 때 첫 번째 곡을 선택되게 하기 위함 
-     			System.out.println(trackList.get(0).getGameMusic());
-     			System.out.println(trackList.get(0).getStartMusic());
+     		
 			}   // 노래선택 화면 변경 이벤트
 		});
 
