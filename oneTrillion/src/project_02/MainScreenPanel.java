@@ -388,10 +388,8 @@ public class MainScreenPanel extends JPanel implements Runnable {
 	    	  selectedImage = new ImageIcon(getClass().getClassLoader().getResource("images/" + trackList.get(nowSelected).getStartImage()))
 	  				.getImage(); // 현재 선택된 곡을 그 곡에 맞춰 이미지를 바꾸어 줌 
 	    	  selectedMusic = new Music(trackList.get(nowSelected).getStartMusic(), true); // 선택된 곡을 가져옴 , true로 무한 재생  
-	    	  System.out.println(selectedMusic);
 	    	  selectedMusic.start(); // 선택된 곡을 실행 
-	      
-	}
+	      }
 	// 메인 화면에서 왼쪽 버튼을 눌렀을 때의 이벤트 
 	public void selectLeft() {
 	// 현재, 첫 번째 곡의 위치에 잇으므로 왼쪽버튼을 누르면 가장 오른쪽으로 가야하므로 크기에서 1을 빼준다.
