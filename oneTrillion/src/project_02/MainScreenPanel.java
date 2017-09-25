@@ -338,7 +338,7 @@ public class MainScreenPanel extends JPanel implements Runnable {
 					temp = 0;
 				}
 				fadeValue = temp;
-
+				repaint();
 				Thread.sleep(100);
 			}
 		} catch (InterruptedException e) {
@@ -365,7 +365,6 @@ public class MainScreenPanel extends JPanel implements Runnable {
 	public void run() {
 		// fadeIn 효과를 넣어준다.
 		fadeIn();
-		fadeOut();
 		while (true) {
 			repaint();
 			try {
