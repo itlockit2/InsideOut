@@ -365,6 +365,7 @@ public class MainScreenPanel extends JPanel implements Runnable {
 	public void run() {
 		// fadeIn 효과를 넣어준다.
 		fadeIn();
+		fadeOut();
 		while (true) {
 			repaint();
 			try {
