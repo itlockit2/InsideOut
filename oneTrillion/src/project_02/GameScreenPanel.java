@@ -47,10 +47,13 @@ public class GameScreenPanel extends JPanel implements Runnable {
 
 	// fadeIn과 fadeOut 을 위한 변수
 	private float fadeValue;
+	private boolean isFadeOut;
 	
 	public GameScreenPanel(InsideOut insideOut) {
 		// 프레임을 매개변수로 받아 제어한다.
 		this.insideOut = insideOut;
+		// fadeOut값을 false로 초기화 시켜문다
+		isFadeOut = false;
 		// 쓰레드를 만들고 실행시켜준다.
 		setThread(new Thread(this));
 		// 컨테이너의 크기가 변경될때 컴포넌트들의 크기와 위치가 자동적으로 변경되는데 그걸 해제한다
@@ -93,6 +96,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 			// 마우스가 backButton 아이콘 눌렀을때 이벤트 처리
 			@Override
 			public void mousePressed(MouseEvent e) {
+				isFadeOut = true;
 			    insideOut.changeMainScreen();
 			   
 			}
@@ -176,7 +180,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 					temp = 0;
 				}
 				fadeValue = temp;
-
+				repaint();
 				Thread.sleep(100);
 			}
 		} catch (InterruptedException e) {
@@ -199,6 +203,8 @@ public class GameScreenPanel extends JPanel implements Runnable {
 	@Override
 	public void run() {
 		fadeIn();
+		if(isFadeOut)
+			fadeOut();
 		while (true) {
 			repaint();
 			try {

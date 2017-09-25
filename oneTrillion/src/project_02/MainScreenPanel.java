@@ -43,10 +43,11 @@ public class MainScreenPanel extends JPanel implements Runnable {
 
 	// fadeIn과 fadeOut 을 위한 변수
 	private float fadeValue;
+	private boolean isFadeOut;
 	
 	// 메인 화면인지 아닌지의 여부 , 처음에는 메인 화면이 아니므로 false를 부여 
 	private boolean isMainScreen = false; 
-
+	
 	
 	// Thread 객체
 	private Thread thread;
@@ -57,6 +58,9 @@ public class MainScreenPanel extends JPanel implements Runnable {
 	public MainScreenPanel(InsideOut insideOut) {
 		// 프레임을 매개변수로 받아 제어한다.
 		this.insideOut = insideOut;
+		// fadeOut의 값을 false로  초기화 시켜준다.
+		isFadeOut = false;
+		
 		
 		/**
 		 * Music의 매개변수로 mp3파일 이름과 루프유무를 넣어준다. 시작화면에서 인트로뮤직이 무한 반복 게임이 시작함과 동시에 음악이 무한 재생
@@ -111,7 +115,7 @@ public class MainScreenPanel extends JPanel implements Runnable {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				// fadeOut 이벤트 처리
-				fadeOut();
+				isFadeOut = true;
 				// 화면 변경 이벤트
 				insideOut.changeGameScreen();
 				
@@ -257,7 +261,8 @@ public class MainScreenPanel extends JPanel implements Runnable {
 	public void run() {
 		// fadeIn 효과를 넣어준다.
 		fadeIn();
-		fadeOut();
+		if(isFadeOut)
+			fadeOut();
 		while (true) {
 			repaint();
 			try {
