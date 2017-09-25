@@ -16,12 +16,14 @@ import javax.swing.JFrame;
  *
  */
 public class InsideOut extends JFrame {
-	
+
 	// MainScreenPanel 객체이다.
 	private MainScreenPanel mainScreenPanel;
+	// GameScreenPanel 객체이다.
+	private GameScreenPanel gameScreenPanel;
 	// 필요한 정보를 출력하는 부분이 contentpane 이다.
 	private Container contentpane;
-	
+
 	public InsideOut() {
 		// 게임이름 설정
 		setTitle("Inside Out");
@@ -42,7 +44,7 @@ public class InsideOut extends JFrame {
 		// 사용자가 게임창을 임의로 줄이고 하는게 불가능, true로 하면 가능
 		setResizable(false);
 		// 메인 패널 생성
-		mainScreenPanel = new MainScreenPanel();
+		mainScreenPanel = new MainScreenPanel(this);
 		// 패널을 추가해준다.
 		contentpane.add(mainScreenPanel);
 		// MainPanel의 쓰레드 실행
@@ -50,4 +52,31 @@ public class InsideOut extends JFrame {
 		// 화면 출력 설정 기본값은 false 이므로 설정 해줘야한다.
 		setVisible(true);
 	}
+
+	public void changeGameScreen() {
+		// 현재 실행되고 있는 모든 판넬을 제거한다.
+		contentpane.removeAll();
+		// 새롭게 게임 스크린 판넬 객체를 만들어서 생성자를 실행
+		gameScreenPanel = new GameScreenPanel(this);
+		// 패널을 추가해준다.
+		contentpane.add(gameScreenPanel);
+		// GamePanel의 쓰레드 실행
+		gameScreenPanel.getThread().start();
+		// 화면 출력 설정 기본값은 false 이므로 설정 해줘야한다.
+		setVisible(true);
+	}
+
+	public void changeMainScreen() {
+		// 현재 실행되고 있는 모든 판넬을 제거한다.
+		contentpane.removeAll();
+		// 새롭게 게임 스크린 판넬 객체를 만들어서 생성자를 실행
+		mainScreenPanel = new MainScreenPanel(this);
+		// 패널을 추가해준다.
+		contentpane.add(mainScreenPanel);
+		// GamePanel의 쓰레드 실행
+		mainScreenPanel.getThread().start();
+		// 화면 출력 설정 기본값은 false 이므로 설정 해줘야한다.
+		setVisible(true);
+	}
+
 }
