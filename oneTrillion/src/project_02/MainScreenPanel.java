@@ -234,7 +234,7 @@ public class MainScreenPanel extends JPanel implements Runnable {
 					temp = 0;
 				}
 				fadeValue = temp;
-
+				repaint();
 				Thread.sleep(100);
 			}
 		} catch (InterruptedException e) {
