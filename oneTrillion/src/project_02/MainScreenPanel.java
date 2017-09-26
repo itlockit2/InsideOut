@@ -46,7 +46,7 @@ public class MainScreenPanel extends JPanel implements Runnable {
 	private boolean isFadeOut;
 	
 	// 메인 화면인지 아닌지의 여부 , 처음에는 메인 화면이 아니므로 false를 부여 
-	private boolean isMainScreen = false; 
+	private boolean isGameScreen = false; 
 	
 	
 	// Thread 객체
@@ -114,10 +114,8 @@ public class MainScreenPanel extends JPanel implements Runnable {
 			// 마우스가 startButton 아이콘 눌렀을때 이벤트 처리
 			@Override
 			public void mousePressed(MouseEvent e) {
-				// fadeOut 이벤트 처리
 				isFadeOut = true;
-				// 화면 변경 이벤트
-				insideOut.changeGameScreen();
+				isGameScreen = true;
 				
 			}   
 		});
@@ -261,11 +259,14 @@ public class MainScreenPanel extends JPanel implements Runnable {
 	public void run() {
 		// fadeIn 효과를 넣어준다.
 		fadeIn();
-		if(isFadeOut)
-			fadeOut();
 		while (true) {
-			repaint();
 			try {
+				if(isFadeOut && isGameScreen) {
+					fadeOut();
+					insideOut.changeGameScreen();
+					return;
+				}
+				repaint();
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
