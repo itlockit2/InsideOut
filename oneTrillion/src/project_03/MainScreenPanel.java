@@ -8,10 +8,11 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
+import java.awt.event.MouseMotionAdapter;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class MainScreenPanel extends JPanel implements Runnable {
@@ -54,7 +55,7 @@ public class MainScreenPanel extends JPanel implements Runnable {
 	
 	// 프레임을 매개 변수로 넘기기 위해 Insideout 객체 선언
 	private InsideOut insideOut;
-
+	
 	public MainScreenPanel(InsideOut insideOut) {
 		// 프레임을 매개변수로 받아 제어한다.
 		this.insideOut = insideOut;
@@ -71,8 +72,8 @@ public class MainScreenPanel extends JPanel implements Runnable {
 		// 컨테이너의 크기가 변경될때 컴포넌트들의 크기와 위치가 자동적으로 변경되는데 그걸 해제한다
 		setLayout(null);
 		// 게임창 크기 설정
-		setSize(Main.SCREENT_WIDTH, Main.SCREENT_HEIGHT);
-		setBounds(0, 0, Main.SCREENT_WIDTH, Main.SCREENT_HEIGHT);
+		setSize(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
+		setBounds(0, 0, Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
 		// 게임 배경화면 색깔 검정으로 지정
 		setBackground(Color.BLACK);
 		// 화면 출력 설정 기본값은 false 이므로 설정 해줘야한다.
@@ -84,13 +85,18 @@ public class MainScreenPanel extends JPanel implements Runnable {
 				.getImage(); 
 		introBackgroundCircle = new ImageIcon(
 				getClass().getClassLoader().getResource("images/MainBackGroundCircle.gif")).getImage();
+		// 버튼들을 미리 설정해놓은 buttonSet 메소드를 통해 추가
 		buttonSet(startButton, 110, 450, 228, 57);
 		buttonSet(helpButton, 110, 515, 183, 55);
 		buttonSet(exitButton, 110, 575, 148, 53);
+		// 메뉴바 exitButton 설정
+		buttonSet(insideOut.getMenubarExitButton(),1200,0,64,28);
+		// 메뉴바 설정
+		add(insideOut.getMenubar());
 		
 		// 쓰레드를 만들고 실행시켜준다.
 		setThread(new Thread(this));
-
+		
 		// startButton의 마우스 이벤트를 처리해준다.
 		startButton.addMouseListener(new MouseAdapter() {
 

@@ -41,12 +41,12 @@ public class GameScreenPanel extends JPanel implements Runnable {
 
 	// 필요한 정보를 출력하는 부분이 contentpane 이다.
 	private Container contentpane;
- 
+
 	private InsideOut insideOut;
-   
+
 	// Circle위치 제어를 위한 객체
-	private Circle circle;
-	
+	private Ball circle;
+
 	// fadeIn과 fadeOut 을 위한 변수
 	private float fadeValue;
 	private boolean isFadeOut;
@@ -66,8 +66,8 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		// 컨테이너의 크기가 변경될때 컴포넌트들의 크기와 위치가 자동적으로 변경되는데 그걸 해제한다
 		setLayout(null);
 		// 게임창 크기 설정
-		setSize(Main.SCREENT_WIDTH, Main.SCREENT_HEIGHT);
-		setBounds(0, 0, Main.SCREENT_WIDTH, Main.SCREENT_HEIGHT);
+		setSize(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
+		setBounds(0, 0, Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
 		// 검정색 바탕에 흰색 원 이므로 검정색으로 설정
 		setBackground(Color.BLACK);
 		// 화면 출력 설정 기본값은 false 이므로 설정 해줘야한다.
@@ -75,8 +75,13 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		// backButton의 위치 설정
 		buttonSet(backButton, 80, 60, 228, 57);
 		buttonSet(gamePlayButton, 600, 300, 125, 135);
-        // x,y 좌표를 받기 위한 객체 생성 
-		circle = new Circle();
+		
+		// 메뉴바 exitButton 설정
+		buttonSet(insideOut.getMenubarExitButton(),1200,0,64,28);
+		// 메뉴바 설정
+		add(insideOut.getMenubar());
+		// x,y 좌표를 받기 위한 객체 생성
+		circle = new Ball();
 		/**
 		 * backButton의 마우스 이벤트를 처리해준다.
 		 */
@@ -136,11 +141,11 @@ public class GameScreenPanel extends JPanel implements Runnable {
 			// 마우스가 gamePlayButton 아이콘 눌렀을때 이벤트 처리
 			@Override
 			public void mousePressed(MouseEvent e) {
-				// 게임이 실행되는 이벤트 
+				// 게임이 실행되는 이벤트
 				// 게임 플레이 버튼이 사라져야 하므로 false값으로 지정을 통해 안보이게 함
-		        gamePlayButton.setVisible(false);
-			   // 쓰레드를 실행시켜 x좌표 , y좌표 변경 시작
-			    circle.getThread().start();
+				gamePlayButton.setVisible(false);
+				// 쓰레드를 실행시켜 x좌표 , y좌표 변경 시작
+				circle.getThread().start();
 			}
 		});
 
@@ -212,7 +217,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		// 흰색으로 설정
 		g2.setColor(Color.WHITE);
-	    // 두께 설정
+		// 두께 설정
 		g2.setStroke(new BasicStroke(8));
 		// 속이 비어있는 원 , x좌표, y좌표, width, height
 		g2.drawOval(375, 100, 530, 530);

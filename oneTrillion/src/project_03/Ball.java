@@ -1,14 +1,17 @@
 package project_03;
 
 // playable 캐릭터를 제어하기 위한 메소드
-public class Circle implements Runnable {
+public class Ball implements Runnable {
 	// x좌표 , y좌표 , radius , 중심좌표 값  x , y
 	private int x, y, r , Ox , Oy;
 	// 증가시킬 크기
 	private double size;
+	// Thread 객체
+	private Thread thread;
 
-	Circle() {
-		// 쓰레드를 만들고 실행시켜준다.
+
+	Ball() {
+		// 쓰레드를 만들고 객체에 넣어준다.
 		setThread(new Thread(this));
 		// 시작지점 x, y
 		x = 630;
@@ -57,9 +60,6 @@ public class Circle implements Runnable {
 	public void setY(int y) {
 		this.y = y;
 	}
-
-	// Thread 객체
-	private Thread thread;
 
 	public Thread getThread() {
 		return thread;

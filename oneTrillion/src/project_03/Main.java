@@ -8,8 +8,8 @@ package project_03;
  */
 public class Main {
 
-	public static final int SCREENT_WIDTH = 1280; // 1280 x 720 사이즈로 출력
-	public static final int SCREENT_HEIGHT = 720;
+	public static final int SCREEN_WIDTH = 1280; // 1280 x 720 사이즈로 출력
+	public static final int SCREEN_HEIGHT = 720;
 	
 	public static void main(String[] args) {
 	   
