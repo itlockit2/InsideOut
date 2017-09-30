@@ -65,7 +65,7 @@ public class InsideOut extends JFrame {
 		setResizable(false);
 
 		// 메뉴바 이미지를 추가시켜준다.
-		menubar = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("images/menubarTest.png")));
+		menubar = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("images/menubarImage.png")));
 		// 메뉴바의 위치를 지정해준다.
 		menubar.setBounds(0, 0, 1280, 28);
 		// 메뉴바를 추가시켜준다.
