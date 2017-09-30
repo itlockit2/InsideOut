@@ -1,15 +1,15 @@
 package project_02;
 
 import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Rectangle2D;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -38,20 +38,22 @@ public class GameScreenPanel extends JPanel implements Runnable {
 
 	// Thread 객체
 	private Thread thread;
-    
+
 	// 필요한 정보를 출력하는 부분이 contentpane 이다.
 	private Container contentpane;
-	
+ 
 	private InsideOut insideOut;
+   
+	// Circle위치 제어를 위한 객체
+	private Circle circle;
 	
-
 	// fadeIn과 fadeOut 을 위한 변수
 	private float fadeValue;
 	private boolean isFadeOut;
-	
+
 	// MainScreen 제어를 위한 변수
 	private boolean isMainScreen;
-	
+
 	public GameScreenPanel(InsideOut insideOut) {
 		// 프레임을 매개변수로 받아 제어한다.
 		this.insideOut = insideOut;
@@ -73,7 +75,8 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		// backButton의 위치 설정
 		buttonSet(backButton, 80, 60, 228, 57);
 		buttonSet(gamePlayButton, 600, 300, 125, 135);
-
+        // x,y 좌표를 받기 위한 객체 생성 
+		circle = new Circle();
 		/**
 		 * backButton의 마우스 이벤트를 처리해준다.
 		 */
@@ -133,7 +136,11 @@ public class GameScreenPanel extends JPanel implements Runnable {
 			// 마우스가 gamePlayButton 아이콘 눌렀을때 이벤트 처리
 			@Override
 			public void mousePressed(MouseEvent e) {
-				// 게임이 실행되는 이벤트
+				// 게임이 실행되는 이벤트 
+				// 게임 플레이 버튼이 사라져야 하므로 false값으로 지정을 통해 안보이게 함
+		        gamePlayButton.setVisible(false);
+			   // 쓰레드를 실행시켜 x좌표 , y좌표 변경 시작
+			    circle.getThread().start();
 			}
 		});
 
@@ -151,6 +158,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		// 버튼 추가
 		add(button);
 	}
+
 	/**
 	 * fadeIn 효과를 주기위한 메소드 temp를 사용한 이유는 fadeIn값이 1.0을 넘어가면 에러가 발생하기 때문에 float연산 특성상
 	 * 0.1씩 10번 증가시키면 1.0이 아니라 1.000001이 되서 에러가 발생한다. 따라서 temp를 증가시키고 fadeIn에 대입시키는
@@ -200,7 +208,16 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		Graphics2D g2 = (Graphics2D) g;
 		// 투명도를 조절하기 위한 부분 fadeValue 가 1.0이면 불투명도 100%, 0.1이면 불투명도가 10% 이다.
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, fadeValue));
-				
+		// 안티앨리어싱 , 원이 깨지지 않게 출력
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		// 흰색으로 설정
+		g2.setColor(Color.WHITE);
+	    // 두께 설정
+		g2.setStroke(new BasicStroke(8));
+		// 속이 비어있는 원 , x좌표, y좌표, width, height
+		g2.drawOval(375, 100, 530, 530);
+		// 안이 가득 찬 원 , circle클래스에서 제어를 통해 좌표가 변경되므로 get메소드 이용 , 우리가 조종할 객체
+		g2.fillOval(circle.getX(), circle.getY(), 25, 25);
 	}
 
 	// run 함수에서 while문을 통해 계속 화면을 그려줌으로써 다음 화면으로 넘어갈 수 있게 해준다.
@@ -210,10 +227,10 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		while (true) {
 			repaint();
 			try {
-				if(isFadeOut && isMainScreen) {
+				if (isFadeOut && isMainScreen) {
 					fadeOut();
-				    insideOut.changeMainScreen();
-				    return;
+					insideOut.changeMainScreen();
+					return;
 				}
 				Thread.sleep(10);
 			} catch (InterruptedException e) {

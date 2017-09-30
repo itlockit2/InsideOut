@@ -64,7 +64,7 @@ public class InsideOut extends JFrame {
 		gameScreenPanel.getThread().start();
 		// 화면 출력 설정 기본값은 false 이므로 설정 해줘야한다.
 		setVisible(true);
-	}
+	}	
 
 	public void changeMainScreen() {
 		// 현재 실행되고 있는 모든 판넬을 제거한다.
