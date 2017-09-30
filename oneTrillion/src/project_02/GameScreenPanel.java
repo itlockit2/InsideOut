@@ -41,18 +41,18 @@ public class GameScreenPanel extends JPanel implements Runnable {
 
 	// 필요한 정보를 출력하는 부분이 contentpane 이다.
 	private Container contentpane;
-
+ 
 	private InsideOut insideOut;
-
+   
+	// Circle위치 제어를 위한 객체
+	private Circle circle;
+	
 	// fadeIn과 fadeOut 을 위한 변수
 	private float fadeValue;
 	private boolean isFadeOut;
 
 	// MainScreen 제어를 위한 변수
 	private boolean isMainScreen;
-	
-    // GameStartScreen 제어르 위한 변수
-	private boolean isGameStart;
 
 	public GameScreenPanel(InsideOut insideOut) {
 		// 프레임을 매개변수로 받아 제어한다.
@@ -61,8 +61,6 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		isFadeOut = false;
 		// isMainScreen의 값을 false로 초기화 시켜준다.
 		isMainScreen = false;
-		// isGameStart의 값을 false로 초기화 시켜준다.
-		isGameStart = false;
 		// 쓰레드를 만들고 실행시켜준다.
 		setThread(new Thread(this));
 		// 컨테이너의 크기가 변경될때 컴포넌트들의 크기와 위치가 자동적으로 변경되는데 그걸 해제한다
@@ -77,7 +75,8 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		// backButton의 위치 설정
 		buttonSet(backButton, 80, 60, 228, 57);
 		buttonSet(gamePlayButton, 600, 300, 125, 135);
-
+        // x,y 좌표를 받기 위한 객체 생성 
+		circle = new Circle();
 		/**
 		 * backButton의 마우스 이벤트를 처리해준다.
 		 */
@@ -137,8 +136,11 @@ public class GameScreenPanel extends JPanel implements Runnable {
 			// 마우스가 gamePlayButton 아이콘 눌렀을때 이벤트 처리
 			@Override
 			public void mousePressed(MouseEvent e) {
-				// 게임이 실행되는 이벤트
-				isGameStart = true;
+				// 게임이 실행되는 이벤트 
+				// 게임 플레이 버튼이 사라져야 하므로 false값으로 지정을 통해 안보이게 함
+		        gamePlayButton.setVisible(false);
+			   // 쓰레드를 실행시켜 x좌표 , y좌표 변경 시작
+			    circle.getThread().start();
 			}
 		});
 
@@ -212,10 +214,10 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		g2.setColor(Color.WHITE);
 	    // 두께 설정
 		g2.setStroke(new BasicStroke(8));
-		// 속이 비어있는 원 
+		// 속이 비어있는 원 , x좌표, y좌표, width, height
 		g2.drawOval(375, 100, 530, 530);
-		// 안이 가득 찬 원
-		g2.fillOval(630, 73, 25, 25);
+		// 안이 가득 찬 원 , circle클래스에서 제어를 통해 좌표가 변경되므로 get메소드 이용 , 우리가 조종할 객체
+		g2.fillOval(circle.getX(), circle.getY(), 25, 25);
 	}
 
 	// run 함수에서 while문을 통해 계속 화면을 그려줌으로써 다음 화면으로 넘어갈 수 있게 해준다.
@@ -229,10 +231,6 @@ public class GameScreenPanel extends JPanel implements Runnable {
 					fadeOut();
 					insideOut.changeMainScreen();
 					return;
-				}
-				if (isGameStart) {
-					insideOut.changeGameStartScreen();
-			        return;
 				}
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
