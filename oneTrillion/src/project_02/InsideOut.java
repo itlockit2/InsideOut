@@ -21,6 +21,8 @@ public class InsideOut extends JFrame {
 	private MainScreenPanel mainScreenPanel;
 	// GameScreenPanel 객체이다.
 	private GameScreenPanel gameScreenPanel;
+	// GameScreenPanel 객체이다.
+	private GameStartScreenPanel gameStartScreenPanel;
 	// 필요한 정보를 출력하는 부분이 contentpane 이다.
 	private Container contentpane;
 
@@ -62,6 +64,19 @@ public class InsideOut extends JFrame {
 		contentpane.add(gameScreenPanel);
 		// GamePanel의 쓰레드 실행
 		gameScreenPanel.getThread().start();
+		// 화면 출력 설정 기본값은 false 이므로 설정 해줘야한다.
+		setVisible(true);
+	}
+	
+	public void changeGameStartScreen() {
+		// 현재 실행되고 있는 모든 판넬을 제거한다.
+		contentpane.removeAll();
+		// 새롭게 게임 스크린 판넬 객체를 만들어서 생성자를 실행
+		gameStartScreenPanel = new GameStartScreenPanel(this);
+		// 패널을 추가해준다.
+		contentpane.add(gameStartScreenPanel);
+		// GamePanel의 쓰레드 실행
+		gameStartScreenPanel.getThread().start();
 		// 화면 출력 설정 기본값은 false 이므로 설정 해줘야한다.
 		setVisible(true);
 	}
