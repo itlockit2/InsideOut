@@ -79,11 +79,16 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 
 		// Main 클래스의 위치를 기반으로 해서 Resource를 얻어서 그것의 이미지값을 변수에 대입시켜준다.
 		gameSelectBackGround = new ImageIcon(
-				getClass().getClassLoader().getResource("images/gameSelectScreenImage.png")).getImage();
+				getClass().getClassLoader().getResource("images/gameSelectScreenImage_2.png")).getImage();
 		musicSelectBackGround = new ImageIcon(
-				getClass().getClassLoader().getResource("images/sunburstGameselectImage.png")).getImage();
+				getClass().getClassLoader().getResource("images/sunburstGameselectImage_2.png")).getImage();
+		// 메뉴바 exitButton 설정
+		buttonSet(insideOut.getMenubarExitButton(),1200,0,64,28);
+		// 메뉴바 설정
+		add(insideOut.getMenubar());
 		// leftButton의 위치 설정
-		buttonSet(leftButton, 100, 310, 120, 120); // 73, 98 (원래 크기) 
+		buttonSet(leftButton, 100, 310, 120, 120); // 73, 98 (원래 크기)
+		
 		/**
 		 * leftButton의 마우스 이벤트를 처리해준다.
 		 */
