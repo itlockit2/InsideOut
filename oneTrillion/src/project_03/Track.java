@@ -1,8 +1,8 @@
 package project_03;
- 
-// 하나의 곡에 대한 정보를 담는 클래스 
+
+//하나의 곡에 대한 정보를 담는 클래스 
 public class Track {
-    
+ 
 	
 //	private String titleImage; // 제목 부분 이미지
 	private String startImage; // 게임 선택 창 표지 이미지

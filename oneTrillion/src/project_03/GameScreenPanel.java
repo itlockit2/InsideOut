@@ -1,5 +1,4 @@
 package project_03;
-
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;

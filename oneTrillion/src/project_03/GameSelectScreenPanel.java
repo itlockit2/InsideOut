@@ -119,9 +119,10 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 
 		// Main 클래스의 위치를 기반으로 해서 Resource를 얻어서 그것의 이미지값을 변수에 대입시켜준다.
 		gameSelectBackGround = new ImageIcon(
-				getClass().getClassLoader().getResource("images/gameSelectScreenImage.png")).getImage();
+				getClass().getClassLoader().getResource("images/gameSelectScreenImage_2.png")).getImage();
+		// 화면 전환 시 개인적으론 이게 더 이쁜거 같아 설정 ..
 		musicSelectBackGround = new ImageIcon(
-				getClass().getClassLoader().getResource("images/sunburstGameselectImage_2.png")).getImage();
+				getClass().getClassLoader().getResource("images/sunburstGameselectImage.png")).getImage();
 		
 		// 메뉴바 exitButton 설정
 		buttonSet(insideOut.getMenubarExitButton(),1200,0,64,28);
@@ -386,7 +387,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		Graphics2D g2 = (Graphics2D) g;
 		// 투명도를 조절하기 위한 부분 fadeValue 가 1.0이면 불투명도 100%, 0.1이면 불투명도가 10% 이다.
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, fadeValue));
-        g2.drawImage(musicSelectBackGround, 0, 0, null);
+		g2.drawImage(musicSelectBackGround, 0, 0, null);
 		g2.drawImage(gameSelectBackGround, 0, 0, null);
 		
 	}
