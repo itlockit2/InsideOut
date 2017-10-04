@@ -16,170 +16,319 @@ import javax.swing.JPanel;
 
 public class GameSelectScreenPanel extends JPanel implements Runnable {
 
-	// ¹è°æ ÀÌ¹ÌÁö¸¦ ´ãÀ» ¼ö ÀÖ´Â °´Ã¼
+	// ë°°ê²½ ì´ë¯¸ì§€ë¥¼ ë‹´ì„ ìˆ˜ ìˆëŠ” ê°ì²´
 	private Image gameSelectBackGround;
 	private Image musicSelectBackGround;
+	private Image selectedImage; // ì‹œì‘í•˜ê³  ë“¤ì–´ ê°”ì„ ë•Œì˜ ì´ë¯¸ì§€
 
-	// µÚ·Î°¡±â ¹öÆ° ÀÌ¹ÌÁö¸¦ ´ãÀ» ¼ö ÀÖ´Â °´Ã¼
+	// ë’¤ë¡œê°€ê¸° ë²„íŠ¼ ì´ë¯¸ì§€ë¥¼ ë‹´ì„ ìˆ˜ ìˆëŠ” ê°ì²´
 	private ImageIcon backButtonImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/backButtonImage.png"));
-	// ¿ŞÂÊ ¹öÆ° ÀÌ¹ÌÁö¸¦ ´ãÀ» ¼ö ÀÖ´Â °´Ã¼
+	// ì™¼ìª½ ë²„íŠ¼ ì´ë¯¸ì§€ë¥¼ ë‹´ì„ ìˆ˜ ìˆëŠ” ê°ì²´
 	private ImageIcon leftButtonImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/leftButtonImage.png"));
-	// ¿À¸¥ÂÊ ¹öÆ° ÀÌ¹ÌÁö¸¦ ´ãÀ» ¼ö ÀÖ´Â °´Ã¼
+	// ì˜¤ë¥¸ìª½ ë²„íŠ¼ ì´ë¯¸ì§€ë¥¼ ë‹´ì„ ìˆ˜ ìˆëŠ” ê°ì²´
 	private ImageIcon rightButtonImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/rightButtonImage.png"));
-
-	// ¸¶¿ì½º°¡ ¹öÆ°¿¡ ÁøÀÔÇßÀ» ¶§ÀÇ ÀÌ¹ÌÁö
+	// ë…¸ë§ ë²„íŠ¼ ì´ë¯¸ì§€ë¥¼ ë‹´ì„ ìˆ˜ ìˆëŠ” ê°ì²´
+	private ImageIcon normalButtonImage = new ImageIcon(
+			getClass().getClassLoader().getResource("images/normalButtonImage.png"));
+	// ì±Œë¦°ì§€ ë²„íŠ¼ ì´ë¯¸ì§€ë¥¼ ë‹´ì„ ìˆ˜ ìˆëŠ” ê°ì²´
+	private ImageIcon challengeButtonImage = new ImageIcon(
+			getClass().getClassLoader().getResource("images/challengeButtonImage.png"));
+    // ì—°ìŠµ ë²„íŠ¼ ì´ë¯¸ì§€ë¥¼ ë‹´ì„ ìˆ˜ ìˆëŠ” ê°ì²´
+	private ImageIcon practiceButtonImage = new ImageIcon(
+			getClass().getClassLoader().getResource("images/practiceButtonImage.png"));
+	
+	// ë§ˆìš°ìŠ¤ê°€ ë²„íŠ¼ì— ì§„ì…í–ˆì„ ë•Œì˜ ì´ë¯¸ì§€
 	private ImageIcon backButtonEnteredImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/backButtonEnteredImage.png"));
 	private ImageIcon leftButtonEnteredImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/leftButtonEnteredImage.png"));
 	private ImageIcon rightButtonEnteredImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/rightButtonEnteredImage.png"));
+	private ImageIcon normalButtonEnteredImage = new ImageIcon(
+			getClass().getClassLoader().getResource("images/normalButtonEnteredImage.png"));
+	private ImageIcon challengeButtonEnteredImage = new ImageIcon(
+			getClass().getClassLoader().getResource("images/challengeButtonEnteredImage.png"));
+	private ImageIcon practiceButtonEnteredImage = new ImageIcon(
+			getClass().getClassLoader().getResource("images/practiceButtonEnteredImage.png"));
+	
 
-	// JButton ±¸Çö
+
+	// JButton êµ¬í˜„
 	private JButton backButton = new JButton(backButtonImage);
 	private JButton leftButton = new JButton(leftButtonImage);
 	private JButton rightButton = new JButton(rightButtonImage);
+	private JButton normalButton = new JButton(normalButtonImage);
+	private JButton challengeButton = new JButton(challengeButtonImage);
+	private JButton practiceButton = new JButton(practiceButtonImage);
 
-	// ¾²·¹µå °´Ã¼ ¼±¾ğ
+
+	// ì“°ë ˆë“œ ê°ì²´ ì„ ì–¸
 	private Thread thread;
 
-	// fadeIn°ú fadeOut À» À§ÇÑ º¯¼ö
+	// fadeInê³¼ fadeOut ì„ ìœ„í•œ ë³€ìˆ˜
 	private float fadeValue;
 	private boolean isFadeOut;
 
-	// MainScreen Á¦¾î¸¦ À§ÇÑ º¯¼ö
+	// MainScreen ì œì–´ë¥¼ ìœ„í•œ ë³€ìˆ˜
 	private boolean isMainScreen;
-
+	// NormalGameScreen ì œì–´ë¥¼ ìœ„í•œ ë³€ìˆ˜
+	private boolean isNormalGameScreen;
+	// ChallengeGameScreen ì œì–´ë¥¼ ìœ„í•œ ë³€ìˆ˜
+	private boolean isChallengeGameScreen;
+	// PracticeGameScreen ì œì–´ë¥¼ ìœ„í•œ ë³€ìˆ˜
+	private boolean isPracticeGameScreen;
+	
+	
 	ArrayList<Track> trackList = new ArrayList<Track>();
-
-	// ÀÚ½Å¿¡°Ô ¸Â´Â ÆÇ³Ú·Î Á¦¾îÇØ¾ß ÇÏ¹Ç·Î insideout°´Ã¼ ¼±¾ğÀ» ÅëÇØ Á¦¾î
+	
+	// ì²« ë²ˆì§¸ ê³¡ì„ ì˜ë¯¸, ì¸ë±ìŠ¤ë¡œ ì‹œì‘ , ArrayListëŠ” ì¸ë±ìŠ¤ 0ë¶€í„° ì‹œì‘
+	private int nowSelected = 0; 
+	private Music selectedMusic;
+	
+	// ìì‹ ì—ê²Œ ë§ëŠ” íŒë„¬ë¡œ ì œì–´í•´ì•¼ í•˜ë¯€ë¡œ insideoutê°ì²´ ì„ ì–¸ì„ í†µí•´ ì œì–´
 	private InsideOut insideOut;
 
 	GameSelectScreenPanel(InsideOut insideOut) {
-		// ÇÁ·¹ÀÓÀ» ¸Å°³º¯¼ö·Î ¹Ş¾Æ Á¦¾îÇÑ´Ù.
+		// í”„ë ˆì„ì„ ë§¤ê°œë³€ìˆ˜ë¡œ ë°›ì•„ ì œì–´í•œë‹¤.
 		this.insideOut = insideOut;
-		// fadeOut°ªÀ» false·Î ÃÊ±âÈ­ ½ÃÄÑ¹®´Ù
+		// fadeOutê°’ì„ falseë¡œ ì´ˆê¸°í™” ì‹œì¼œë¬¸ë‹¤
 		isFadeOut = false;
-		// isMainScreenÀÇ °ªÀ» false·Î ÃÊ±âÈ­ ½ÃÄÑÁØ´Ù.
+		// isMainScreenì˜ ê°’ì„ falseë¡œ ì´ˆê¸°í™” ì‹œì¼œì¤€ë‹¤.
 		isMainScreen = false;
-		// ¾²·¹µå¸¦ ¸¸µé°í ½ÇÇà½ÃÄÑÁØ´Ù.
+		// ì“°ë ˆë“œë¥¼ ë§Œë“¤ê³  ì‹¤í–‰ì‹œì¼œì¤€ë‹¤.
 		setThread(new Thread(this));
-		// ÄÁÅ×ÀÌ³ÊÀÇ Å©±â°¡ º¯°æµÉ¶§ ÄÄÆ÷³ÍÆ®µéÀÇ Å©±â¿Í À§Ä¡°¡ ÀÚµ¿ÀûÀ¸·Î º¯°æµÇ´Âµ¥ ±×°É ÇØÁ¦ÇÑ´Ù
+		// ì»¨í…Œì´ë„ˆì˜ í¬ê¸°ê°€ ë³€ê²½ë ë•Œ ì»´í¬ë„ŒíŠ¸ë“¤ì˜ í¬ê¸°ì™€ ìœ„ì¹˜ê°€ ìë™ì ìœ¼ë¡œ ë³€ê²½ë˜ëŠ”ë° ê·¸ê±¸ í•´ì œí•œë‹¤
 		setLayout(null);
-		// °ÔÀÓÃ¢ Å©±â ¼³Á¤
+		// ê²Œì„ì°½ í¬ê¸° ì„¤ì •
 		setSize(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
 		setBounds(0, 0, Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
-		// °ËÁ¤»ö ¹ÙÅÁ¿¡ Èò»ö ¿ø ÀÌ¹Ç·Î °ËÁ¤»öÀ¸·Î ¼³Á¤
+		// ê²€ì •ìƒ‰ ë°”íƒ•ì— í°ìƒ‰ ì› ì´ë¯€ë¡œ ê²€ì •ìƒ‰ìœ¼ë¡œ ì„¤ì •
 		setBackground(Color.BLACK);
-		// È­¸é Ãâ·Â ¼³Á¤ ±âº»°ªÀº false ÀÌ¹Ç·Î ¼³Á¤ ÇØÁà¾ßÇÑ´Ù.
+		// í™”ë©´ ì¶œë ¥ ì„¤ì • ê¸°ë³¸ê°’ì€ false ì´ë¯€ë¡œ ì„¤ì • í•´ì¤˜ì•¼í•œë‹¤.
 		setVisible(true);
+		
+		trackList.add(new Track("Metalika Start image.jpg", "Metalika Start image.jpg",
+				"Master of puppets.mp3", "Master of puppets.mp3"));
+		trackList.add(new Track( "Defending champion Game image.png", "Defending Champions.mp3",
+				"Defending Champions.mp3", "Defending Champions"));
+		trackList.add(new Track( "Dasboot Game image.png", "Dasboot.mp3",
+				"Dasboot.mp3", "Dasboot"));
 
-		// Main Å¬·¡½ºÀÇ À§Ä¡¸¦ ±â¹İÀ¸·Î ÇØ¼­ Resource¸¦ ¾ò¾î¼­ ±×°ÍÀÇ ÀÌ¹ÌÁö°ªÀ» º¯¼ö¿¡ ´ëÀÔ½ÃÄÑÁØ´Ù.
+		// Main í´ë˜ìŠ¤ì˜ ìœ„ì¹˜ë¥¼ ê¸°ë°˜ìœ¼ë¡œ í•´ì„œ Resourceë¥¼ ì–»ì–´ì„œ ê·¸ê²ƒì˜ ì´ë¯¸ì§€ê°’ì„ ë³€ìˆ˜ì— ëŒ€ì…ì‹œì¼œì¤€ë‹¤.
 		gameSelectBackGround = new ImageIcon(
 				getClass().getClassLoader().getResource("images/gameSelectScreenImage_2.png")).getImage();
 		musicSelectBackGround = new ImageIcon(
 				getClass().getClassLoader().getResource("images/sunburstGameselectImage_2.png")).getImage();
-		// ¸Ş´º¹Ù exitButton ¼³Á¤
-		buttonSet(insideOut.getMenubarExitButton(), 1200, 0, 64, 28);
-		// ¸Ş´º¹Ù ¼³Á¤
-		add(insideOut.getMenubar());
-		// leftButtonÀÇ À§Ä¡ ¼³Á¤
-		buttonSet(leftButton, 100, 310, 120, 120); // 73, 98 (¿ø·¡ Å©±â)
 
+		// ë©”ë‰´ë°” exitButton ì„¤ì •
+		buttonSet(insideOut.getMenubarExitButton(),1200,0,64,28);
+		// ë©”ë‰´ë°” ì„¤ì •
+		add(insideOut.getMenubar());
+		// leftButtonì˜ ìœ„ì¹˜ ì„¤ì •
+		buttonSet(leftButton, 100, 310, 120, 120); // 73, 98 (ì›ë˜ í¬ê¸°)
+		
 		/**
-		 * leftButtonÀÇ ¸¶¿ì½º ÀÌº¥Æ®¸¦ Ã³¸®ÇØÁØ´Ù.
+		 * leftButtonì˜ ë§ˆìš°ìŠ¤ ì´ë²¤íŠ¸ë¥¼ ì²˜ë¦¬í•´ì¤€ë‹¤.
 		 */
 
 		leftButton.addMouseListener(new MouseAdapter() {
 			/**
-			 * ¸¶¿ì½º°¡ ¾ÆÀÌÄÜ À§¿¡ ÀÖÀ»¶§ ÀÌº¥Æ® Ã³¸®
+			 * ë§ˆìš°ìŠ¤ê°€ ì•„ì´ì½˜ ìœ„ì— ìˆì„ë•Œ ì´ë²¤íŠ¸ ì²˜ë¦¬
 			 */
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				// ¾ÆÀÌÄÜ ÀÌ¹ÌÁö¸¦ Entered ÀÌ¹ÌÁö·Î º¯°æ
+				// ì•„ì´ì½˜ ì´ë¯¸ì§€ë¥¼ Entered ì´ë¯¸ì§€ë¡œ ë³€ê²½
 				leftButton.setIcon(leftButtonEnteredImage);
-				// Ä¿¼­ ÀÌ¹ÌÁöµµ HAND_CURSOR·Î º¯°æÇØ¼­ Á»´õ ¾Ë¾Æº¸±â ½±°ÔÇÑ´Ù.
+				// ì»¤ì„œ ì´ë¯¸ì§€ë„ HAND_CURSORë¡œ ë³€ê²½í•´ì„œ ì¢€ë” ì•Œì•„ë³´ê¸° ì‰½ê²Œí•œë‹¤.
 				leftButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
-			// ¸¶¿ì½º°¡ ¾ÆÀÌÄÜÀ» ¹ş¾î ³µÀ»¶§ ÀÌº¥Æ® Ã³¸®
+			// ë§ˆìš°ìŠ¤ê°€ ì•„ì´ì½˜ì„ ë²—ì–´ ë‚¬ì„ë•Œ ì´ë²¤íŠ¸ ì²˜ë¦¬
 			@Override
 			public void mouseExited(MouseEvent e) {
-				// ¾ÆÀÌÄÜ ÀÌ¹ÌÁö¸¦ ±âº»ÀÌ¹ÌÁ¹ º¯°æ
+				// ì•„ì´ì½˜ ì´ë¯¸ì§€ë¥¼ ê¸°ë³¸ì´ë¯¸ì¡¸ ë³€ê²½
 				leftButton.setIcon(leftButtonImage);
 				leftButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 
-			// ¸¶¿ì½º°¡ leftbutton ¾ÆÀÌÄÜ ´­·¶À»¶§ ÀÌº¥Æ® Ã³¸®
+			// ë§ˆìš°ìŠ¤ê°€ leftbutton ì•„ì´ì½˜ ëˆŒë €ì„ë•Œ ì´ë²¤íŠ¸ ì²˜ë¦¬
 			@Override
 			public void mousePressed(MouseEvent e) {
-				// ¿ŞÂÊ ¹öÆ° ÀÌº¥Æ® Ã³¸®
+				// ì™¼ìª½ ë²„íŠ¼ ì´ë²¤íŠ¸ ì²˜ë¦¬
+				selectLeft();
 			}
 		});
 
-		// rightButtonÀÇ À§Ä¡ ¼³Á¤
-		buttonSet(rightButton, 1050, 310, 120, 120); // 73 98 (¿ø·¡ Å©±â)
+		// rightButtonì˜ ìœ„ì¹˜ ì„¤ì •
+		buttonSet(rightButton, 1050, 310, 120, 120); // 73 98 (ì›ë˜ í¬ê¸°) 
 		/**
-		 * rightButtonÀÇ ¸¶¿ì½º ÀÌº¥Æ®¸¦ Ã³¸®ÇØÁØ´Ù.
+		 * rightButtonì˜ ë§ˆìš°ìŠ¤ ì´ë²¤íŠ¸ë¥¼ ì²˜ë¦¬í•´ì¤€ë‹¤.
 		 */
 
 		rightButton.addMouseListener(new MouseAdapter() {
 			/**
-			 * ¸¶¿ì½º°¡ ¾ÆÀÌÄÜ À§¿¡ ÀÖÀ»¶§ ÀÌº¥Æ® Ã³¸®
+			 * ë§ˆìš°ìŠ¤ê°€ ì•„ì´ì½˜ ìœ„ì— ìˆì„ë•Œ ì´ë²¤íŠ¸ ì²˜ë¦¬
 			 */
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				// ¾ÆÀÌÄÜ ÀÌ¹ÌÁö¸¦ Entered ÀÌ¹ÌÁö·Î º¯°æ
+				// ì•„ì´ì½˜ ì´ë¯¸ì§€ë¥¼ Entered ì´ë¯¸ì§€ë¡œ ë³€ê²½
 				rightButton.setIcon(rightButtonEnteredImage);
-				// Ä¿¼­ ÀÌ¹ÌÁöµµ HAND_CURSOR·Î º¯°æÇØ¼­ Á»´õ ¾Ë¾Æº¸±â ½±°ÔÇÑ´Ù.
+				// ì»¤ì„œ ì´ë¯¸ì§€ë„ HAND_CURSORë¡œ ë³€ê²½í•´ì„œ ì¢€ë” ì•Œì•„ë³´ê¸° ì‰½ê²Œí•œë‹¤.
 				rightButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
-			// ¸¶¿ì½º°¡ ¾ÆÀÌÄÜÀ» ¹ş¾î ³µÀ»¶§ ÀÌº¥Æ® Ã³¸®
+			// ë§ˆìš°ìŠ¤ê°€ ì•„ì´ì½˜ì„ ë²—ì–´ ë‚¬ì„ë•Œ ì´ë²¤íŠ¸ ì²˜ë¦¬
 			@Override
 			public void mouseExited(MouseEvent e) {
-				// ¾ÆÀÌÄÜ ÀÌ¹ÌÁö¸¦ ±âº»ÀÌ¹ÌÁ¹ º¯°æ
+				// ì•„ì´ì½˜ ì´ë¯¸ì§€ë¥¼ ê¸°ë³¸ì´ë¯¸ì¡¸ ë³€ê²½
 				rightButton.setIcon(rightButtonImage);
 				rightButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 
-			// ¸¶¿ì½º°¡ leftbutton ¾ÆÀÌÄÜ ´­·¶À»¶§ ÀÌº¥Æ® Ã³¸®
+			// ë§ˆìš°ìŠ¤ê°€ leftbutton ì•„ì´ì½˜ ëˆŒë €ì„ë•Œ ì´ë²¤íŠ¸ ì²˜ë¦¬
 			@Override
 			public void mousePressed(MouseEvent e) {
-				// ¿À¸¥ÂÊ ¹öÆ° ÀÌº¥Æ® Ã³¸®
+				// ì˜¤ë¥¸ìª½ ë²„íŠ¼ ì´ë²¤íŠ¸ ì²˜ë¦¬
+				selectRight();
+			}
+		});
+		
+		// normalButtonì˜ ìœ„ì¹˜ ì„¤ì • xì¢Œí‘œ,yì¢Œí‘œ,í¬ê¸° (ê°€ë¡œ x ì„¸ë¡œ)
+		buttonSet(normalButton, 390, 360, 213, 40); //  
+		/**
+		 * normalButtonì˜ ë§ˆìš°ìŠ¤ ì´ë²¤íŠ¸ë¥¼ ì²˜ë¦¬í•´ì¤€ë‹¤.
+		 */
+
+		normalButton.addMouseListener(new MouseAdapter() {
+			/**
+			 * ë§ˆìš°ìŠ¤ê°€ ì•„ì´ì½˜ ìœ„ì— ìˆì„ë•Œ ì´ë²¤íŠ¸ ì²˜ë¦¬
+			 */
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// ì•„ì´ì½˜ ì´ë¯¸ì§€ë¥¼ Entered ì´ë¯¸ì§€ë¡œ ë³€ê²½
+				normalButton.setIcon(normalButtonEnteredImage);
+				// ì»¤ì„œ ì´ë¯¸ì§€ë„ HAND_CURSORë¡œ ë³€ê²½í•´ì„œ ì¢€ë” ì•Œì•„ë³´ê¸° ì‰½ê²Œí•œë‹¤.
+				normalButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+
+			// ë§ˆìš°ìŠ¤ê°€ ì•„ì´ì½˜ì„ ë²—ì–´ ë‚¬ì„ë•Œ ì´ë²¤íŠ¸ ì²˜ë¦¬
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// ì•„ì´ì½˜ ì´ë¯¸ì§€ë¥¼ ê¸°ë³¸ì´ë¯¸ì¡¸ ë³€ê²½
+				normalButton.setIcon(normalButtonImage);
+				normalButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			// ë§ˆìš°ìŠ¤ê°€ practiceButton ì•„ì´ì½˜ ëˆŒë €ì„ë•Œ ì´ë²¤íŠ¸ ì²˜ë¦¬
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// ë…¸ë§ ë²„íŠ¼ ì´ë²¤íŠ¸ ì²˜ë¦¬
+				isFadeOut = true;
+				isNormalGameScreen = true;
+			}
+		});
+		
+		// challengeButtonì˜ ìœ„ì¹˜ ì„¤ì • xì¢Œí‘œ,yì¢Œí‘œ,í¬ê¸° (ê°€ë¡œ x ì„¸ë¡œ)
+		buttonSet(challengeButton, 680, 360, 234, 38); //  
+		/**
+		 * challengeButtonì˜ ë§ˆìš°ìŠ¤ ì´ë²¤íŠ¸ë¥¼ ì²˜ë¦¬í•´ì¤€ë‹¤.
+		 */
+
+		challengeButton.addMouseListener(new MouseAdapter() {
+			/**
+			 * ë§ˆìš°ìŠ¤ê°€ ì•„ì´ì½˜ ìœ„ì— ìˆì„ë•Œ ì´ë²¤íŠ¸ ì²˜ë¦¬
+			 */
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// ì•„ì´ì½˜ ì´ë¯¸ì§€ë¥¼ Entered ì´ë¯¸ì§€ë¡œ ë³€ê²½
+				challengeButton.setIcon(challengeButtonEnteredImage);
+				// ì»¤ì„œ ì´ë¯¸ì§€ë„ HAND_CURSORë¡œ ë³€ê²½í•´ì„œ ì¢€ë” ì•Œì•„ë³´ê¸° ì‰½ê²Œí•œë‹¤.
+				challengeButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+
+			// ë§ˆìš°ìŠ¤ê°€ ì•„ì´ì½˜ì„ ë²—ì–´ ë‚¬ì„ë•Œ ì´ë²¤íŠ¸ ì²˜ë¦¬
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// ì•„ì´ì½˜ ì´ë¯¸ì§€ë¥¼ ê¸°ë³¸ì´ë¯¸ì¡¸ ë³€ê²½
+				challengeButton.setIcon(challengeButtonImage);
+				challengeButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			// ë§ˆìš°ìŠ¤ê°€ practiceButton ì•„ì´ì½˜ ëˆŒë €ì„ë•Œ ì´ë²¤íŠ¸ ì²˜ë¦¬
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// ì±Œë¦°ì§€ ë²„íŠ¼ ì´ë²¤íŠ¸ ì²˜ë¦¬
+				isFadeOut = true;
+				isChallengeGameScreen = true;
 			}
 		});
 
-		// backButtonÀÇ À§Ä¡ ¼³Á¤
+		// practiceButtonì˜ ìœ„ì¹˜ ì„¤ì • xì¢Œí‘œ,yì¢Œí‘œ,í¬ê¸° (ê°€ë¡œ x ì„¸ë¡œ)
+		buttonSet(practiceButton, 540, 580, 213, 40); //  
+		/**
+		 * practiceButtonì˜ ë§ˆìš°ìŠ¤ ì´ë²¤íŠ¸ë¥¼ ì²˜ë¦¬í•´ì¤€ë‹¤.
+		 */
+
+		practiceButton.addMouseListener(new MouseAdapter() {
+			/**
+			 * ë§ˆìš°ìŠ¤ê°€ ì•„ì´ì½˜ ìœ„ì— ìˆì„ë•Œ ì´ë²¤íŠ¸ ì²˜ë¦¬
+			 */
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// ì•„ì´ì½˜ ì´ë¯¸ì§€ë¥¼ Entered ì´ë¯¸ì§€ë¡œ ë³€ê²½
+				practiceButton.setIcon(practiceButtonEnteredImage);
+				// ì»¤ì„œ ì´ë¯¸ì§€ë„ HAND_CURSORë¡œ ë³€ê²½í•´ì„œ ì¢€ë” ì•Œì•„ë³´ê¸° ì‰½ê²Œí•œë‹¤.
+				practiceButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+
+			// ë§ˆìš°ìŠ¤ê°€ ì•„ì´ì½˜ì„ ë²—ì–´ ë‚¬ì„ë•Œ ì´ë²¤íŠ¸ ì²˜ë¦¬
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// ì•„ì´ì½˜ ì´ë¯¸ì§€ë¥¼ ê¸°ë³¸ì´ë¯¸ì¡¸ ë³€ê²½
+				practiceButton.setIcon(practiceButtonImage);
+				practiceButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			// ë§ˆìš°ìŠ¤ê°€ practiceButton ì•„ì´ì½˜ ëˆŒë €ì„ë•Œ ì´ë²¤íŠ¸ ì²˜ë¦¬
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// ì—°ìŠµ ë²„íŠ¼ ì´ë²¤íŠ¸ ì²˜ë¦¬
+				isFadeOut = true;
+				isPracticeGameScreen = true;
+			}
+		});
+
+
+		// backButtonì˜ ìœ„ì¹˜ ì„¤ì •
 		buttonSet(backButton, 80, 60, 228, 57);
 		/**
-		 * backButtonÀÇ ¸¶¿ì½º ÀÌº¥Æ®¸¦ Ã³¸®ÇØÁØ´Ù.
+		 * backButtonì˜ ë§ˆìš°ìŠ¤ ì´ë²¤íŠ¸ë¥¼ ì²˜ë¦¬í•´ì¤€ë‹¤.
 		 */
 
 		backButton.addMouseListener(new MouseAdapter() {
 			/**
-			 * ¸¶¿ì½º°¡ ¾ÆÀÌÄÜ À§¿¡ ÀÖÀ»¶§ ÀÌº¥Æ® Ã³¸®
+			 * ë§ˆìš°ìŠ¤ê°€ ì•„ì´ì½˜ ìœ„ì— ìˆì„ë•Œ ì´ë²¤íŠ¸ ì²˜ë¦¬
 			 */
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				// ¾ÆÀÌÄÜ ÀÌ¹ÌÁö¸¦ Entered ÀÌ¹ÌÁö·Î º¯°æ
+				// ì•„ì´ì½˜ ì´ë¯¸ì§€ë¥¼ Entered ì´ë¯¸ì§€ë¡œ ë³€ê²½
 				backButton.setIcon(backButtonEnteredImage);
-				// Ä¿¼­ ÀÌ¹ÌÁöµµ HAND_CURSOR·Î º¯°æÇØ¼­ Á»´õ ¾Ë¾Æº¸±â ½±°ÔÇÑ´Ù.
+				// ì»¤ì„œ ì´ë¯¸ì§€ë„ HAND_CURSORë¡œ ë³€ê²½í•´ì„œ ì¢€ë” ì•Œì•„ë³´ê¸° ì‰½ê²Œí•œë‹¤.
 				backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
-			// ¸¶¿ì½º°¡ ¾ÆÀÌÄÜÀ» ¹ş¾î ³µÀ»¶§ ÀÌº¥Æ® Ã³¸®
+			// ë§ˆìš°ìŠ¤ê°€ ì•„ì´ì½˜ì„ ë²—ì–´ ë‚¬ì„ë•Œ ì´ë²¤íŠ¸ ì²˜ë¦¬
 			@Override
 			public void mouseExited(MouseEvent e) {
-				// ¾ÆÀÌÄÜ ÀÌ¹ÌÁö¸¦ ±âº»ÀÌ¹ÌÁ¹ º¯°æ
+				// ì•„ì´ì½˜ ì´ë¯¸ì§€ë¥¼ ê¸°ë³¸ì´ë¯¸ì¡¸ ë³€ê²½
 				backButton.setIcon(backButtonImage);
 				backButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 
-			// ¸¶¿ì½º°¡ backButton ¾ÆÀÌÄÜ ´­·¶À»¶§ ÀÌº¥Æ® Ã³¸®
+			// ë§ˆìš°ìŠ¤ê°€ backButton ì•„ì´ì½˜ ëˆŒë €ì„ë•Œ ì´ë²¤íŠ¸ ì²˜ë¦¬
 			@Override
 			public void mousePressed(MouseEvent e) {
 				isFadeOut = true;
@@ -190,9 +339,9 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 	}
 
 	/**
-	 * fadeIn È¿°ú¸¦ ÁÖ±âÀ§ÇÑ ¸Ş¼Òµå temp¸¦ »ç¿ëÇÑ ÀÌÀ¯´Â fadeIn°ªÀÌ 1.0À» ³Ñ¾î°¡¸é ¿¡·¯°¡ ¹ß»ıÇÏ±â ¶§¹®¿¡ float¿¬»ê Æ¯¼º»ó
-	 * 0.1¾¿ 10¹ø Áõ°¡½ÃÅ°¸é 1.0ÀÌ ¾Æ´Ï¶ó 1.000001ÀÌ µÇ¼­ ¿¡·¯°¡ ¹ß»ıÇÑ´Ù. µû¶ó¼­ temp¸¦ Áõ°¡½ÃÅ°°í fadeIn¿¡ ´ëÀÔ½ÃÅ°´Â
-	 * ¹æ½ÄÀ» »ç¿ëÇÑ´Ù. ¿©±â¼­ temp°¡ 1º¸´Ù Ä¿Áö¸é temp¸¦ 1·Î ¼³Á¤ÇÏ°í ´ëÀÔ½ÃÄÑÁØ´Ù.
+	 * fadeIn íš¨ê³¼ë¥¼ ì£¼ê¸°ìœ„í•œ ë©”ì†Œë“œ tempë¥¼ ì‚¬ìš©í•œ ì´ìœ ëŠ” fadeInê°’ì´ 1.0ì„ ë„˜ì–´ê°€ë©´ ì—ëŸ¬ê°€ ë°œìƒí•˜ê¸° ë•Œë¬¸ì— floatì—°ì‚° íŠ¹ì„±ìƒ
+	 * 0.1ì”© 10ë²ˆ ì¦ê°€ì‹œí‚¤ë©´ 1.0ì´ ì•„ë‹ˆë¼ 1.000001ì´ ë˜ì„œ ì—ëŸ¬ê°€ ë°œìƒí•œë‹¤. ë”°ë¼ì„œ tempë¥¼ ì¦ê°€ì‹œí‚¤ê³  fadeInì— ëŒ€ì…ì‹œí‚¤ëŠ”
+	 * ë°©ì‹ì„ ì‚¬ìš©í•œë‹¤. ì—¬ê¸°ì„œ tempê°€ 1ë³´ë‹¤ ì»¤ì§€ë©´ tempë¥¼ 1ë¡œ ì„¤ì •í•˜ê³  ëŒ€ì…ì‹œì¼œì¤€ë‹¤.
 	 */
 	public void fadeIn() {
 		try {
@@ -233,15 +382,16 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		// graphics¸¦ 2D·Î º¯°æ
+		// graphicsë¥¼ 2Dë¡œ ë³€ê²½
 		Graphics2D g2 = (Graphics2D) g;
-		// Åõ¸íµµ¸¦ Á¶ÀıÇÏ±â À§ÇÑ ºÎºĞ fadeValue °¡ 1.0ÀÌ¸é ºÒÅõ¸íµµ 100%, 0.1ÀÌ¸é ºÒÅõ¸íµµ°¡ 10% ÀÌ´Ù.
+		// íˆ¬ëª…ë„ë¥¼ ì¡°ì ˆí•˜ê¸° ìœ„í•œ ë¶€ë¶„ fadeValue ê°€ 1.0ì´ë©´ ë¶ˆíˆ¬ëª…ë„ 100%, 0.1ì´ë©´ ë¶ˆíˆ¬ëª…ë„ê°€ 10% ì´ë‹¤.
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, fadeValue));
 		g2.drawImage(musicSelectBackGround, 0, 0, null);
 		g2.drawImage(gameSelectBackGround, 0, 0, null);
+		
 	}
 
-	// run ÇÔ¼ö¿¡¼­ while¹®À» ÅëÇØ °è¼Ó È­¸éÀ» ±×·ÁÁÜÀ¸·Î½á ´ÙÀ½ È­¸éÀ¸·Î ³Ñ¾î°¥ ¼ö ÀÖ°Ô ÇØÁØ´Ù.
+	// run í•¨ìˆ˜ì—ì„œ whileë¬¸ì„ í†µí•´ ê³„ì† í™”ë©´ì„ ê·¸ë ¤ì¤Œìœ¼ë¡œì¨ ë‹¤ìŒ í™”ë©´ìœ¼ë¡œ ë„˜ì–´ê°ˆ ìˆ˜ ìˆê²Œ í•´ì¤€ë‹¤.
 	@Override
 	public void run() {
 		fadeIn();
@@ -253,6 +403,22 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 					insideOut.changeMainScreen();
 					return;
 				}
+				else if(isFadeOut && isNormalGameScreen) {
+					fadeOut();
+					insideOut.changeGameScreen();
+					return;
+				}
+				else if(isFadeOut && isChallengeGameScreen) {
+					fadeOut();
+					insideOut.changeGameScreen();
+					return;
+				}
+				else if(isFadeOut && isPracticeGameScreen) {
+					fadeOut();
+					insideOut.changeGameScreen();
+					return;
+				}
+				
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -260,17 +426,44 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		}
 
 	}
+	//  ë‹¤ìŒ ì‘ì—…í•´ì•¼ í•  ì¥ì†Œ
+	public void selectTrack(int nowSelected) {
+		if(selectedMusic != null) 
+			selectedMusic.close();
+		selectedImage = new ImageIcon(
+				getClass().getClassLoader().getResource("images/gameSelectScreenImage.png")).getImage();
+		selectedMusic = new Music(trackList.get(nowSelected).getStartMusic(), true);
+		selectedMusic.start(); // ë¬´í•œ ì¬ìƒ
+	}
+	
+	// ì™¼ìª½ ë²„íŠ¼ì„ ëˆŒë €ì„ ë•Œì˜ ì´ë²¤íŠ¸ ì²˜ë¦¬
+	public void selectLeft() {
+		if(nowSelected == 0)
+			nowSelected = trackList.size() - 1; // ì²« ë²ˆì§¸ê³¡ì—ì„œ ì™¼ìª½ ë²„íŠ¼ì„ ëˆ„ë¥´ë©´ ê°€ì¥ ì˜¤ë¥¸ìª½ ê³¡ì´ ì„ íƒë˜ì–´ì•¼ í•˜ê¸° ë•Œë¬¸
+		else
+			nowSelected--; // ê·¸ ì™¸ì˜ ê²½ìš°ëŠ” 1ì„ ë¹¼ì¤Œ
+		selectTrack(nowSelected);
+	}
+	
+	// ì˜¤ë¥¸ìª½ ë²„íŠ¼ì„ ëˆŒë €ì„ ë•Œì˜ ì´ë²¤íŠ¸ ì²˜ë¦¬
+	public void selectRight() {
+		if(nowSelected == trackList.size() - 1)
+			nowSelected = 0; // ì™¼ìª½ê³¼ ë°˜ëŒ€
+		else
+			nowSelected++; // ë§ˆì°¬ê°€ì§€ë¡œ  ê·¸ ì™¸ì˜ ê²½ìš°ëŠ” 1ì„ ë”í•¨ 
+		selectTrack(nowSelected);
+	}
 
-	// ÀÏÀÏÀÌ ´Ù ¼³Á¤ÇÏ±â Èûµå¹Ç·Î ¸Ş¼Òµå¸¦ ÅëÇØ ¼Õ½±°Ô ¹öÆ°ÀÇ À§Ä¡¸¦ ¼³Á¤
+	// ì¼ì¼ì´ ë‹¤ ì„¤ì •í•˜ê¸° í˜ë“œë¯€ë¡œ ë©”ì†Œë“œë¥¼ í†µí•´ ì†ì‰½ê²Œ ë²„íŠ¼ì˜ ìœ„ì¹˜ë¥¼ ì„¤ì •
 	public void buttonSet(JButton button, int x, int y, int width, int height) {
 		button.setBounds(x, y, width, height);
-		// ¹öÆ° Å×µÎ¸® Á¦°Å
+		// ë²„íŠ¼ í…Œë‘ë¦¬ ì œê±°
 		button.setBorderPainted(false);
-		// ´©¸£´Â ´À³¦ Á¦°Å
+		// ëˆ„ë¥´ëŠ” ëŠë‚Œ ì œê±°
 		button.setContentAreaFilled(false);
-		// ±Û¾¾ Å×µÎ¸® Á¦°Å
+		// ê¸€ì”¨ í…Œë‘ë¦¬ ì œê±°
 		button.setFocusPainted(false);
-		// ¹öÆ° Ãß°¡
+		// ë²„íŠ¼ ì¶”ê°€
 		add(button);
 	}
 
