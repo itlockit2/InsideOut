@@ -18,8 +18,8 @@ import javax.swing.JPanel;
 public class MainScreenPanel extends JPanel implements Runnable {
 
 	// 배경 이미지를 담을 수 있는 객체
-	private Image background; // 화면이 전환 됨에 따라 intro 화면에 한정 되지 않으므로 변수 명을 background로 변경 
-	private Image introBackgroundCircle; // 원은 intro 화면에 한정 되므로 변경하지 않음 
+	private Image introbackground; 
+	private Image introBackgroundCircle; 
 
 	// 버튼 이미지를 담을 수 있는 객체
 	private ImageIcon exitButtonImage = new ImageIcon(getClass().getClassLoader().getResource("images/exitButton.png"));
@@ -47,7 +47,7 @@ public class MainScreenPanel extends JPanel implements Runnable {
 	private boolean isFadeOut;
 	
 	// 메인 화면인지 아닌지의 여부 , 처음에는 메인 화면이 아니므로 false를 부여 
-	private boolean isGameScreen = false; 
+	private boolean isGameSelectScreen = false; 
 	
 	
 	// Thread 객체
@@ -68,8 +68,9 @@ public class MainScreenPanel extends JPanel implements Runnable {
 		 */
 		introMusic = new Music("introMusic.mp3", true);
 		introMusic.start();
-		
-		// 컨테이너의 크기가 변경될때 컴포넌트들의 크기와 위치가 자동적으로 변경되는데 그걸 해제한다
+	
+	
+    	// 컨테이너의 크기가 변경될때 컴포넌트들의 크기와 위치가 자동적으로 변경되는데 그걸 해제한다
 		setLayout(null);
 		// 게임창 크기 설정
 		setSize(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
@@ -81,7 +82,7 @@ public class MainScreenPanel extends JPanel implements Runnable {
 
 		// Main 클래스의 위치를 기반으로 해서 Resource를 얻어서 그것의 이미지값을 변수에 대입시켜준다.
 		// 배경이미지 , introBackground => Background로 변경 
-		background = new ImageIcon(getClass().getClassLoader().getResource("images/MainBackGround.png"))
+		introbackground = new ImageIcon(getClass().getClassLoader().getResource("images/MainBackGround.png"))
 				.getImage(); 
 		introBackgroundCircle = new ImageIcon(
 				getClass().getClassLoader().getResource("images/MainBackGroundCircle.gif")).getImage();
@@ -121,7 +122,7 @@ public class MainScreenPanel extends JPanel implements Runnable {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				isFadeOut = true;
-				isGameScreen = true;
+				isGameSelectScreen = true;
 				
 			}   
 		});
@@ -258,18 +259,22 @@ public class MainScreenPanel extends JPanel implements Runnable {
 		// 투명도를 조절하기 위한 부분 fadeValue 가 1.0이면 불투명도 100%, 0.1이면 불투명도가 10% 이다.
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, fadeValue));
 		g2.drawImage(introBackgroundCircle, 275, 30, 1200, 676, null);
-		g2.drawImage(background, 0, 0, null);
+		g2.drawImage(introbackground, 0, 0, null);
 	}
 
 	@Override
 	public void run() {
 		// fadeIn 효과를 넣어준다.
 		fadeIn();
+
 		while (true) {
 			try {
-				if(isFadeOut && isGameScreen) {
+			    	if(isFadeOut && isGameSelectScreen) {
 					fadeOut();
-					insideOut.changeGameScreen();
+					// 화면이 넘어갔으므로 introMusic을 종료시킨다. 또한, fadeOut()을 한 후의 music 종료가 가장 깔끔하다고 생각되므로 위치를 fadeOut()다음으로 설정
+					// 또한, 깔끔한 코딩을 위해 쓰레드의 run함수에서 종료시켰다.
+					introMusic.close();
+					insideOut.changeGameSelectScreen();	
 					return;
 				}
 				repaint();
