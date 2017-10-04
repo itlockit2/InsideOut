@@ -83,12 +83,12 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		musicSelectBackGround = new ImageIcon(
 				getClass().getClassLoader().getResource("images/sunburstGameselectImage_2.png")).getImage();
 		// 메뉴바 exitButton 설정
-		buttonSet(insideOut.getMenubarExitButton(),1200,0,64,28);
+		buttonSet(insideOut.getMenubarExitButton(), 1200, 0, 64, 28);
 		// 메뉴바 설정
 		add(insideOut.getMenubar());
 		// leftButton의 위치 설정
 		buttonSet(leftButton, 100, 310, 120, 120); // 73, 98 (원래 크기)
-		
+
 		/**
 		 * leftButton의 마우스 이벤트를 처리해준다.
 		 */
@@ -121,7 +121,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		});
 
 		// rightButton의 위치 설정
-		buttonSet(rightButton, 1050, 310, 120, 120); // 73 98 (원래 크기) 
+		buttonSet(rightButton, 1050, 310, 120, 120); // 73 98 (원래 크기)
 		/**
 		 * rightButton의 마우스 이벤트를 처리해준다.
 		 */
