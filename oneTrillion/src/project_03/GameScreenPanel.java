@@ -34,7 +34,6 @@ public class GameScreenPanel extends JPanel implements Runnable {
 	// JButton 구현
 	private JButton backButton = new JButton(backButtonImage);
 	private JButton gamePlayButton = new JButton(gamePlayButtonImage);
-	// Rectangle2D rec = new Rectangle2D.Double(4,4,7,7);
 	
 	// Thread 객체
 	private Thread thread;
@@ -49,15 +48,15 @@ public class GameScreenPanel extends JPanel implements Runnable {
 	private boolean isFadeOut;
 
 	// MainScreen 제어를 위한 변수
-	private boolean isMainScreen;
+	private boolean isGameSelectScreen;
 
 	public GameScreenPanel(InsideOut insideOut) {
 		// 프레임을 매개변수로 받아 제어한다.
 		this.insideOut = insideOut;
 		// fadeOut값을 false로 초기화 시켜문다
 		isFadeOut = false;
-		// isMainScreen의 값을 false로 초기화 시켜준다.
-		isMainScreen = false;
+		// isGameSelectScreen의 값을 false로 초기화 시켜준다.
+		isGameSelectScreen = false;
 		// 쓰레드를 만들고 실행시켜준다.
 		setThread(new Thread(this));
 		// 컨테이너의 크기가 변경될때 컴포넌트들의 크기와 위치가 자동적으로 변경되는데 그걸 해제한다
@@ -108,7 +107,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				isFadeOut = true;
-				isMainScreen = true;
+				isGameSelectScreen = true;
 			}
 		});
 
@@ -230,9 +229,9 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		while (true) {
 			repaint();
 			try {
-				if (isFadeOut && isMainScreen) {
+				if (isFadeOut && isGameSelectScreen) {
 					fadeOut();
-					insideOut.changeMainScreen();
+					insideOut.changeGameSelectScreen();
 					return;
 				}
 				Thread.sleep(10);
