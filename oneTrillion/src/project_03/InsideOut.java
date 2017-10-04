@@ -22,6 +22,8 @@ public class InsideOut extends JFrame {
 
 	// MainScreenPanel 객체이다.
 	private MainScreenPanel mainScreenPanel;
+	// MusicSelectScreenPanel 객체이다.
+	private GameSelectScreenPanel gameSelectScreenPanel;
 	// GameScreenPanel 객체이다.
 	private GameScreenPanel gameScreenPanel;
 	// 필요한 정보를 출력하는 부분이 contentpane 이다.
@@ -136,7 +138,23 @@ public class InsideOut extends JFrame {
 		// 화면 출력 설정 기본값은 false 이므로 설정 해줘야한다.되도록 맨마지막에 해준다.
 		setVisible(true);
 	}
-
+	
+	// Start 버튼을 누를시 전에 실행되던 판넬을 종료시키고 MusicSelectScreen화면으로 이동
+	// 또한 GameScreen화면에서 Back버튼을 누를시 MusicSelectScreen화면으로도 이동
+	public void changeGameSelectScreen() {
+		// 현재 실행되고 있는 모든 판넬을 제거한다.
+		contentpane.removeAll();
+		// 새롭게 게임 스크린 판넬 객체를 만들어서 생성자를 실행
+		gameSelectScreenPanel = new GameSelectScreenPanel(this);
+		// 패널을 추가해준다.
+		contentpane.add(gameSelectScreenPanel);
+		// GamePanel의 쓰레드 실행
+		gameSelectScreenPanel.getThread().start();
+		// 화면 출력 설정 기본값은 false 이므로 설정 해줘야한다.
+		setVisible(true);
+	}
+    
+	// MusicSelectPanel에서 음악 선택시 실행되던 판넬을 종료시키고 GameScreen화면으로 이동
 	public void changeGameScreen() {
 		// 현재 실행되고 있는 모든 판넬을 제거한다.
 		contentpane.removeAll();
@@ -150,6 +168,7 @@ public class InsideOut extends JFrame {
 		setVisible(true);
 	}
 
+	// MusicSelectPanel에서 실행되던 판넬을 종료시키고 MainScreen화면으로 이동
 	public void changeMainScreen() {
 		// 현재 실행되고 있는 모든 판넬을 제거한다.
 		contentpane.removeAll();
