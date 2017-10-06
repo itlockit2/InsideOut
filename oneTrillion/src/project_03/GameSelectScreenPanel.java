@@ -36,10 +36,10 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 	// 챌린지 버튼 이미지를 담을 수 있는 객체
 	private ImageIcon challengeButtonImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/challengeButtonImage_2.png"));
-    // 연습 버튼 이미지를 담을 수 있는 객체
+	// 연습 버튼 이미지를 담을 수 있는 객체
 	private ImageIcon practiceButtonImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/practiceButtonImage_2.png"));
-	
+
 	// 마우스가 버튼에 진입했을 때의 이미지
 	private ImageIcon backButtonEnteredImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/backButtonEnteredImage_2.png"));
@@ -53,8 +53,6 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 			getClass().getClassLoader().getResource("images/challengeButtonEnteredImage_2.png"));
 	private ImageIcon practiceButtonEnteredImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/practiceButtonEnteredImage_2.png"));
-	
-
 
 	// JButton 구현
 	private JButton backButton = new JButton(backButtonImage);
@@ -63,7 +61,6 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 	private JButton normalButton = new JButton(normalButtonImage);
 	private JButton challengeButton = new JButton(challengeButtonImage);
 	private JButton practiceButton = new JButton(practiceButtonImage);
-
 
 	// 쓰레드 객체 선언
 	private Thread thread;
@@ -80,14 +77,13 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 	private boolean isChallengeGameScreen;
 	// PracticeGameScreen 제어를 위한 변수
 	private boolean isPracticeGameScreen;
-	
-	
+
 	ArrayList<Track> trackList = new ArrayList<Track>();
-	
+
 	// 첫 번째 곡을 의미, 인덱스로 시작 , ArrayList는 인덱스 0부터 시작
-	private int nowSelected = 0; 
+	private int nowSelected = 0;
 	private Music selectedMusic;
-	
+
 	// 자신에게 맞는 판넬로 제어해야 하므로 insideout객체 선언을 통해 제어
 	private InsideOut insideOut;
 
@@ -109,13 +105,12 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		setBackground(Color.BLACK);
 		// 화면 출력 설정 기본값은 false 이므로 설정 해줘야한다.
 		setVisible(true);
-		
-		trackList.add(new Track("Metalika Start image.jpg", "Metalika Start image.jpg",
-				"Master of puppets.mp3", "Master of puppets.mp3"));
-		trackList.add(new Track( "Defending champion Game image.png", "Defending Champions.mp3",
+
+		trackList.add(new Track("Metalika Start image.jpg", "Metalika Start image.jpg", "Master of puppets.mp3",
+				"Master of puppets.mp3"));
+		trackList.add(new Track("Defending champion Game image.png", "Defending Champions.mp3",
 				"Defending Champions.mp3", "Defending Champions"));
-		trackList.add(new Track( "Dasboot Game image.png", "Dasboot.mp3",
-				"Dasboot.mp3", "Dasboot"));
+		trackList.add(new Track("Dasboot Game image.png", "Dasboot.mp3", "Dasboot.mp3", "Dasboot"));
 
 		// Main 클래스의 위치를 기반으로 해서 Resource를 얻어서 그것의 이미지값을 변수에 대입시켜준다.
 		gameSelectBackGround = new ImageIcon(
@@ -124,12 +119,12 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 				getClass().getClassLoader().getResource("images/sunburstGameselectImage_2.png")).getImage();
 
 		// 메뉴바 exitButton 설정
-		buttonSet(insideOut.getMenubarExitButton(),1200,0,64,28);
+		buttonSet(insideOut.getMenubarExitButton(), 1200, 0, 64, 28);
 		// 메뉴바 설정
 		add(insideOut.getMenubar());
 		// leftButton의 위치 설정
 		buttonSet(leftButton, 100, 310, 120, 120); // 73, 98 (원래 크기)
-		
+
 		/**
 		 * leftButton의 마우스 이벤트를 처리해준다.
 		 */
@@ -163,7 +158,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		});
 
 		// rightButton의 위치 설정
-		buttonSet(rightButton, 1050, 310, 120, 120); // 73 98 (원래 크기) 
+		buttonSet(rightButton, 1050, 310, 120, 120); // 73 98 (원래 크기)
 		/**
 		 * rightButton의 마우스 이벤트를 처리해준다.
 		 */
@@ -195,9 +190,9 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 				selectRight();
 			}
 		});
-		
+
 		// normalButton의 위치 설정 x좌표,y좌표,크기 (가로 x 세로)
-		buttonSet(normalButton, 390, 360, 213, 40); //  
+		buttonSet(normalButton, 390, 360, 213, 40); //
 		/**
 		 * normalButton의 마우스 이벤트를 처리해준다.
 		 */
@@ -230,9 +225,9 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 				isNormalGameScreen = true;
 			}
 		});
-		
+
 		// challengeButton의 위치 설정 x좌표,y좌표,크기 (가로 x 세로)
-		buttonSet(challengeButton, 680, 360, 234, 38); //  
+		buttonSet(challengeButton, 680, 360, 234, 38); //
 		/**
 		 * challengeButton의 마우스 이벤트를 처리해준다.
 		 */
@@ -267,7 +262,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		});
 
 		// practiceButton의 위치 설정 x좌표,y좌표,크기 (가로 x 세로)
-		buttonSet(practiceButton, 540, 580, 213, 40); //  
+		buttonSet(practiceButton, 540, 580, 213, 40); //
 		/**
 		 * practiceButton의 마우스 이벤트를 처리해준다.
 		 */
@@ -300,7 +295,6 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 				isPracticeGameScreen = true;
 			}
 		});
-
 
 		// backButton의 위치 설정
 		buttonSet(backButton, 80, 60, 228, 57);
@@ -388,7 +382,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, fadeValue));
 		g2.drawImage(musicSelectBackGround, 0, 0, null);
 		g2.drawImage(gameSelectBackGround, 0, 0, null);
-		
+
 	}
 
 	// run 함수에서 while문을 통해 계속 화면을 그려줌으로써 다음 화면으로 넘어갈 수 있게 해준다.
@@ -398,27 +392,15 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		while (true) {
 			repaint();
 			try {
-				if (isFadeOut && isMainScreen) {
+				if (isFadeOut && (isMainScreen)) {
 					fadeOut();
 					insideOut.changeMainScreen();
 					return;
-				}
-				else if(isFadeOut && isNormalGameScreen) {
+				} else if (isFadeOut && (isNormalGameScreen || isChallengeGameScreen || isPracticeGameScreen)) {
 					fadeOut();
 					insideOut.changeGameScreen();
 					return;
-				}
-				else if(isFadeOut && isChallengeGameScreen) {
-					fadeOut();
-					insideOut.changeGameScreen();
-					return;
-				}
-				else if(isFadeOut && isPracticeGameScreen) {
-					fadeOut();
-					insideOut.changeGameScreen();
-					return;
-				}
-				
+				} 
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -426,31 +408,32 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		}
 
 	}
-	//  다음 작업해야 할 장소
+
+	// 다음 작업해야 할 장소
 	public void selectTrack(int nowSelected) {
-		if(selectedMusic != null) 
+		if (selectedMusic != null)
 			selectedMusic.close();
-		selectedImage = new ImageIcon(
-				getClass().getClassLoader().getResource("images/gameSelectScreenImage.png")).getImage();
+		selectedImage = new ImageIcon(getClass().getClassLoader().getResource("images/gameSelectScreenImage.png"))
+				.getImage();
 		selectedMusic = new Music(trackList.get(nowSelected).getStartMusic(), true);
 		selectedMusic.start(); // 무한 재생
 	}
-	
+
 	// 왼쪽 버튼을 눌렀을 때의 이벤트 처리
 	public void selectLeft() {
-		if(nowSelected == 0)
+		if (nowSelected == 0)
 			nowSelected = trackList.size() - 1; // 첫 번째곡에서 왼쪽 버튼을 누르면 가장 오른쪽 곡이 선택되어야 하기 때문
 		else
 			nowSelected--; // 그 외의 경우는 1을 빼줌
 		selectTrack(nowSelected);
 	}
-	
+
 	// 오른쪽 버튼을 눌렀을 때의 이벤트 처리
 	public void selectRight() {
-		if(nowSelected == trackList.size() - 1)
+		if (nowSelected == trackList.size() - 1)
 			nowSelected = 0; // 왼쪽과 반대
 		else
-			nowSelected++; // 마찬가지로  그 외의 경우는 1을 더함 
+			nowSelected++; // 마찬가지로 그 외의 경우는 1을 더함
 		selectTrack(nowSelected);
 	}
 
