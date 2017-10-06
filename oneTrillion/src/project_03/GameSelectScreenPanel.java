@@ -23,36 +23,36 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 
 	// 뒤로가기 버튼 이미지를 담을 수 있는 객체
 	private ImageIcon backButtonImage = new ImageIcon(
-			getClass().getClassLoader().getResource("images/backButtonImage.png"));
+			getClass().getClassLoader().getResource("images/backButtonImage_2.png"));
 	// 왼쪽 버튼 이미지를 담을 수 있는 객체
 	private ImageIcon leftButtonImage = new ImageIcon(
-			getClass().getClassLoader().getResource("images/leftButtonImage.png"));
+			getClass().getClassLoader().getResource("images/leftButtonImage_2.png"));
 	// 오른쪽 버튼 이미지를 담을 수 있는 객체
 	private ImageIcon rightButtonImage = new ImageIcon(
-			getClass().getClassLoader().getResource("images/rightButtonImage.png"));
+			getClass().getClassLoader().getResource("images/rightButtonImage_2.png"));
 	// 노말 버튼 이미지를 담을 수 있는 객체
 	private ImageIcon normalButtonImage = new ImageIcon(
-			getClass().getClassLoader().getResource("images/normalButtonImage.png"));
+			getClass().getClassLoader().getResource("images/normalButtonImage_2.png"));
 	// 챌린지 버튼 이미지를 담을 수 있는 객체
 	private ImageIcon challengeButtonImage = new ImageIcon(
-			getClass().getClassLoader().getResource("images/challengeButtonImage.png"));
+			getClass().getClassLoader().getResource("images/challengeButtonImage_2.png"));
     // 연습 버튼 이미지를 담을 수 있는 객체
 	private ImageIcon practiceButtonImage = new ImageIcon(
-			getClass().getClassLoader().getResource("images/practiceButtonImage.png"));
+			getClass().getClassLoader().getResource("images/practiceButtonImage_2.png"));
 	
 	// 마우스가 버튼에 진입했을 때의 이미지
 	private ImageIcon backButtonEnteredImage = new ImageIcon(
-			getClass().getClassLoader().getResource("images/backButtonEnteredImage.png"));
+			getClass().getClassLoader().getResource("images/backButtonEnteredImage_2.png"));
 	private ImageIcon leftButtonEnteredImage = new ImageIcon(
-			getClass().getClassLoader().getResource("images/leftButtonEnteredImage.png"));
+			getClass().getClassLoader().getResource("images/leftButtonEnteredImage_2.png"));
 	private ImageIcon rightButtonEnteredImage = new ImageIcon(
-			getClass().getClassLoader().getResource("images/rightButtonEnteredImage.png"));
+			getClass().getClassLoader().getResource("images/rightButtonEnteredImage_2.png"));
 	private ImageIcon normalButtonEnteredImage = new ImageIcon(
-			getClass().getClassLoader().getResource("images/normalButtonEnteredImage.png"));
+			getClass().getClassLoader().getResource("images/normalButtonEnteredImage_2.png"));
 	private ImageIcon challengeButtonEnteredImage = new ImageIcon(
-			getClass().getClassLoader().getResource("images/challengeButtonEnteredImage.png"));
+			getClass().getClassLoader().getResource("images/challengeButtonEnteredImage_2.png"));
 	private ImageIcon practiceButtonEnteredImage = new ImageIcon(
-			getClass().getClassLoader().getResource("images/practiceButtonEnteredImage.png"));
+			getClass().getClassLoader().getResource("images/practiceButtonEnteredImage_2.png"));
 	
 
 
