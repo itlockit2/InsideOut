@@ -76,6 +76,7 @@ public class MainScreenPanel extends JPanel implements Runnable {
 		 */
 		introMusic = new Music("introMusic.mp3", true);
 		introMusic.start();
+		
 
 		// 컨테이너의 크기가 변경될때 컴포넌트들의 크기와 위치가 자동적으로 변경되는데 그걸 해제한다
 		setLayout(null);
