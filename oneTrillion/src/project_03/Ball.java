@@ -1,6 +1,6 @@
 package project_03;
 
-// playable 캐릭터를 제어하기 위한 메소드
+//playable 캐릭터를 제어하기 위한 메소드
 public class Ball implements Runnable {
 	// x좌표 , y좌표 , radius , 중심좌표 값  x , y
 	private int x, y, r , Ox , Oy;

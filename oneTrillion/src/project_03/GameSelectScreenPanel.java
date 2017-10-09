@@ -392,15 +392,20 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		while (true) {
 			repaint();
 			try {
-				if (isFadeOut && (isMainScreen)) {
+				if (isFadeOut
+						&& (isMainScreen)){
+				
+				
 					fadeOut();
 					insideOut.changeMainScreen();
 					return;
-				} else if (isFadeOut && (isNormalGameScreen || isChallengeGameScreen || isPracticeGameScreen)) {
+				
+				} else if(isFadeOut
+						&& (isNormalGameScreen || isChallengeGameScreen || isPracticeGameScreen)) { 
 					fadeOut();
 					insideOut.changeGameScreen();
 					return;
-				} 
+				}
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
