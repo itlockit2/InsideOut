@@ -7,14 +7,18 @@ package project_03;
  * @author Yun
  *
  */
-public class Main {
 
+// HelpScreen의 음악 문제 
+// SelectTrack의 이미지 위치 문제 조절 필요
+
+public class Main {
+	
 	public static final int SCREEN_WIDTH = 1280; // 1280 x 720 사이즈로 출력
 	public static final int SCREEN_HEIGHT = 720;
 	
 	public static void main(String[] args) {
-	   
-		 new InsideOut();
+	
+		new InsideOut();
 
 	}
 }

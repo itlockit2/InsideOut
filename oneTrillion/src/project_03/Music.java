@@ -23,6 +23,7 @@ public class Music extends Thread {
 	private InputStream is;
 	private String name;
 
+    	
 	// 생성자를 통해서 곡의 이름과 반복결정값을 받는다
 	public Music(String name, boolean isLoop) {
 
@@ -31,7 +32,7 @@ public class Music extends Thread {
 			this.name = name;
 			// isLoop값 초기화
 			this.isLoop = isLoop;
-			
+			// 현재 재생시간을 얻어오기 위한 int값 , 초기값은 0으로 초기화 
 			// fis를 사용하면 Jar파일을 이용하게 될때 에러가 발생하므로 InputStream을 사용한다.
 			is = getClass().getClassLoader().getResourceAsStream("music/" + name);
 			// InputStream를 bis버퍼에 담아서 읽을수 있게 한다

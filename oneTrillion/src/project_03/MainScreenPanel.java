@@ -20,16 +20,12 @@ public class MainScreenPanel extends JPanel implements Runnable {
 	// 배경 이미지를 담을 수 있는 객체
 	private Image introbackground;
 	private Image introBackgroundCircle;
-	// 도움말 이미지를 담을 수 있는 객체
-	private Image helpScreen;
 
 	// 버튼 이미지를 담을 수 있는 객체
 	private ImageIcon exitButtonImage = new ImageIcon(getClass().getClassLoader().getResource("images/exitButton.png"));
 	private ImageIcon helpButtonImage = new ImageIcon(getClass().getClassLoader().getResource("images/helpButton.png"));
 	private ImageIcon startButtonImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/startButton.png"));
-	private ImageIcon backButtonImage = new ImageIcon(
-			getClass().getClassLoader().getResource("images/backButtonImage_2.png"));
 
 	// 마우스가 버튼에 진입했을때 이미지
 	private ImageIcon startEnteredButtonImage = new ImageIcon(
@@ -38,32 +34,29 @@ public class MainScreenPanel extends JPanel implements Runnable {
 			getClass().getClassLoader().getResource("images/helpButtonEntered.png"));
 	private ImageIcon exitEnteredButtonImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/exitButtonEntered.png"));
-	private ImageIcon backButtonEnteredImage = new ImageIcon(
-			getClass().getClassLoader().getResource("images/backButtonEnteredImage_2.png"));
 
 	// JButton 구현
 	private JButton exitButton = new JButton(exitButtonImage);
 	private JButton helpButton = new JButton(helpButtonImage);
 	private JButton startButton = new JButton(startButtonImage);
-	private JButton backButton = new JButton(backButtonImage);
 
 	// 음악을 담을 수 있는 객체
-	Music introMusic;
+	private Music introMusic;
 
 	// fadeIn과 fadeOut 을 위한 변수
 	private float fadeValue;
 	private boolean isFadeOut;
 
-	// 메인 화면인지 아닌지의 여부 , 처음에는 메인 화면이 아니므로 false를 부여
+	// boolean값을 통해 어떤 화면으로 전환할 지 가독성을 높일 수 있으며 값이 true가 되면 화면을 전환한다.
 	private boolean isGameSelectScreen = false;
 	private boolean isHelpScreen = false;
-	private boolean isMainScreen = true;
 
 	// Thread 객체
 	private Thread thread;
 
 	// 프레임을 매개 변수로 넘기기 위해 Insideout 객체 선언
 	private InsideOut insideOut;
+	
 
 	public MainScreenPanel(InsideOut insideOut) {
 		// 프레임을 매개변수로 받아 제어한다.
@@ -77,7 +70,7 @@ public class MainScreenPanel extends JPanel implements Runnable {
 		introMusic = new Music("introMusic.mp3", true);
 		introMusic.start();
 		
-
+        
 		// 컨테이너의 크기가 변경될때 컴포넌트들의 크기와 위치가 자동적으로 변경되는데 그걸 해제한다
 		setLayout(null);
 		// 게임창 크기 설정
@@ -94,15 +87,13 @@ public class MainScreenPanel extends JPanel implements Runnable {
 				.getImage();
 		introBackgroundCircle = new ImageIcon(
 				getClass().getClassLoader().getResource("images/MainBackGroundCircle.gif")).getImage();
-		helpScreen = new ImageIcon(getClass().getClassLoader().getResource("images/helpScreen.png")).getImage();
+		
 
 		// 버튼들을 미리 설정해놓은 buttonSet 메소드를 통해 추가
 		buttonSet(startButton, 110, 450, 228, 57);
 		buttonSet(helpButton, 110, 515, 183, 55);
 		buttonSet(exitButton, 110, 575, 148, 53);
-		// backButton의 위치 설정
-		buttonSet(backButton, 20, 60, 228, 57);
-		backButton.setVisible(false);
+		
 
 		// 메뉴바 exitButton 설정
 		buttonSet(insideOut.getMenubarExitButton(), 1200, 0, 64, 28);
@@ -168,7 +159,8 @@ public class MainScreenPanel extends JPanel implements Runnable {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				// 도움말 화면 변경 이벤트
-				enterHelpScreen();
+				isFadeOut = true;
+				isHelpScreen = true;
 			}
 		});
 
@@ -202,54 +194,6 @@ public class MainScreenPanel extends JPanel implements Runnable {
 				System.exit(0);
 			}
 		});
-
-		backButton.addMouseListener(new MouseAdapter() {
-			/**
-			 * 마우스가 아이콘 위에 있을때 이벤트 처리
-			 */
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// 아이콘 이미지를 Entered 이미지로 변경
-				backButton.setIcon(backButtonEnteredImage);
-				// 커서 이미지도 HAND_CURSOR로 변경해서 좀더 알아보기 쉽게한다.
-				backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			}
-
-			// 마우스가 아이콘을 벗어 났을때 이벤트 처리
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// 아이콘 이미지를 기본이미졸 변경
-				backButton.setIcon(backButtonImage);
-				backButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			}
-
-			// 마우스가 backButton 아이콘 눌렀을때 이벤트 처리
-			@Override
-			public void mousePressed(MouseEvent e) {
-				exitHelpScreen();
-			}
-		});
-	}
-
-	// helpScreen을 진입햇을때의 메소드
-	public void enterHelpScreen() {
-		isMainScreen = false;
-		isHelpScreen = true;
-		backButton.setVisible(true);
-		startButton.setVisible(false);
-		exitButton.setVisible(false);
-		helpButton.setVisible(false);
-	}
-
-	// helpScreen을 나갔을때의 메소드
-	public void exitHelpScreen() {
-		isFadeOut = true;
-		isMainScreen = true;
-		isHelpScreen = false;
-		backButton.setVisible(false);
-		startButton.setVisible(true);
-		exitButton.setVisible(true);
-		helpButton.setVisible(true);
 	}
 
 	/**
@@ -319,24 +263,18 @@ public class MainScreenPanel extends JPanel implements Runnable {
 		super.paintComponent(g);
 		// graphics를 2D로 변경
 		Graphics2D g2 = (Graphics2D) g;
-		// isMainScreen이 true이면 메인스크린을 그리고 그게 아니라면 HelpScreen을 띄워준다.
-		if (isMainScreen) {
 			// 투명도를 조절하기 위한 부분 fadeValue 가 1.0이면 불투명도 100%, 0.1이면 불투명도가 10% 이다.
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, fadeValue));
 			g2.drawImage(introBackgroundCircle, 275, 30, 1200, 676, null);
 			g2.drawImage(introbackground, 0, 0, null);
-		} else {
-			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, fadeValue));
-			g2.drawImage(helpScreen, 0, 0, null);
 		}
-	}
+	
 
 	@Override
 	public void run() {
 		// fadeIn 효과를 넣어준다.
 		fadeIn();
-
-		while (true) {
+    while (true) {
 			try {
 				if (isFadeOut && isGameSelectScreen) {
 					fadeOut();
@@ -347,6 +285,13 @@ public class MainScreenPanel extends JPanel implements Runnable {
 					insideOut.changeGameSelectScreen();
 					return;
 				} 
+				else if(isFadeOut && isHelpScreen) {
+					fadeOut();
+					// 음악 진행을 받아서 실행
+
+					insideOut.changeHelpScreen();
+					return;
+				}
 				repaint();
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
