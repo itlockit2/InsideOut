@@ -1,5 +1,6 @@
 package project_03;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Cursor;
@@ -11,6 +12,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /**
  * 게임의 전반적인 컨트롤을 해주는 클래스이다.
@@ -22,6 +24,8 @@ public class InsideOut extends JFrame {
 
 	// MainScreenPanel 객체이다.
 	private MainScreenPanel mainScreenPanel;
+	// Help(도움말)ScreenPanel 객체이다.
+	private HelpScreenPanel helpScreenPanel;
 	// MusicSelectScreenPanel 객체이다.
 	private GameSelectScreenPanel gameSelectScreenPanel;
 	// GameScreenPanel 객체이다.
@@ -127,6 +131,8 @@ public class InsideOut extends JFrame {
 				}
 				System.exit(0);
 			}
+			
+		
 		});
 
 		// 메인 패널 생성
@@ -150,6 +156,20 @@ public class InsideOut extends JFrame {
 		contentpane.add(gameSelectScreenPanel);
 		// GamePanel의 쓰레드 실행
 		gameSelectScreenPanel.getThread().start();
+		// 화면 출력 설정 기본값은 false 이므로 설정 해줘야한다.
+		setVisible(true);
+	}
+	
+	// 마찬가지로 도움말 스크린으로 이동할 시에 대해 판넬 처리를 해준다.
+	public void changeHelpScreen() {
+		// 현재 실행되고 있는 모든 판넬을 제거한다.
+		contentpane.removeAll();
+		// 새롭게 게임 스크린 판넬 객체를 만들어서 생성자를 실행
+		helpScreenPanel = new HelpScreenPanel(this);
+		// 패널을 추가해준다.
+		contentpane.add(helpScreenPanel);
+		// GamePanel의 쓰레드 실행
+		helpScreenPanel.getThread().start();
 		// 화면 출력 설정 기본값은 false 이므로 설정 해줘야한다.
 		setVisible(true);
 	}

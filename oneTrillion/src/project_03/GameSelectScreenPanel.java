@@ -14,6 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+
 public class GameSelectScreenPanel extends JPanel implements Runnable {
 
 	// 배경 이미지를 담을 수 있는 객체
@@ -105,12 +106,15 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		setBackground(Color.BLACK);
 		// 화면 출력 설정 기본값은 false 이므로 설정 해줘야한다.
 		setVisible(true);
-
+         
+		// trackList를 통해 원하는 곡과 화면을 구현 따라서, 이런 식으로 구현이 가능하다. 기본적으로 4개 구성해봄
+		trackList.add(new Track("sunburstGameselectImage_2.png", "sunburstGameselectImage_2.png", "Tobu & Itro - Sunburst_Highlight.mp3",
+				"Tobu & Itro - Sunburst.mp3"));
 		trackList.add(new Track("Metalika Start image.jpg", "Metalika Start image.jpg", "Master of puppets.mp3",
 				"Master of puppets.mp3"));
-		trackList.add(new Track("Defending champion Game image.png", "Defending Champions.mp3",
-				"Defending Champions.mp3", "Defending Champions"));
-		trackList.add(new Track("Dasboot Game image.png", "Dasboot.mp3", "Dasboot.mp3", "Dasboot"));
+		trackList.add(new Track("Defending champion Start image.png", "Defending champions Start Image.mp3",
+				"Defending Champions.mp3", "Defending Champions.mp3"));
+		trackList.add(new Track("Dasboot Start image.png", "Dasboot Start Image.png", "Dasboot.mp3", "Dasboot.mp3"));
 
 		// Main 클래스의 위치를 기반으로 해서 Resource를 얻어서 그것의 이미지값을 변수에 대입시켜준다.
 		gameSelectBackGround = new ImageIcon(
@@ -124,7 +128,10 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		add(insideOut.getMenubar());
 		// leftButton의 위치 설정
 		buttonSet(leftButton, 100, 310, 120, 120); // 73, 98 (원래 크기)
-
+        // 선택할 곡을 보여주고 들려준다. 인덱스인 nowSelected값에 따라 곡 변경이 가능함 
+		selectTrack(nowSelected);
+		
+		
 		/**
 		 * leftButton의 마우스 이벤트를 처리해준다.
 		 */
@@ -187,7 +194,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				// 오른쪽 버튼 이벤트 처리
-				selectRight();
+				  selectRight();
 			}
 		});
 
@@ -382,7 +389,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, fadeValue));
 		g2.drawImage(musicSelectBackGround, 0, 0, null);
 		g2.drawImage(gameSelectBackGround, 0, 0, null);
-
+		g2.drawImage(selectedImage, 0, 0, null);
 	}
 
 	// run 함수에서 while문을 통해 계속 화면을 그려줌으로써 다음 화면으로 넘어갈 수 있게 해준다.
@@ -392,18 +399,18 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		while (true) {
 			repaint();
 			try {
-				if (isFadeOut
-						&& (isMainScreen)){
-				
-				
-					fadeOut();
-					insideOut.changeMainScreen();
+				if (isFadeOut && (isMainScreen)) {
+                	fadeOut();
+              		insideOut.changeMainScreen();
+              		// 메인으로 돌아가야 하기 때문에 현재 실행하고 있는 음악을 종료한다.
+					selectedMusic.close();
 					return;
-				
-				} else if(isFadeOut
-						&& (isNormalGameScreen || isChallengeGameScreen || isPracticeGameScreen)) { 
+
+				} else if (isFadeOut && (isNormalGameScreen || isChallengeGameScreen || isPracticeGameScreen)) {
 					fadeOut();
-					insideOut.changeGameScreen();
+	            	insideOut.changeGameScreen();
+	    			// 게임 화면으로  전환해야 하기 때문에 현재 실행하고 있는 음악을 종료한다.
+					selectedMusic.close();
 					return;
 				}
 				Thread.sleep(10);
@@ -414,12 +421,14 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 
 	}
 
-	// 다음 작업해야 할 장소
+    // 노래를 선택하기 위해 만든 메소드 
 	public void selectTrack(int nowSelected) {
 		if (selectedMusic != null)
 			selectedMusic.close();
-		selectedImage = new ImageIcon(getClass().getClassLoader().getResource("images/gameSelectScreenImage.png"))
-				.getImage();
+		// 노래 선택시의 image 구현
+		selectedImage = new ImageIcon(
+				getClass().getClassLoader().getResource("images/" + trackList.get(nowSelected).getStartImage())).getImage();
+		// Music 객체를 새로 만듦으로써 실행하고자 하는 곡을 무한 반복 시킨다.
 		selectedMusic = new Music(trackList.get(nowSelected).getStartMusic(), true);
 		selectedMusic.start(); // 무한 재생
 	}
