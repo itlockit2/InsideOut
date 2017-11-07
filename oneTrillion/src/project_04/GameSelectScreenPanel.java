@@ -355,7 +355,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 				}
 				fadeValue = temp;
 				repaint();
-				Thread.sleep(100);
+				Thread.sleep(50);
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -373,7 +373,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 				}
 				fadeValue = temp;
 				repaint();
-				Thread.sleep(100);
+				Thread.sleep(50);
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -401,7 +401,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 			try {
 				if (isFadeOut && (isMainScreen)) {
                 	fadeOut();
-              		insideOut.changeMainScreen();
+              		insideOut.changeMainScreen(0);
               		// ë©”ì¸?œ¼ë¡? ?Œ?•„ê°??•¼ ?•˜ê¸? ?•Œë¬¸ì— ?˜„?¬ ?‹¤?–‰?•˜ê³? ?ˆ?Š” ?Œ?•…?„ ì¢…ë£Œ?•œ?‹¤.
 					selectedMusic.close();
 					return;
@@ -429,7 +429,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		selectedImage = new ImageIcon(
 				getClass().getClassLoader().getResource("images/" + trackList.get(nowSelected).getStartImage())).getImage();
 		// Music ê°ì²´ë¥? ?ƒˆë¡? ë§Œë“¦?œ¼ë¡œì¨ ?‹¤?–‰?•˜ê³ ì ?•˜?Š” ê³¡ì„ ë¬´í•œ ë°˜ë³µ ?‹œ?‚¨?‹¤.
-		selectedMusic = new Music(trackList.get(nowSelected).getStartMusic(), true);
+		selectedMusic = new Music(trackList.get(nowSelected).getStartMusic(), true,0);
 		selectedMusic.start(); // ë¬´í•œ ?¬?ƒ
 	}
 

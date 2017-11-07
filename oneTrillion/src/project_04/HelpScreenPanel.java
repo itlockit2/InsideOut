@@ -32,6 +32,9 @@ public class HelpScreenPanel extends JPanel implements Runnable {
 	// 음악을 담을 수 있는 객체 , introMusic의 현재 진행 시간을 받아서 계속 진행시켜주어야 하므로 객체를 만든다.
 	private Music introMusic;
 
+	// 음악이 중지 되었을때를 담을수 있는 객체
+	private int stopPoint;
+	
 	// fadeIn과 fadeOut 을 위한 변수
 	private float fadeValue;
 	private boolean isFadeOut;
@@ -45,12 +48,17 @@ public class HelpScreenPanel extends JPanel implements Runnable {
 	// 자신에게 맞는 판넬로 제어해야 하므로 insideout객체 선언을 통해 제어
 	private InsideOut insideOut;
 
-	HelpScreenPanel(InsideOut insideOut) {
+	HelpScreenPanel(InsideOut insideOut, int stopPoint) {
 		// 프레임을 매개변수로 받아 제어한다.
 		this.insideOut = insideOut;
+		// introMusic 시작점을 정의해준다
+		this.stopPoint = stopPoint;
+		
+		introMusic = new Music("introMusic.mp3", true, stopPoint);
+		introMusic.start();
+		
 		// fadeOut의 값을 false로 초기화 시켜준다.
 		isFadeOut = false;
-
         // 컨테이너의 크기가 변경될때 컴포넌트들의 크기와 위치가 자동적으로 변경되는데 그걸 해제한다
 		setLayout(null);
 		// 게임창 크기 설정
@@ -193,7 +201,11 @@ public class HelpScreenPanel extends JPanel implements Runnable {
 			try {
 				if (isFadeOut && isMainScreen) {
 					fadeOut();
-					insideOut.changeMainScreen();
+					// 음악 진행을 받아서 실행
+					introMusic.getPlayer().stop();
+					stopPoint = introMusic.getPausedOnFrame();
+					introMusic.close();
+					insideOut.changeMainScreen(stopPoint);
 					return;
 				} 
 				repaint();

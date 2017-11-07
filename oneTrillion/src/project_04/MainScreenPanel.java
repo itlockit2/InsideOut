@@ -42,6 +42,9 @@ public class MainScreenPanel extends JPanel implements Runnable {
 
 	// 음악을 담을 수 있는 객체
 	private Music introMusic;
+	
+	// 음악이 중지 되었을때를 담을수 있는 객체
+	private int stopPoint;
 
 	// fadeIn과 fadeOut 을 위한 변수
 	private float fadeValue;
@@ -58,16 +61,20 @@ public class MainScreenPanel extends JPanel implements Runnable {
 	private InsideOut insideOut;
 	
 
-	public MainScreenPanel(InsideOut insideOut) {
+	public MainScreenPanel(InsideOut insideOut, int stopPoint) {
 		// 프레임을 매개변수로 받아 제어한다.
 		this.insideOut = insideOut;
 		// fadeOut의 값을 false로 초기화 시켜준다.
 		isFadeOut = false;
 
+		//stopPoint를 초기화 시켜준다
+		this.stopPoint = stopPoint;
+		
+		
 		/**
-		 * Music의 매개변수로 mp3파일 이름과 루프유무를 넣어준다. 시작화면에서 인트로뮤직이 무한 반복 게임이 시작함과 동시에 음악이 무한 재생
+		 * Music의 매개변수로 mp3파일 이름과 루프유무와 스타팅 포인트를 넣어준다. 시작화면에서 인트로뮤직이 무한 반복 게임이 시작함과 동시에 음악이 무한 재생
 		 */
-		introMusic = new Music("introMusic.mp3", true);
+		introMusic = new Music("introMusic.mp3", true, stopPoint);
 		introMusic.start();
 		
         
@@ -288,8 +295,10 @@ public class MainScreenPanel extends JPanel implements Runnable {
 				else if(isFadeOut && isHelpScreen) {
 					fadeOut();
 					// 음악 진행을 받아서 실행
-
-					insideOut.changeHelpScreen();
+					introMusic.getPlayer().stop();
+					stopPoint = introMusic.getPausedOnFrame();
+					introMusic.close();
+					insideOut.changeHelpScreen(stopPoint);
 					return;
 				}
 				repaint();

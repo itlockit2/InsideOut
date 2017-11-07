@@ -136,7 +136,7 @@ public class InsideOut extends JFrame {
 		});
 
 		// 메인 패널 생성
-		mainScreenPanel = new MainScreenPanel(this);
+		mainScreenPanel = new MainScreenPanel(this, 0);
 		// 패널을 추가해준다.
 		contentpane.add(mainScreenPanel);
 		// MainPanel의 쓰레드 실행
@@ -161,11 +161,11 @@ public class InsideOut extends JFrame {
 	}
 	
 	// 마찬가지로 도움말 스크린으로 이동할 시에 대해 판넬 처리를 해준다.
-	public void changeHelpScreen() {
+	public void changeHelpScreen(int introMusicStartPoint) {
 		// 현재 실행되고 있는 모든 판넬을 제거한다.
 		contentpane.removeAll();
 		// 새롭게 게임 스크린 판넬 객체를 만들어서 생성자를 실행
-		helpScreenPanel = new HelpScreenPanel(this);
+		helpScreenPanel = new HelpScreenPanel(this, introMusicStartPoint);
 		// 패널을 추가해준다.
 		contentpane.add(helpScreenPanel);
 		// GamePanel의 쓰레드 실행
@@ -189,11 +189,11 @@ public class InsideOut extends JFrame {
 	}
 
 	// MusicSelectPanel에서 실행되던 판넬을 종료시키고 MainScreen화면으로 이동
-	public void changeMainScreen() {
+	public void changeMainScreen(int introMusicStartPoint) {
 		// 현재 실행되고 있는 모든 판넬을 제거한다.
 		contentpane.removeAll();
 		// 새롭게 게임 스크린 판넬 객체를 만들어서 생성자를 실행
-		mainScreenPanel = new MainScreenPanel(this);
+		mainScreenPanel = new MainScreenPanel(this, introMusicStartPoint);
 		// 패널을 추가해준다.
 		contentpane.add(mainScreenPanel);
 		// GamePanel의 쓰레드 실행
