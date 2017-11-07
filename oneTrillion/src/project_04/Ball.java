@@ -1,4 +1,4 @@
-package project_03;
+package project_04;
 
 //playable 캐릭터를 제어하기 위한 메소드
 public class Ball implements Runnable {
