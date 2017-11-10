@@ -17,31 +17,35 @@ import javax.swing.JPanel;
 
 public class GameSelectScreenPanel extends JPanel implements Runnable {
 
-	// 諛곌꼍 ?씠誘몄?瑜? ?떞?쓣 ?닔 ?엳?뒗 媛앹껜
+	// 배경 이미지를 담을 수 있는 객체
 	private Image gameSelectBackGround;
 	private Image musicSelectBackGround;
-	private Image selectedImage; // ?떆?옉?븯怨? ?뱾?뼱 媛붿쓣 ?븣?쓽 ?씠誘몄?
+	// 곡 선택화면에서의 Title이미지와 Game이미지
+	private Image selectedTitleImage;
+	private Image selectedImage; 
+	private int selectedDrawX;
+	private int selectedDrawY;
 
-	// ?뮘濡쒓?湲? 踰꾪듉 ?씠誘몄?瑜? ?떞?쓣 ?닔 ?엳?뒗 媛앹껜
+	// 뒤로가기 버튼 이미지를 담을 수 있는 객체
 	private ImageIcon backButtonImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/backButtonImage_2.png"));
-	// ?쇊履? 踰꾪듉 ?씠誘몄?瑜? ?떞?쓣 ?닔 ?엳?뒗 媛앹껜
+	// 왼쪽 버튼 이미지를 담을 수 있는 객체
 	private ImageIcon leftButtonImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/leftButtonImage_2.png"));
-	// ?삤瑜몄そ 踰꾪듉 ?씠誘몄?瑜? ?떞?쓣 ?닔 ?엳?뒗 媛앹껜
+	// 오른쪽 버튼 이미지를 담을 수 있는 객체
 	private ImageIcon rightButtonImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/rightButtonImage_2.png"));
-	// ?끂留? 踰꾪듉 ?씠誘몄?瑜? ?떞?쓣 ?닔 ?엳?뒗 媛앹껜
+	// 노말 버튼 이미지를 담을 수 있는 객체
 	private ImageIcon normalButtonImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/normalButtonImage_2.png"));
-	// 梨뚮┛吏? 踰꾪듉 ?씠誘몄?瑜? ?떞?쓣 ?닔 ?엳?뒗 媛앹껜
+	// 챌린지 버튼 이미지를 담을 수 있는 객체
 	private ImageIcon challengeButtonImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/challengeButtonImage_2.png"));
-	// ?뿰?뒿 踰꾪듉 ?씠誘몄?瑜? ?떞?쓣 ?닔 ?엳?뒗 媛앹껜
+	// 연습 버튼 이미지를 담을 수 있는 객체
 	private ImageIcon practiceButtonImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/practiceButtonImage_2.png"));
 
-	// 留덉슦?뒪媛? 踰꾪듉?뿉 吏꾩엯?뻽?쓣 ?븣?쓽 ?씠誘몄?
+	// 마우스가 버튼에 진입했을 때의 이미지
 	private ImageIcon backButtonEnteredImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/backButtonEnteredImage_2.png"));
 	private ImageIcon leftButtonEnteredImage = new ImageIcon(
@@ -55,7 +59,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 	private ImageIcon practiceButtonEnteredImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/practiceButtonEnteredImage_2.png"));
 
-	// JButton 援ы쁽
+	// JButton 구현
 	private JButton backButton = new JButton(backButtonImage);
 	private JButton leftButton = new JButton(leftButtonImage);
 	private JButton rightButton = new JButton(rightButtonImage);
@@ -63,273 +67,276 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 	private JButton challengeButton = new JButton(challengeButtonImage);
 	private JButton practiceButton = new JButton(practiceButtonImage);
 
-	// ?벐?젅?뱶 媛앹껜 ?꽑?뼵
+	// 쓰레드 객체 선언
 	private Thread thread;
 
-	// fadeIn怨? fadeOut ?쓣 ?쐞?븳 蹂??닔
+	// fadeIn과 fadeOut 을 위한 변수
 	private float fadeValue;
 	private boolean isFadeOut;
 
-	// MainScreen ?젣?뼱瑜? ?쐞?븳 蹂??닔
+	// MainScreen 제어를 위한 변수
 	private boolean isMainScreen;
-	// NormalGameScreen ?젣?뼱瑜? ?쐞?븳 蹂??닔
+	// NormalGameScreen 제어를 위한 변수
 	private boolean isNormalGameScreen;
-	// ChallengeGameScreen ?젣?뼱瑜? ?쐞?븳 蹂??닔
+	// ChallengeGameScreen 제어를 위한 변수
 	private boolean isChallengeGameScreen;
-	// PracticeGameScreen ?젣?뼱瑜? ?쐞?븳 蹂??닔
+	// PracticeGameScreen 제어를 위한 변수
 	private boolean isPracticeGameScreen;
 
 	ArrayList<Track> trackList = new ArrayList<Track>();
 
-	// 泥? 踰덉㎏ 怨≪쓣 ?쓽誘?, ?씤?뜳?뒪濡? ?떆?옉 , ArrayList?뒗 ?씤?뜳?뒪 0遺??꽣 ?떆?옉
+	// 첫 번째 곡을 의미, 인덱스로 시작 , ArrayList는 인덱스 0부터 시작
 	private int nowSelected = 0;
 	private Music selectedMusic;
 
-	// ?옄?떊?뿉寃? 留욌뒗 ?뙋?꽟濡? ?젣?뼱?빐?빞 ?븯誘?濡? insideout媛앹껜 ?꽑?뼵?쓣 ?넻?빐 ?젣?뼱
+	// 자신에게 맞는 판넬로 제어해야 하므로 insideout객체 선언을 통해 제어
 	private InsideOut insideOut;
 
 	GameSelectScreenPanel(InsideOut insideOut) {
-		// ?봽?젅?엫?쓣 留ㅺ컻蹂??닔濡? 諛쏆븘 ?젣?뼱?븳?떎.
+		// 프레임을 매개변수로 받아 제어한다.
 		this.insideOut = insideOut;
-		// fadeOut媛믪쓣 false濡? 珥덇린?솕 ?떆耳쒕Ц?떎
+		// fadeOut값을 false로 초기화 시켜문다
 		isFadeOut = false;
-		// isMainScreen?쓽 媛믪쓣 false濡? 珥덇린?솕 ?떆耳쒖??떎.
+		// isMainScreen의 값을 false로 초기화 시켜준다.
 		isMainScreen = false;
-		// ?벐?젅?뱶瑜? 留뚮뱾怨? ?떎?뻾?떆耳쒖??떎.
+		// 쓰레드를 만들고 실행시켜준다.
 		setThread(new Thread(this));
-		// 而⑦뀒?씠?꼫?쓽 ?겕湲곌? 蹂?寃쎈맆?븣 而댄룷?꼳?듃?뱾?쓽 ?겕湲곗? ?쐞移섍? ?옄?룞?쟻?쑝濡? 蹂?寃쎈릺?뒗?뜲 洹멸구 ?빐?젣?븳?떎
+		// 컨테이너의 크기가 변경될때 컴포넌트들의 크기와 위치가 자동적으로 변경되는데 그걸 해제한다
 		setLayout(null);
-		// 寃뚯엫李? ?겕湲? ?꽕?젙
+		// 게임창 크기 설정
 		setSize(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
 		setBounds(0, 0, Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
-		// 寃??젙?깋 諛뷀깢?뿉 ?씛?깋 ?썝 ?씠誘?濡? 寃??젙?깋?쑝濡? ?꽕?젙
+		// 검정색 바탕에 흰색 원 이므로 검정색으로 설정
 		setBackground(Color.BLACK);
-		// ?솕硫? 異쒕젰 ?꽕?젙 湲곕낯媛믪? false ?씠誘?濡? ?꽕?젙 ?빐以섏빞?븳?떎.
+		// 화면 출력 설정 기본값은 false 이므로 설정 해줘야한다.
 		setVisible(true);
-         
-		// trackList瑜? ?넻?빐 ?썝?븯?뒗 怨↔낵 ?솕硫댁쓣 援ы쁽 ?뵲?씪?꽌, ?씠?윴 ?떇?쑝濡? 援ы쁽?씠 媛??뒫?븯?떎. 湲곕낯?쟻?쑝濡? 4媛? 援ъ꽦?빐遊?
-		trackList.add(new Track("sunburstGameselectImage_2.png", "sunburstGameselectImage_2.png", "Tobu & Itro - Sunburst_Highlight.mp3",
-				"Tobu & Itro - Sunburst.mp3"));
-		trackList.add(new Track("Metalika Start image.jpg", "Metalika Start image.jpg", "Master of puppets.mp3",
-				"Master of puppets.mp3"));
-		trackList.add(new Track("Defending champion Start image.png", "Defending champions Start Image.mp3",
-				"Defending Champions.mp3", "Defending Champions.mp3"));
-		trackList.add(new Track("Dasboot Start image.png", "Dasboot Start Image.png", "Dasboot.mp3", "Dasboot.mp3"));
 
-		// Main ?겢?옒?뒪?쓽 ?쐞移섎?? 湲곕컲?쑝濡? ?빐?꽌 Resource瑜? ?뼸?뼱?꽌 洹멸쾬?쓽 ?씠誘몄?媛믪쓣 蹂??닔?뿉 ???엯?떆耳쒖??떎.
+		// trackList를 통해 원하는 곡과 화면을 구현 
+		// 시작 트랙
+		trackList.add(new Track("SunburstTitleImage.png", "sunburstGameselectImage_2.png", 
+				"Tobu & Itro - Sunburst_Highlight.mp3", "Tobu & Itro - Sunburst.mp3", 420 , 180));
+		// 1번 트랙
+		trackList.add(new Track("BadNewsTitleImage.png", "BadNewsImage.png",
+				"BadNewsHighLight.mp3", "Lock N Bounce - Bad News.mp3", 375 , 180));
+		// 2번 트랙 
+		trackList.add(new Track("HeartBeatTitleImage.png", "HeartBeatImage.png",
+				"HeartBeatHighLight.mp3", "Krale - Heartbeat,mp3" , 375 , 170));
+
+		// Main 클래스의 위치를 기반으로 해서 Resource를 얻어서 그것의 이미지값을 변수에 대입시켜준다.
 		gameSelectBackGround = new ImageIcon(
 				getClass().getClassLoader().getResource("images/gameSelectScreenImage_2.png")).getImage();
 		musicSelectBackGround = new ImageIcon(
 				getClass().getClassLoader().getResource("images/sunburstGameselectImage_2.png")).getImage();
 
-		// 硫붾돱諛? exitButton ?꽕?젙
+
+		// 메뉴바 exitButton 설정
 		buttonSet(insideOut.getMenubarExitButton(), 1200, 0, 64, 28);
-		// 硫붾돱諛? ?꽕?젙
+		// 메뉴바 설정
 		add(insideOut.getMenubar());
-		// leftButton?쓽 ?쐞移? ?꽕?젙
-		buttonSet(leftButton, 100, 310, 120, 120); // 73, 98 (?썝?옒 ?겕湲?)
-        // ?꽑?깮?븷 怨≪쓣 蹂댁뿬二쇨퀬 ?뱾?젮以??떎. ?씤?뜳?뒪?씤 nowSelected媛믪뿉 ?뵲?씪 怨? 蹂?寃쎌씠 媛??뒫?븿 
+		// leftButton의 위치 설정
+		buttonSet(leftButton, 100, 310, 120, 120); // 73, 98 (원래 크기)
+		// 선택할 곡을 보여주고 들려준다. 인덱스인 nowSelected값에 따라 곡 변경이 가능함 
 		selectTrack(nowSelected);
-		
-		
+
+
 		/**
-		 * leftButton?쓽 留덉슦?뒪 ?씠踰ㅽ듃瑜? 泥섎━?빐以??떎.
+		 * leftButton의 마우스 이벤트를 처리해준다.
 		 */
 
 		leftButton.addMouseListener(new MouseAdapter() {
 			/**
-			 * 留덉슦?뒪媛? ?븘?씠肄? ?쐞?뿉 ?엳?쓣?븣 ?씠踰ㅽ듃 泥섎━
+			 * 마우스가 아이콘 위에 있을때 이벤트 처리
 			 */
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				// ?븘?씠肄? ?씠誘몄?瑜? Entered ?씠誘몄?濡? 蹂?寃?
+				// 아이콘 이미지를 Entered 이미지로 변경
 				leftButton.setIcon(leftButtonEnteredImage);
-				// 而ㅼ꽌 ?씠誘몄??룄 HAND_CURSOR濡? 蹂?寃쏀빐?꽌 醫??뜑 ?븣?븘蹂닿린 ?돺寃뚰븳?떎.
+				// 커서 이미지도 HAND_CURSOR로 변경해서 좀더 알아보기 쉽게한다.
 				leftButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
-			// 留덉슦?뒪媛? ?븘?씠肄섏쓣 踰쀬뼱 ?궗?쓣?븣 ?씠踰ㅽ듃 泥섎━
+			// 마우스가 아이콘을 벗어 났을때 이벤트 처리
 			@Override
 			public void mouseExited(MouseEvent e) {
-				// ?븘?씠肄? ?씠誘몄?瑜? 湲곕낯?씠誘몄「 蹂?寃?
+				// 아이콘 이미지를 기본이미졸 변경
 				leftButton.setIcon(leftButtonImage);
 				leftButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 
-			// 留덉슦?뒪媛? leftbutton ?븘?씠肄? ?닃???쓣?븣 ?씠踰ㅽ듃 泥섎━
+			// 마우스가 leftbutton 아이콘 눌렀을때 이벤트 처리
 			@Override
 			public void mousePressed(MouseEvent e) {
-				// ?쇊履? 踰꾪듉 ?씠踰ㅽ듃 泥섎━
+				// 왼쪽 버튼 이벤트 처리
 				selectLeft();
 			}
 		});
 
-		// rightButton?쓽 ?쐞移? ?꽕?젙
-		buttonSet(rightButton, 1050, 310, 120, 120); // 73 98 (?썝?옒 ?겕湲?)
+		// rightButton의 위치 설정
+		buttonSet(rightButton, 1050, 310, 120, 120); // 73 98 (원래 크기)
 		/**
-		 * rightButton?쓽 留덉슦?뒪 ?씠踰ㅽ듃瑜? 泥섎━?빐以??떎.
+		 * rightButton의 마우스 이벤트를 처리해준다.
 		 */
 
 		rightButton.addMouseListener(new MouseAdapter() {
 			/**
-			 * 留덉슦?뒪媛? ?븘?씠肄? ?쐞?뿉 ?엳?쓣?븣 ?씠踰ㅽ듃 泥섎━
+			 * 마우스가 아이콘 위에 있을때 이벤트 처리
 			 */
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				// ?븘?씠肄? ?씠誘몄?瑜? Entered ?씠誘몄?濡? 蹂?寃?
+				// 아이콘 이미지를 Entered 이미지로 변경
 				rightButton.setIcon(rightButtonEnteredImage);
-				// 而ㅼ꽌 ?씠誘몄??룄 HAND_CURSOR濡? 蹂?寃쏀빐?꽌 醫??뜑 ?븣?븘蹂닿린 ?돺寃뚰븳?떎.
+				// 커서 이미지도 HAND_CURSOR로 변경해서 좀더 알아보기 쉽게한다.
 				rightButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
-			// 留덉슦?뒪媛? ?븘?씠肄섏쓣 踰쀬뼱 ?궗?쓣?븣 ?씠踰ㅽ듃 泥섎━
+			// 마우스가 아이콘을 벗어 났을때 이벤트 처리
 			@Override
 			public void mouseExited(MouseEvent e) {
-				// ?븘?씠肄? ?씠誘몄?瑜? 湲곕낯?씠誘몄「 蹂?寃?
+				// 아이콘 이미지를 기본이미졸 변경
 				rightButton.setIcon(rightButtonImage);
 				rightButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 
-			// 留덉슦?뒪媛? leftbutton ?븘?씠肄? ?닃???쓣?븣 ?씠踰ㅽ듃 泥섎━
+			// 마우스가 leftbutton 아이콘 눌렀을때 이벤트 처리
 			@Override
 			public void mousePressed(MouseEvent e) {
-				// ?삤瑜몄そ 踰꾪듉 ?씠踰ㅽ듃 泥섎━
-				  selectRight();
+				// 오른쪽 버튼 이벤트 처리
+				selectRight();
 			}
 		});
 
-		// normalButton?쓽 ?쐞移? ?꽕?젙 x醫뚰몴,y醫뚰몴,?겕湲? (媛?濡? x ?꽭濡?)
+		// normalButton의 위치 설정 x좌표,y좌표,크기 (가로 x 세로)
 		buttonSet(normalButton, 390, 360, 213, 40); //
 		/**
-		 * normalButton?쓽 留덉슦?뒪 ?씠踰ㅽ듃瑜? 泥섎━?빐以??떎.
+		 * normalButton의 마우스 이벤트를 처리해준다.
 		 */
 
 		normalButton.addMouseListener(new MouseAdapter() {
 			/**
-			 * 留덉슦?뒪媛? ?븘?씠肄? ?쐞?뿉 ?엳?쓣?븣 ?씠踰ㅽ듃 泥섎━
+			 * 마우스가 아이콘 위에 있을때 이벤트 처리
 			 */
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				// ?븘?씠肄? ?씠誘몄?瑜? Entered ?씠誘몄?濡? 蹂?寃?
+				// 아이콘 이미지를 Entered 이미지로 변경
 				normalButton.setIcon(normalButtonEnteredImage);
-				// 而ㅼ꽌 ?씠誘몄??룄 HAND_CURSOR濡? 蹂?寃쏀빐?꽌 醫??뜑 ?븣?븘蹂닿린 ?돺寃뚰븳?떎.
+				// 커서 이미지도 HAND_CURSOR로 변경해서 좀더 알아보기 쉽게한다.
 				normalButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
-			// 留덉슦?뒪媛? ?븘?씠肄섏쓣 踰쀬뼱 ?궗?쓣?븣 ?씠踰ㅽ듃 泥섎━
+			// 마우스가 아이콘을 벗어 났을때 이벤트 처리
 			@Override
 			public void mouseExited(MouseEvent e) {
-				// ?븘?씠肄? ?씠誘몄?瑜? 湲곕낯?씠誘몄「 蹂?寃?
+				// 아이콘 이미지를 기본이미졸 변경
 				normalButton.setIcon(normalButtonImage);
 				normalButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 
-			// 留덉슦?뒪媛? practiceButton ?븘?씠肄? ?닃???쓣?븣 ?씠踰ㅽ듃 泥섎━
+			// 마우스가 practiceButton 아이콘 눌렀을때 이벤트 처리
 			@Override
 			public void mousePressed(MouseEvent e) {
-				// ?끂留? 踰꾪듉 ?씠踰ㅽ듃 泥섎━
+				// 노말 버튼 이벤트 처리
 				isFadeOut = true;
 				isNormalGameScreen = true;
 			}
 		});
 
-		// challengeButton?쓽 ?쐞移? ?꽕?젙 x醫뚰몴,y醫뚰몴,?겕湲? (媛?濡? x ?꽭濡?)
+		// challengeButton의 위치 설정 x좌표,y좌표,크기 (가로 x 세로)
 		buttonSet(challengeButton, 680, 360, 234, 38); //
 		/**
-		 * challengeButton?쓽 留덉슦?뒪 ?씠踰ㅽ듃瑜? 泥섎━?빐以??떎.
+		 * challengeButton의 마우스 이벤트를 처리해준다.
 		 */
 
 		challengeButton.addMouseListener(new MouseAdapter() {
 			/**
-			 * 留덉슦?뒪媛? ?븘?씠肄? ?쐞?뿉 ?엳?쓣?븣 ?씠踰ㅽ듃 泥섎━
+			 * 마우스가 아이콘 위에 있을때 이벤트 처리
 			 */
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				// ?븘?씠肄? ?씠誘몄?瑜? Entered ?씠誘몄?濡? 蹂?寃?
+				// 아이콘 이미지를 Entered 이미지로 변경
 				challengeButton.setIcon(challengeButtonEnteredImage);
-				// 而ㅼ꽌 ?씠誘몄??룄 HAND_CURSOR濡? 蹂?寃쏀빐?꽌 醫??뜑 ?븣?븘蹂닿린 ?돺寃뚰븳?떎.
+				// 커서 이미지도 HAND_CURSOR로 변경해서 좀더 알아보기 쉽게한다.
 				challengeButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
-			// 留덉슦?뒪媛? ?븘?씠肄섏쓣 踰쀬뼱 ?궗?쓣?븣 ?씠踰ㅽ듃 泥섎━
+			// 마우스가 아이콘을 벗어 났을때 이벤트 처리
 			@Override
 			public void mouseExited(MouseEvent e) {
-				// ?븘?씠肄? ?씠誘몄?瑜? 湲곕낯?씠誘몄「 蹂?寃?
+				// 아이콘 이미지를 기본이미졸 변경
 				challengeButton.setIcon(challengeButtonImage);
 				challengeButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 
-			// 留덉슦?뒪媛? practiceButton ?븘?씠肄? ?닃???쓣?븣 ?씠踰ㅽ듃 泥섎━
+			// 마우스가 practiceButton 아이콘 눌렀을때 이벤트 처리
 			@Override
 			public void mousePressed(MouseEvent e) {
-				// 梨뚮┛吏? 踰꾪듉 ?씠踰ㅽ듃 泥섎━
+				// 챌린지 버튼 이벤트 처리
 				isFadeOut = true;
 				isChallengeGameScreen = true;
 			}
 		});
 
-		// practiceButton?쓽 ?쐞移? ?꽕?젙 x醫뚰몴,y醫뚰몴,?겕湲? (媛?濡? x ?꽭濡?)
+		// practiceButton의 위치 설정 x좌표,y좌표,크기 (가로 x 세로)
 		buttonSet(practiceButton, 540, 580, 213, 40); //
 		/**
-		 * practiceButton?쓽 留덉슦?뒪 ?씠踰ㅽ듃瑜? 泥섎━?빐以??떎.
+		 * practiceButton의 마우스 이벤트를 처리해준다.
 		 */
 
 		practiceButton.addMouseListener(new MouseAdapter() {
 			/**
-			 * 留덉슦?뒪媛? ?븘?씠肄? ?쐞?뿉 ?엳?쓣?븣 ?씠踰ㅽ듃 泥섎━
+			 * 마우스가 아이콘 위에 있을때 이벤트 처리
 			 */
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				// ?븘?씠肄? ?씠誘몄?瑜? Entered ?씠誘몄?濡? 蹂?寃?
+				// 아이콘 이미지를 Entered 이미지로 변경
 				practiceButton.setIcon(practiceButtonEnteredImage);
-				// 而ㅼ꽌 ?씠誘몄??룄 HAND_CURSOR濡? 蹂?寃쏀빐?꽌 醫??뜑 ?븣?븘蹂닿린 ?돺寃뚰븳?떎.
+				// 커서 이미지도 HAND_CURSOR로 변경해서 좀더 알아보기 쉽게한다.
 				practiceButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
-			// 留덉슦?뒪媛? ?븘?씠肄섏쓣 踰쀬뼱 ?궗?쓣?븣 ?씠踰ㅽ듃 泥섎━
+			// 마우스가 아이콘을 벗어 났을때 이벤트 처리
 			@Override
 			public void mouseExited(MouseEvent e) {
-				// ?븘?씠肄? ?씠誘몄?瑜? 湲곕낯?씠誘몄「 蹂?寃?
+				// 아이콘 이미지를 기본이미졸 변경
 				practiceButton.setIcon(practiceButtonImage);
 				practiceButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 
-			// 留덉슦?뒪媛? practiceButton ?븘?씠肄? ?닃???쓣?븣 ?씠踰ㅽ듃 泥섎━
+			// 마우스가 practiceButton 아이콘 눌렀을때 이벤트 처리
 			@Override
 			public void mousePressed(MouseEvent e) {
-				// ?뿰?뒿 踰꾪듉 ?씠踰ㅽ듃 泥섎━
+				// 연습 버튼 이벤트 처리
 				isFadeOut = true;
 				isPracticeGameScreen = true;
 			}
 		});
 
-		// backButton?쓽 ?쐞移? ?꽕?젙
+		// backButton의 위치 설정
 		buttonSet(backButton, 80, 60, 228, 57);
 		/**
-		 * backButton?쓽 留덉슦?뒪 ?씠踰ㅽ듃瑜? 泥섎━?빐以??떎.
+		 * backButton의 마우스 이벤트를 처리해준다.
 		 */
 
 		backButton.addMouseListener(new MouseAdapter() {
 			/**
-			 * 留덉슦?뒪媛? ?븘?씠肄? ?쐞?뿉 ?엳?쓣?븣 ?씠踰ㅽ듃 泥섎━
+			 * 마우스가 아이콘 위에 있을때 이벤트 처리
 			 */
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				// ?븘?씠肄? ?씠誘몄?瑜? Entered ?씠誘몄?濡? 蹂?寃?
+				// 아이콘 이미지를 Entered 이미지로 변경
 				backButton.setIcon(backButtonEnteredImage);
-				// 而ㅼ꽌 ?씠誘몄??룄 HAND_CURSOR濡? 蹂?寃쏀빐?꽌 醫??뜑 ?븣?븘蹂닿린 ?돺寃뚰븳?떎.
+				// 커서 이미지도 HAND_CURSOR로 변경해서 좀더 알아보기 쉽게한다.
 				backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
-			// 留덉슦?뒪媛? ?븘?씠肄섏쓣 踰쀬뼱 ?궗?쓣?븣 ?씠踰ㅽ듃 泥섎━
+			// 마우스가 아이콘을 벗어 났을때 이벤트 처리
 			@Override
 			public void mouseExited(MouseEvent e) {
-				// ?븘?씠肄? ?씠誘몄?瑜? 湲곕낯?씠誘몄「 蹂?寃?
+				// 아이콘 이미지를 기본이미졸 변경
 				backButton.setIcon(backButtonImage);
 				backButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 
-			// 留덉슦?뒪媛? backButton ?븘?씠肄? ?닃???쓣?븣 ?씠踰ㅽ듃 泥섎━
+			// 마우스가 backButton 아이콘 눌렀을때 이벤트 처리
 			@Override
 			public void mousePressed(MouseEvent e) {
 				isFadeOut = true;
@@ -340,9 +347,9 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 	}
 
 	/**
-	 * fadeIn ?슚怨쇰?? 二쇨린?쐞?븳 硫붿냼?뱶 temp瑜? ?궗?슜?븳 ?씠?쑀?뒗 fadeIn媛믪씠 1.0?쓣 ?꽆?뼱媛?硫? ?뿉?윭媛? 諛쒖깮?븯湲? ?븣臾몄뿉 float?뿰?궛 ?듅?꽦?긽
-	 * 0.1?뵫 10踰? 利앷??떆?궎硫? 1.0?씠 ?븘?땲?씪 1.000001?씠 ?릺?꽌 ?뿉?윭媛? 諛쒖깮?븳?떎. ?뵲?씪?꽌 temp瑜? 利앷??떆?궎怨? fadeIn?뿉 ???엯?떆?궎?뒗
-	 * 諛⑹떇?쓣 ?궗?슜?븳?떎. ?뿬湲곗꽌 temp媛? 1蹂대떎 而ㅼ?硫? temp瑜? 1濡? ?꽕?젙?븯怨? ???엯?떆耳쒖??떎.
+	 * fadeIn 효과를 주기위한 메소드 temp를 사용한 이유는 fadeIn값이 1.0을 넘어가면 에러가 발생하기 때문에 float연산 특성상
+	 * 0.1씩 10번 증가시키면 1.0이 아니라 1.000001이 되서 에러가 발생한다. 따라서 temp를 증가시키고 fadeIn에 대입시키는
+	 * 방식을 사용한다. 여기서 temp가 1보다 커지면 temp를 1로 설정하고 대입시켜준다.
 	 */
 	public void fadeIn() {
 		try {
@@ -355,7 +362,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 				}
 				fadeValue = temp;
 				repaint();
-				Thread.sleep(50);
+				Thread.sleep(100);
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -373,7 +380,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 				}
 				fadeValue = temp;
 				repaint();
-				Thread.sleep(50);
+				Thread.sleep(100);
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -383,16 +390,18 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		// graphics瑜? 2D濡? 蹂?寃?
+		// graphics를 2D로 변경
 		Graphics2D g2 = (Graphics2D) g;
-		// ?닾紐낅룄瑜? 議곗젅?븯湲? ?쐞?븳 遺?遺? fadeValue 媛? 1.0?씠硫? 遺덊닾紐낅룄 100%, 0.1?씠硫? 遺덊닾紐낅룄媛? 10% ?씠?떎.
+		// 투명도를 조절하기 위한 부분 fadeValue 가 1.0이면 불투명도 100%, 0.1이면 불투명도가 10% 이다.
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, fadeValue));
 		g2.drawImage(musicSelectBackGround, 0, 0, null);
-		g2.drawImage(gameSelectBackGround, 0, 0, null);
 		g2.drawImage(selectedImage, 0, 0, null);
+		// titleImage의 위치가 곡마다 다르므로 경우에 get메소드를 통해 처리를 해주었다.
+		g2.drawImage(selectedTitleImage, selectedDrawX, selectedDrawY, null);
+		g2.drawImage(gameSelectBackGround, 0, 0, null);
 	}
 
-	// run ?븿?닔?뿉?꽌 while臾몄쓣 ?넻?빐 怨꾩냽 ?솕硫댁쓣 洹몃젮以뚯쑝濡쒖뜥 ?떎?쓬 ?솕硫댁쑝濡? ?꽆?뼱媛? ?닔 ?엳寃? ?빐以??떎.
+	// run 함수에서 while문을 통해 계속 화면을 그려줌으로써 다음 화면으로 넘어갈 수 있게 해준다.
 	@Override
 	public void run() {
 		fadeIn();
@@ -400,16 +409,16 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 			repaint();
 			try {
 				if (isFadeOut && (isMainScreen)) {
-                	fadeOut();
-              		insideOut.changeMainScreen(0);
-              		// 硫붿씤?쑝濡? ?룎?븘媛??빞 ?븯湲? ?븣臾몄뿉 ?쁽?옱 ?떎?뻾?븯怨? ?엳?뒗 ?쓬?븙?쓣 醫낅즺?븳?떎.
+					fadeOut();
+					insideOut.changeMainScreen(0);
+					// 메인으로 돌아가야 하기 때문에 현재 실행하고 있는 음악을 종료한다.
 					selectedMusic.close();
 					return;
 
 				} else if (isFadeOut && (isNormalGameScreen || isChallengeGameScreen || isPracticeGameScreen)) {
 					fadeOut();
-	            	insideOut.changeGameScreen();
-	    			// 寃뚯엫 ?솕硫댁쑝濡?  ?쟾?솚?빐?빞 ?븯湲? ?븣臾몄뿉 ?쁽?옱 ?떎?뻾?븯怨? ?엳?뒗 ?쓬?븙?쓣 醫낅즺?븳?떎.
+					insideOut.changeGameScreen();
+					// 게임 화면으로  전환해야 하기 때문에 현재 실행하고 있는 음악을 종료한다.
 					selectedMusic.close();
 					return;
 				}
@@ -421,46 +430,53 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 
 	}
 
-    // ?끂?옒瑜? ?꽑?깮?븯湲? ?쐞?빐 留뚮뱺 硫붿냼?뱶 
+	// 노래를 선택하기 위해 만든 메소드 
 	public void selectTrack(int nowSelected) {
 		if (selectedMusic != null)
 			selectedMusic.close();
-		// ?끂?옒 ?꽑?깮?떆?쓽 image 援ы쁽
+		// 노래 선택시의 TitleImage 구현
+		selectedTitleImage = new ImageIcon(
+				getClass().getClassLoader().getResource("images/" + trackList.get(nowSelected).getTitleImage())).getImage();
+		// 노래 선택시의 StartImage 구현
 		selectedImage = new ImageIcon(
 				getClass().getClassLoader().getResource("images/" + trackList.get(nowSelected).getStartImage())).getImage();
-		// Music 媛앹껜瑜? ?깉濡? 留뚮벀?쑝濡쒖뜥 ?떎?뻾?븯怨좎옄 ?븯?뒗 怨≪쓣 臾댄븳 諛섎났 ?떆?궓?떎.
-		selectedMusic = new Music(trackList.get(nowSelected).getStartMusic(), true,0);
-		selectedMusic.start(); // 臾댄븳 ?옱?깮
+		// 현재 선택 된 곡의 타이틀 이미지의 X좌표를 얻어오는 함수 
+		selectedDrawX = trackList.get(nowSelected).getDrawX();
+		// 현재 선택 된 곡의 타이틀 이미지의 Y좌표를 얻어오는 함수 
+		selectedDrawY = trackList.get(nowSelected).getDrawY();
+		// Music 객체를 새로 만듦으로써 실행하고자 하는 곡을 무한 반복 시킨다.
+		selectedMusic = new Music(trackList.get(nowSelected).getStartMusic(), true, 0);
+		selectedMusic.start(); // 무한 재생
 	}
 
-	// ?쇊履? 踰꾪듉?쓣 ?닃???쓣 ?븣?쓽 ?씠踰ㅽ듃 泥섎━
+	// 왼쪽 버튼을 눌렀을 때의 이벤트 처리
 	public void selectLeft() {
 		if (nowSelected == 0)
-			nowSelected = trackList.size() - 1; // 泥? 踰덉㎏怨≪뿉?꽌 ?쇊履? 踰꾪듉?쓣 ?늻瑜대㈃ 媛??옣 ?삤瑜몄そ 怨≪씠 ?꽑?깮?릺?뼱?빞 ?븯湲? ?븣臾?
+			nowSelected = trackList.size() - 1; // 첫 번째곡에서 왼쪽 버튼을 누르면 가장 오른쪽 곡이 선택되어야 하기 때문
 		else
-			nowSelected--; // 洹? ?쇅?쓽 寃쎌슦?뒗 1?쓣 鍮쇱쨲
+			nowSelected--; // 그 외의 경우는 1을 빼줌
 		selectTrack(nowSelected);
 	}
 
-	// ?삤瑜몄そ 踰꾪듉?쓣 ?닃???쓣 ?븣?쓽 ?씠踰ㅽ듃 泥섎━
+	// 오른쪽 버튼을 눌렀을 때의 이벤트 처리
 	public void selectRight() {
 		if (nowSelected == trackList.size() - 1)
-			nowSelected = 0; // ?쇊履쎄낵 諛섎?
+			nowSelected = 0; // 왼쪽과 반대
 		else
-			nowSelected++; // 留덉갔媛?吏?濡? 洹? ?쇅?쓽 寃쎌슦?뒗 1?쓣 ?뜑?븿
+			nowSelected++; // 마찬가지로 그 외의 경우는 1을 더함
 		selectTrack(nowSelected);
 	}
 
-	// ?씪?씪?씠 ?떎 ?꽕?젙?븯湲? ?옒?뱶誘?濡? 硫붿냼?뱶瑜? ?넻?빐 ?넀?돺寃? 踰꾪듉?쓽 ?쐞移섎?? ?꽕?젙
+	// 일일이 다 설정하기 힘드므로 메소드를 통해 손쉽게 버튼의 위치를 설정
 	public void buttonSet(JButton button, int x, int y, int width, int height) {
 		button.setBounds(x, y, width, height);
-		// 踰꾪듉 ?뀒?몢由? ?젣嫄?
+		// 버튼 테두리 제거
 		button.setBorderPainted(false);
-		// ?늻瑜대뒗 ?뒓?굦 ?젣嫄?
+		// 누르는 느낌 제거
 		button.setContentAreaFilled(false);
-		// 湲??뵪 ?뀒?몢由? ?젣嫄?
+		// 글씨 테두리 제거
 		button.setFocusPainted(false);
-		// 踰꾪듉 異붽?
+		// 버튼 추가
 		add(button);
 	}
 

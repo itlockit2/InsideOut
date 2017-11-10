@@ -21,7 +21,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 	private ImageIcon backButtonImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/backButtonImage_2.png"));
 	// 게임 시작 버튼 이미지를 담을 수 있는 객체
-	private ImageIcon gamePlayButtonImage = new ImageIcon(
+	 ImageIcon gamePlayButtonImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/gamePlayButton.png"));
 
 	// 마우스가 버튼에 진입했을 때의 이미지

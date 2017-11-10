@@ -14,13 +14,14 @@ public class Ball implements Runnable {
 	Ball() {
 		// 쓰레드를 만들고 객체에 넣어준다.
 		setThread(new Thread(this));
-		// 시작지점 x, y
+		// 시작지점 x, y 
 		x = 640;
 		y = 85;
+		// 속이 빈 원의 반지름 265 + ball의 반지름 13 + 공이 살짝 떠있으므로 그에 대한 값으로 2를 주었다. 
 		r = 280;     
-		 // 값이 적을수록 왼쪽으로 감 ( x좌표 ) 905 - 265 - 15 (x좌표(3시) - 반지름 - 적절히 수정) 625 , 왼쪽 3시부터 그림을 그림
+		 // 원의 중심 x좌표 = 375 + 265 = 640 , 속이 빈 원의 반지름은 265
 		Ox = 640;  
-		// 값이 적을수록 올라감 ( y좌표 ) 630 - 265 - 10 (y좌표(6시) - 반지름 - 적절히 수정) 355 , 12시부터 그림을 그림
+		 // 원의 중심 y좌표 = 100 + 265 = 640 , 속이 빈 원의 반지름은 265
 		Oy = 365;  
 	}
 
@@ -44,6 +45,7 @@ public class Ball implements Runnable {
 
 	// x의 값을 얻어오는 함수
 	public int getX() {
+		// Ball을 그릴 때 11시 방향을 기준으로 그려주므로 반지름인 13을 빼주어서 X좌표를 얻어온다. 
 		return x - adjustmentDistance ;
 	}
 
@@ -54,6 +56,7 @@ public class Ball implements Runnable {
 
 	// y의 값을 얻어오는 함수
 	public int getY() {
+		// Ball을 그릴 때 11시 방향을 기준으로 그려주므로 반지름인 13을 빼주어서 Y좌표를 얻어온다. 
 		return y - adjustmentDistance;
 	}
 

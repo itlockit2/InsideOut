@@ -1,6 +1,5 @@
 package project_04;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Cursor;
@@ -12,7 +11,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 /**
  * 게임의 전반적인 컨트롤을 해주는 클래스이다.
@@ -21,7 +19,7 @@ import javax.swing.JPanel;
  *
  */
 public class InsideOut extends JFrame {
-
+	
 	// MainScreenPanel 객체이다.
 	private MainScreenPanel mainScreenPanel;
 	// Help(도움말)ScreenPanel 객체이다.
