@@ -3,18 +3,6 @@ package project_04;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 
-import javazoom.jl.player.Player;
-
-/**
- * mp3파일을 실행시켜주는 클래스로 JavaZoom에서 지원하는 외부라이브러리를 사용했다.
- * 
- * @author Yun
- */
-
-import java.io.BufferedInputStream;
-import java.io.InputStream;
-
-import javazoom.jl.player.Player;
 import javazoom.jl.player.advanced.AdvancedPlayer;
 import javazoom.jl.player.advanced.PlaybackEvent;
 import javazoom.jl.player.advanced.PlaybackListener;
