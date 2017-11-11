@@ -362,7 +362,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 				}
 				fadeValue = temp;
 				repaint();
-				Thread.sleep(100);
+				Thread.sleep(50);
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -380,7 +380,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 				}
 				fadeValue = temp;
 				repaint();
-				Thread.sleep(100);
+				Thread.sleep(50);
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
