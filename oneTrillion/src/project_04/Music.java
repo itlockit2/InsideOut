@@ -10,28 +10,43 @@ import javazoom.jl.player.advanced.PlaybackListener;
 /**
  * mp3파일을 실행시켜주는 클래스로 JavaZoom에서 지원하는 외부라이브러리를 사용했다.
  * 
- * @author Yun
+ * @author SungHo Yun
+ * @version 0.4
  */
 
 public class Music extends Thread {
-	// Player 클래스는 Javazoom 에서 지원하는 클래스중 하나이다
+	/** AdvancedPlayer 클래스는 Javazoom 에서 개발하여 지원하는 라이브러리에 있는 클래스중 하나이다 
+	 *  기존에는 Player 클래스를 통해서 개발을 했지만 Player클래스로는 특정 구간에서부터의 노래 시작이 불가능하므로 
+	 *  AdvancedPlayer를 통해 개발 했다.
+	 *  BufferedInputStream을 매개변수로 받아 해당 버퍼에 있는 내용을 실행시킨다.
+	 */
 	private AdvancedPlayer player;
 	
-	// playerEvent를 통해 노래가 정지 했을때 정보를 가져올수 있다.
+	/** playerEvent를 통해 노래가 정지 했을때 정보를 가져올수 있다. */
 	private PlaybackEvent playerEvent;
 	
-	// 한번만 재생이 되는지 무한정 재생이 되는지 결정하는 값
+	/** 한번만 재생이 되는지 무한정 재생이 되는지 결정하는 값 
+	 *  isLoop의 값이 True이면 반복재생 False이면 한번만 시작된다.
+	 * */
 	private boolean isLoop;
 	
-	// 노래가 정지되었을때의 Frame 값을 저장하기 위한 변수
+	/** 노래가 정지되었을때의 Frame 값을 저장하기 위한 변수 */
 	private int pausedOnFrame = 0;
 
-	// 파일 입출력 관련된 필드값들
-	private BufferedInputStream bis;
+	/** InputStream을 통해 파일로부터 값을 받아온다 */
 	private InputStream is;
+	/** InputStream으로 받아온 값을 버퍼에 담는다. */
+	private BufferedInputStream bis;
+	
+	/** 노래의 제목을 저장하는 필드값이다. */
 	private String name;
 
-	// 생성자를 통해서 곡의 이름과 반복결정값과 startPoint를 받는다.
+	/**
+	 * 생성자를 통해 곡의 제목과 반복유무 시작위치를 받는다.
+	 * @param name
+	 * @param isLoop
+	 * @param startPoint
+	 */
 	public Music(String name, boolean isLoop, int startPoint) {
 
 		try {
@@ -61,7 +76,9 @@ public class Music extends Thread {
 		}
 	}
 
-	// 음악을 언제든지 종료 할 수 있다.
+	/**
+	 * 음악을 종료시키는 메소드이다.
+	 */
 	public void close() {
 		isLoop = false;
 		player.close();
@@ -69,8 +86,9 @@ public class Music extends Thread {
 		this.interrupt();
 	}
 
-	// Thread를 상속하면 무조건 넣어야 하는 메소드이다.
-	// 곡을 재생시킨다.
+	/**
+	 * 곡을 재생시킨다.
+	 */
 	@Override
 	public void run() {
 		try {
@@ -92,12 +110,18 @@ public class Music extends Thread {
 		}
 	}
 
-
+	/**
+	 * AdvancedPlyaer를 리턴해줘서 다른 클래스에서 stop메소드를 통해 노래를 멈출수 있게끔 한다. 
+	 * @return player
+	 */
 	public AdvancedPlayer getPlayer() {
 		return player;
 	}
 
-
+	/**
+	 * pausedOnFrame을 리턴하여 정지된 시점의 Frame을 얻을수 있게 한다.
+	 * @return pausedOnFrame
+	 */
 	public int getPausedOnFrame() {
 		return pausedOnFrame;
 	}

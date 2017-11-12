@@ -7,28 +7,49 @@ import java.awt.image.ImageObserver;
 
 import javax.swing.ImageIcon;
 
+/**
+ * 장애물 구현을 위한 클래스 이다.
+ * @author SungHo Yun
+ * @version 0.4
+ */
 public class Obstacle{
-	private Image obstacleImage = new ImageIcon(getClass().getClassLoader().getResource("images/obstacleImage.png")).getImage();
+	/** 장애물 이미지를 위한 객체  */
+	private Image obstacleImage;
+	/** 장애물 의 구현위치 */
 	private int x, y;
+	/** 원중심의 위치와 반지름 */
 	private int circleX, circleY, circleRadius;
-	private double size;
+	/** Ball 객체의 반지름 값  */
+	private double radian;
 	
-	// Thread 객체
+	/** Thread 객체 */
 	private Thread thread;
 	
-	// ball 객체
-	Ball b;
+	/** ball 객체 */
+	Ball ball;
 	
-	public Obstacle(int circleRadius, int circleX, int circleY, double size) {
+	/**
+	 * 원의 반지름과 원 중심의 위치를 받아오고 라디안값을 받아와서 장애물을 구현한다. 
+	 * @param circleRadius
+	 * @param circleX
+	 * @param circleY
+	 * @param radian
+	 */
+	public Obstacle(int circleRadius, int circleX, int circleY, double radian) {
+		obstacleImage = new ImageIcon(getClass().getClassLoader().getResource("images/obstacleImage.png")).getImage();
 		this.circleRadius = circleRadius;
 		this.circleX = circleX;
 		this.circleY = circleY;
-		this.size = size;
-		this.x =   obstacleImage.getWidth(null) /-2 + circleX + (int) (circleRadius * Math.cos(Math.toRadians(size))  );
-		this.y =   obstacleImage.getHeight(null) /-2 + circleY + (int) (circleRadius * Math.sin(Math.toRadians(size) )  );
-		rotateImage(size+90);
+		this.radian = radian;
+		this.x =   obstacleImage.getWidth(null) /-2 + circleX + (int) (circleRadius * Math.cos(Math.toRadians(radian))  );
+		this.y =   obstacleImage.getHeight(null) /-2 + circleY + (int) (circleRadius * Math.sin(Math.toRadians(radian) )  );
+		rotateImage(radian+90);
 	}
 	
+	/**
+	 * 라디안을 받아와서 해당 라디안에 맞는 각도로 이미지를 회전시켜준다.
+	 * @param radian
+	 */
 	public void rotateImage(double radian) {
 		ImageIcon icon = new ImageIcon(this.obstacleImage);
 		BufferedImage blankCanvas = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(),BufferedImage.TYPE_INT_RGB);
@@ -39,16 +60,26 @@ public class Obstacle{
 	}
 	
 
-
+	/**
+	 * 장애물의 구현위치중 x의 값을 받아온다. 
+	 * @return x
+	 */
 	public int getX() {
 		return x;
 	}
 
-
+	/**
+	 * 장애물의 구현위치중 y의 값을 받아온다.
+	 * @return y
+	 */
 	public int getY() {
 		return y;
 	}
 
+	/**
+	 * 장애물의 이미지를 받아온다.
+	 * @return obstacleImage
+	 */
 	public Image getObstacleImage() {
 		return obstacleImage;
 	}
