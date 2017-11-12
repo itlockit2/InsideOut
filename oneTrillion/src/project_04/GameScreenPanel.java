@@ -3,13 +3,13 @@ package project_04;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -40,6 +40,9 @@ public class GameScreenPanel extends JPanel implements Runnable {
 	
 	// Ball 위치 제어를 위한 객체
 	private Ball ball;
+	
+	// 장애물 구현을 위한 객체
+	ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 
 	// fadeIn과 fadeOut 을 위한 변수
 	private float fadeValue;
@@ -72,7 +75,6 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		// backButton의 위치 설정
 		buttonSet(backButton, 80, 60, 228, 57);
 		buttonSet(gamePlayButton, 600, 300, 125, 135);
-	    
 		
 		// 메뉴바 exitButton 설정
 		buttonSet(insideOut.getMenubarExitButton(),1200,0,64,28);
@@ -80,10 +82,16 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		add(insideOut.getMenubar());
 		// x,y 좌표를 받기 위한 객체 생성
 		ball = new Ball();
+		
+		//test
+		for(int i = 0 ; i < 36 ; i ++) {
+			obstacles.add(new Obstacle(ball.getRadius(),ball.getCircleX(),ball.getCircleY(),10*i));
+			System.out.println(10*i);
+		}
+		
 		/**
 		 * backButton의 마우스 이벤트를 처리해준다.
 		 */
-
 		backButton.addMouseListener(new MouseAdapter() {
 			/**
 			 * 마우스가 아이콘 위에 있을때 이벤트 처리
@@ -213,6 +221,9 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, fadeValue));
 		// 안티앨리어싱 , 원이 깨지지 않게 출력
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		for(int i = 0 ; i < 36 ; i ++) {
+			g2.drawImage(obstacles.get(i).getObstacleImage(),obstacles.get(i).getX() , obstacles.get(i).getY(), null);
+		}
 		// 흰색으로 설정
 		g2.setColor(Color.WHITE);
 		// 두께 설정
