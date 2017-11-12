@@ -12,48 +12,48 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-/**
- * 게임의 전반적인 컨트롤을 해주는 클래스이다.
- * 
- * @author Yun
+/** 게임의 전반적인 컨트롤을 해주는 클래스
+ *  
+ *  @author Jimin Kim
+ *  @version 0.4
  *
  */
 public class InsideOut extends JFrame {
 	
-	// MainScreenPanel 객체이다.
+	/** MainScreen(시작 화면)을 제어하기 위한 mainScreenPanel 객체 */
 	private MainScreenPanel mainScreenPanel;
-	// Help(도움말)ScreenPanel 객체이다.
+	/** HelpScreen(도움말 화면)을 제어하기 위한 helpScreenPanel 객체 */
 	private HelpScreenPanel helpScreenPanel;
-	// MusicSelectScreenPanel 객체이다.
+	/** GameSelectScreen(곡 선택 화면)을 제어하기 위한 gameSelectScreenPanel 객체 */
 	private GameSelectScreenPanel gameSelectScreenPanel;
-	// GameScreenPanel 객체이다.
+	/** GameScreen(플레이어가 플레이 하게 되는 화면)을 제어하기 위한 gameScreenPanel 객체 */
 	private GameScreenPanel gameScreenPanel;
-	// 필요한 정보를 출력하는 부분이 contentpane 이다.
+	/** Panel을 얻어오고 Frame에 추가하여 Panel의 내용을 표시할 수 있도록 만들어 주는 객체  */
 	private Container contentpane;
 
-	// MenuBar이미지
-	private JLabel menubar;
-
-	/**
-	 * 현재 프로그램내에서 마우스의 X와 Y좌표를 받을수 있는 필드를 만든다. 메뉴바를 옮기기 위해서 필요하다.
-	 */
+	/** 현재 프로그램내에서 마우스의 X와 Y좌표를 받을수 있는 필드를 만든다. 메뉴바를 옮기기 위해서 필요한 변수 */
 	private int mouseX, mouseY;
 
-	// Menubar Exit이미지
+	/** MenuBar 이미지 */
+	private JLabel menubar;
+	
+	/** MenuBar의 Exit버튼 기본 이미지 */
 	private ImageIcon menubarImageBasic = new ImageIcon(
 			getClass().getClassLoader().getResource("images/manubarExitButtonImage.png"));
+	/** MenuBar의 마우스가 버튼에 올라갔을 때의 Exit버튼 이미지 */
 	private ImageIcon menubarImageEntered = new ImageIcon(
 			getClass().getClassLoader().getResource("images/manubarExitButtonImageEntered.png"));
 	
-	// Menubar Button
+	/** MenuBar의 Exit버튼 객체 생성 */
 	private JButton menubarExitButton = new JButton(menubarImageBasic);
 
+	/** Main함수에서 게임 실행시 처음 시작 화면(MainScreen)을 출력하기 위한 생성자 */
 	public InsideOut() {
 		// 게임이름 설정
 		setTitle("Inside Out");
 		// 게임을 끄면 완전히 종료, 반드시 필요한 함수
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		// getContentPane 으로 contentpane 정보를 얻어온다.
+		// getContentPane 으로 contentpane(Panel) 정보를 얻어온다.
 		contentpane = getContentPane();
 		// 게임창 크기 설정
 		setSize(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
@@ -135,87 +135,107 @@ public class InsideOut extends JFrame {
 
 		// 메인 패널 생성
 		mainScreenPanel = new MainScreenPanel(this, 0);
-		// 패널을 추가해준다.
+		// Panel을 추가해준다.
 		contentpane.add(mainScreenPanel);
-		// MainPanel의 쓰레드 실행
+		// MainPanel의 Thread 실행
 		mainScreenPanel.getThread().start();
-		// 화면 출력 설정 기본값은 false 이므로 설정 해줘야한다.되도록 맨마지막에 해준다.
+		// 화면 출력 설정 기본값은 false 이므로 설정 해줘야한다. 되도록 맨마지막에 해준다.
 		setVisible(true);
 	}
 	
-	// Start 버튼을 누를시 전에 실행되던 판넬을 종료시키고 MusicSelectScreen화면으로 이동
-	// 또한 GameScreen화면에서 Back버튼을 누를시 MusicSelectScreen화면으로도 이동
+	/** GameSelectScreen(곡 선택 화면)으로 이동하기 위한 함수 */
 	public void changeGameSelectScreen() {
 		// 현재 실행되고 있는 모든 판넬을 제거한다.
 		contentpane.removeAll();
-		// 새롭게 게임 스크린 판넬 객체를 만들어서 생성자를 실행
+		// 새롭게 GameSelectScreen 판넬 객체를 만들어서 생성자를 실행
 		gameSelectScreenPanel = new GameSelectScreenPanel(this);
-		// 패널을 추가해준다.
+		// Panel을 추가해준다.
 		contentpane.add(gameSelectScreenPanel);
-		// GamePanel의 쓰레드 실행
+		// gameSelectScreenPanel의 Thread 실행
 		gameSelectScreenPanel.getThread().start();
-		// 화면 출력 설정 기본값은 false 이므로 설정 해줘야한다.
+		// 화면 출력 설정 기본값은 false이므로 true로 설정 해줘야한다.
 		setVisible(true);
 	}
 	
-	// 마찬가지로 도움말 스크린으로 이동할 시에 대해 판넬 처리를 해준다.
+	/** HelpScreen(도움말 화면)으로 이동하기 위한 함수 
+	 * 
+	 * @param int introMusicStartPoint 
+	 * */
 	public void changeHelpScreen(int introMusicStartPoint) {
 		// 현재 실행되고 있는 모든 판넬을 제거한다.
 		contentpane.removeAll();
-		// 새롭게 게임 스크린 판넬 객체를 만들어서 생성자를 실행
+		// 새롭게 HelpScreen 판넬 객체를 만들어서 생성자를 실행
 		helpScreenPanel = new HelpScreenPanel(this, introMusicStartPoint);
-		// 패널을 추가해준다.
+		// Panel을 추가해준다.
 		contentpane.add(helpScreenPanel);
-		// GamePanel의 쓰레드 실행
+		// helpScreenPanel의 Thread 실행
 		helpScreenPanel.getThread().start();
-		// 화면 출력 설정 기본값은 false 이므로 설정 해줘야한다.
+		// 화면 출력 설정 기본값은 false이므로 true로 설정 해줘야한다.
 		setVisible(true);
 	}
     
-	// MusicSelectPanel에서 음악 선택시 실행되던 판넬을 종료시키고 GameScreen화면으로 이동
+	/** GameScreen(플레이어가 플레이 하게 되는 화면)으로 이동하기 위한 함수 */
 	public void changeGameScreen() {
 		// 현재 실행되고 있는 모든 판넬을 제거한다.
 		contentpane.removeAll();
-		// 새롭게 게임 스크린 판넬 객체를 만들어서 생성자를 실행
+		// 새롭게 GameScreen 판넬 객체를 만들어서 생성자를 실행
 		gameScreenPanel = new GameScreenPanel(this);
-		// 패널을 추가해준다.
+		// Panel을 추가해준다.
 		contentpane.add(gameScreenPanel);
-		// GamePanel의 쓰레드 실행
+		// gameScreenPanel의 Thread 실행
 		gameScreenPanel.getThread().start();
-		// 화면 출력 설정 기본값은 false 이므로 설정 해줘야한다.
+		// 화면 출력 설정 기본값은 false이므로 true로 설정 해줘야한다.
 		setVisible(true);
 	}
 
-	// MusicSelectPanel에서 실행되던 판넬을 종료시키고 MainScreen화면으로 이동
+	/** MainScreen(시작 화면)으로 이동하기 위한 함수 
+	 * 
+	 * @param int introMusicStartPoint 
+	 * */
 	public void changeMainScreen(int introMusicStartPoint) {
 		// 현재 실행되고 있는 모든 판넬을 제거한다.
 		contentpane.removeAll();
-		// 새롭게 게임 스크린 판넬 객체를 만들어서 생성자를 실행
+		// 새롭게 MainScreen 판넬 객체를 만들어서 생성자를 실행
 		mainScreenPanel = new MainScreenPanel(this, introMusicStartPoint);
-		// 패널을 추가해준다.
+		// Panel을 추가해준다.
 		contentpane.add(mainScreenPanel);
-		// GamePanel의 쓰레드 실행
+		// mainScreenPanel의 Thread 실행
 		mainScreenPanel.getThread().start();
-		// 화면 출력 설정 기본값은 false 이므로 설정 해줘야한다.
+		// 화면 출력 설정 기본값은 false이므로 true로 설정 해줘야한다.
 		setVisible(true);
 	}
-
+	
+    /** MenuBar이미지를 얻어오기 위한 getMenubar함수 
+     * 
+     * @return menubar
+     * */
 	public JLabel getMenubar() {
 		return menubar;
 	}
-
+    
+    /** MenuBar이미지를 설정하기 위한 setMenubar함수 
+     * 
+     * @param JLabel menubar
+     * */
 	public void setMenubar(JLabel menubar) {
 		this.menubar = menubar;
 	}
-
+    
+	/** MenuBar의 Exit이미지 버튼를 얻어오기 위한 getMenubarExitButton함수 
+	 * 
+	 * @return menubarExitButton
+	 * */
 	public JButton getMenubarExitButton() {
 		return menubarExitButton;
 	}
-
+    
+	/** MenuBar의 Exit이미지 버튼를 설정하기 위한 setMenubarExitButton함수 
+	 * 
+	 * @param JButton menubarExitButton
+	 * */
 	public void setMenubarExitButton(JButton menubarExitButton) {
 		this.menubarExitButton = menubarExitButton;
 	}
 	
 	
-
 }

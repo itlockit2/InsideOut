@@ -15,53 +15,75 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+/** 게임의 MainScreen 즉, 시작 화면에 대한 정보를 담고있는 클래스
+ *  
+ *  @author Jimin Kim
+ *  @version 0.4
+ *
+ */
+
 public class MainScreenPanel extends JPanel implements Runnable {
 
-	// 배경 이미지를 담을 수 있는 객체
-	private Image introbackground;
+	
+	/** 시작 화면의 배경 이미지를 담는 객체 */
+	private Image introBackground;
+	/** 시작 화면의 배경 이미지(원)를 담는 객체 */
 	private Image introBackgroundCircle;
 
-	// 버튼 이미지를 담을 수 있는 객체
+	/** 시작 화면의 exitButton 이미지를 담는 객체 */
 	private ImageIcon exitButtonImage = new ImageIcon(getClass().getClassLoader().getResource("images/exitButton.png"));
+	/** 시작 화면의 helpButton 이미지를 담는 객체 */
 	private ImageIcon helpButtonImage = new ImageIcon(getClass().getClassLoader().getResource("images/helpButton.png"));
+	/** 시작 화면의 startButton 이미지를 담는 객체 */
 	private ImageIcon startButtonImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/startButton.png"));
 
-	// 마우스가 버튼에 진입했을때 이미지
-	private ImageIcon startEnteredButtonImage = new ImageIcon(
-			getClass().getClassLoader().getResource("images/startButtonEntered.png"));
-	private ImageIcon helpEnteredButtonImage = new ImageIcon(
-			getClass().getClassLoader().getResource("images/helpButtonEntered.png"));
+	/** 마우스가 버튼에 올라 갔을 때에 대한 exitButton 이미지를 담는 객체 */
 	private ImageIcon exitEnteredButtonImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/exitButtonEntered.png"));
+	/** 마우스가 버튼에 올라 갔을 때에 대한 helpButton 이미지를 담는 객체 */
+	private ImageIcon helpEnteredButtonImage = new ImageIcon(
+			getClass().getClassLoader().getResource("images/helpButtonEntered.png"));
+	/** 마우스가 버튼에 올라 갔을 때에 대한 startButton 이미지를 담는 객체 */
+	private ImageIcon startEnteredButtonImage = new ImageIcon(
+			getClass().getClassLoader().getResource("images/startButtonEntered.png"));
 
-	// JButton 구현
+	
+	/** Exit JButton 객체 구현 */
 	private JButton exitButton = new JButton(exitButtonImage);
+	/** Help JButton 객체 구현 */
 	private JButton helpButton = new JButton(helpButtonImage);
+	/** Start JButton 객체 구현 */
 	private JButton startButton = new JButton(startButtonImage);
-
-	// 음악을 담을 수 있는 객체
+	
+	/** 시작 화면을 실행하면 실행되는 음악을 담을 수 있는 객체 */
 	private Music introMusic;
 	
-	// 음악이 중지 되었을때를 담을수 있는 객체
+	/** 음악이 화면 전환 등에 의해 정지 되었을 때 그 값을 저장하기 위한 변수 */
 	private int stopPoint;
 
-	// fadeIn과 fadeOut 을 위한 변수
+	/** fadeIn과 밝기 조절을 위한 변수 */
 	private float fadeValue;
+	/** fadeOut의 밝기 조절을 위한 변수 */
 	private boolean isFadeOut;
 
-	// boolean값을 통해 어떤 화면으로 전환할 지 가독성을 높일 수 있으며 값이 true가 되면 화면을 전환한다.
-	private boolean isGameSelectScreen = false;
-	private boolean isHelpScreen = false;
+	/** GameSelectScreen 전환을 제어할 boolean변수 */
+	private boolean isGameSelectScreen ;
+	/** HelpScreen 전환을 제어할 boolean변수 */
+	private boolean isHelpScreen ;
 
-	// Thread 객체
+	/** 화면 전환과 실행되는 Music 대한 제어를 수행하기 위한 Thread 객체*/
 	private Thread thread;
 
-	// 프레임을 매개 변수로 넘기기 위해 Insideout 객체 선언
+	/** 프레임을 매개변수로 넘기기 위한 InsideOut 객체 */
 	private InsideOut insideOut;
 	
-
-	public MainScreenPanel(InsideOut insideOut, int stopPoint) {
+	/** 시작화면인 MainScreen의 구성 요소 및 정보를 담고 있는 생성자
+	 * 
+	 * @param InsideOut insideOut
+	 * @param int stopPoint 
+	 * */
+	public MainScreenPanel(InsideOut insideOut, int stopPoint) 	{
 		// 프레임을 매개변수로 받아 제어한다.
 		this.insideOut = insideOut;
 		// fadeOut의 값을 false로 초기화 시켜준다.
@@ -70,14 +92,14 @@ public class MainScreenPanel extends JPanel implements Runnable {
 		//stopPoint를 초기화 시켜준다
 		this.stopPoint = stopPoint;
 		
-		
-		/**
-		 * Music의 매개변수로 mp3파일 이름과 루프유무와 스타팅 포인트를 넣어준다. 시작화면에서 인트로뮤직이 무한 반복 게임이 시작함과 동시에 음악이 무한 재생
-		 */
+		// Music의 매개변수로 mp3파일 이름과 루프유무와 스타팅 포인트를 넣어준다. 시작화면에서 인트로뮤직이 무한 반복 게임이 시작함과 동시에 음악이 무한 재생
 		introMusic = new Music("introMusic.mp3", true, stopPoint);
 		introMusic.start();
 		
-        
+		// isGameSelectScreen의 값을 false로 초기화 시켜준다.
+		isGameSelectScreen = false;
+		// isHelpScreen의 값을 false로 초기화 시켜준다.
+		isHelpScreen = false;
 		// 컨테이너의 크기가 변경될때 컴포넌트들의 크기와 위치가 자동적으로 변경되는데 그걸 해제한다
 		setLayout(null);
 		// 게임창 크기 설정
@@ -90,7 +112,7 @@ public class MainScreenPanel extends JPanel implements Runnable {
 
 		// Main 클래스의 위치를 기반으로 해서 Resource를 얻어서 그것의 이미지값을 변수에 대입시켜준다.
 		// 배경이미지 , introBackground => Background로 변경
-		introbackground = new ImageIcon(getClass().getClassLoader().getResource("images/MainBackGround.png"))
+		introBackground = new ImageIcon(getClass().getClassLoader().getResource("images/MainBackGround.png"))
 				.getImage();
 		introBackgroundCircle = new ImageIcon(
 				getClass().getClassLoader().getResource("images/MainBackGroundCircle.gif")).getImage();
@@ -203,14 +225,13 @@ public class MainScreenPanel extends JPanel implements Runnable {
 		});
 	}
 
-	/**
-	 * 버튼 셋팅 메소드 모든 버튼마다 설정값을 넣기 귀찮으므로 메소드로 만들었다.
-	 * 
-	 * @param button
-	 * @param x
-	 * @param y
-	 * @param width
-	 * @param height
+	/** JButton의 위치나 다른 요소들을 제어하기 위한 함수
+	 *  
+	 * @param JButton button
+	 * @param int x
+	 * @param int y
+	 * @param int width
+	 * @param int height
 	 */
 	public void buttonSet(JButton button, int x, int y, int width, int height) {
 		button.setBounds(x, y, width, height);
@@ -224,10 +245,11 @@ public class MainScreenPanel extends JPanel implements Runnable {
 		add(button);
 	}
 
-	/**
-	 * fadeIn 효과를 주기위한 메소드 temp를 사용한 이유는 fadeIn값이 1.0을 넘어가면 에러가 발생하기 때문에 float연산 특성상
-	 * 0.1씩 10번 증가시키면 1.0이 아니라 1.000001이 되서 에러가 발생한다. 따라서 temp를 증가시키고 fadeIn에 대입시키는
-	 * 방식을 사용한다. 여기서 temp가 1보다 커지면 temp를 1로 설정하고 대입시켜준다.
+	/** fadeIn 효과를 설정하기 위한 함수
+	 * 
+	 * temp를 사용한 이유는 fadeIn값이 1.0을 넘어가면 에러가 발생한다.
+	 * 하지만 float연산 특성상 0.1씩 10번 증가시키면 1.0이 아니라 1.000001이 되기 때문에 에러가 발생한다.
+	 * 따라서 temp를 증가시키고 fadeIn에 대입시키는 방식을 사용한다. 여기서 temp가 1보다 커지면 temp를 1로 설정하고 대입시켜준다.
 	 */
 	public void fadeIn() {
 		try {
@@ -246,7 +268,11 @@ public class MainScreenPanel extends JPanel implements Runnable {
 			e.printStackTrace();
 		}
 	}
-
+	
+	/** fadeOut 효과를 설정하기 위한 함수
+	 * 
+	 * 마찬가지로, float연산의 특성상 0이하로 내려가게 되면 0이 아닌 값이 나오기 때문에 0보다 작아지면 0으로 설정한다.
+	 */
 	public void fadeOut() {
 		try {
 			float temp = 1.0f;
@@ -264,7 +290,11 @@ public class MainScreenPanel extends JPanel implements Runnable {
 			e.printStackTrace();
 		}
 	}
-
+	
+    /** MainScreen의 배경 이미지를 그려주거나 투명도를 조정해 주는 paint함수 
+     * 
+     * @param Graphics g
+     * */
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -273,10 +303,10 @@ public class MainScreenPanel extends JPanel implements Runnable {
 			// 투명도를 조절하기 위한 부분 fadeValue 가 1.0이면 불투명도 100%, 0.1이면 불투명도가 10% 이다.
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, fadeValue));
 			g2.drawImage(introBackgroundCircle, 275, 30, 1200, 676, null);
-			g2.drawImage(introbackground, 0, 0, null);
+			g2.drawImage(introBackground, 0, 0, null);
 		}
 	
-
+    /** 시작화면(MainScreenPanel)의 Thread가 실행 될 시 수행되는 함수 */
 	@Override
 	public void run() {
 		// fadeIn 효과를 넣어준다.
@@ -308,11 +338,19 @@ public class MainScreenPanel extends JPanel implements Runnable {
 			}
 		}
 	}
-
+    
+	/** 시작 화면의 Thread를 얻어오는 함수
+	 * 
+	 * @return thread
+	 */
 	public Thread getThread() {
 		return thread;
 	}
 
+	/** 시작 화면의 Thread를 설정하는 함수
+	 * 
+	 * @panel Thread thread
+	 */
 	public void setThread(Thread thread) {
 		this.thread = thread;
 	}

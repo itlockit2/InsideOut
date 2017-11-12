@@ -14,7 +14,7 @@ public class Track {
 	public String getTitleImage() {
 		return titleImage;
 	}
-	public void setGameImage(String titleImage) {
+	public void setTitleImage(String titleImage) {
 		this.titleImage = titleImage;
 	}
 	

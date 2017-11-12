@@ -38,8 +38,6 @@ public class GameScreenPanel extends JPanel implements Runnable {
 	// Thread 객체
 	private Thread thread;
 	
-	private InsideOut insideOut;
-
 	// Ball 위치 제어를 위한 객체
 	private Ball ball;
 	
@@ -52,6 +50,9 @@ public class GameScreenPanel extends JPanel implements Runnable {
 
 	// MainScreen 제어를 위한 변수
 	private boolean isGameSelectScreen;
+	
+	// insideOut 객체를 생성해 자기 자신의 판넬을 받을 수 있도록 한다. 
+	private InsideOut insideOut;
 
 	public GameScreenPanel(InsideOut insideOut) {
 		// 프레임을 매개변수로 받아 제어한다.
