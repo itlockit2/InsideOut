@@ -14,83 +14,109 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+/** 플레이 할 곡의 선택 화면에 대한 정보를 담고있는 클래스
+ *  
+ *  @author Jimin Kim
+ *  @version 0.4
+ *
+ */
 
 public class GameSelectScreenPanel extends JPanel implements Runnable {
 
-	// 배경 이미지를 담을 수 있는 객체
+	/** 곡 선택 화면의 배경 이미지를 담는 객체 */
 	private Image gameSelectBackGround;
-	private Image musicSelectBackGround;
-	// 곡 선택화면에서의 Title이미지와 Game이미지
-	private Image selectedTitleImage;
+	/** 곡 선택 화면의 현재 선택 된 음악 이미지를 담는 객체 */
 	private Image selectedImage; 
+	/** 곡 선택 화면의 현재 선택 된 타이틀 이미지를 담는 객체 */
+	private Image selectedTitleImage;
+	/** 타이틀 이미지의 위치를 조정하기 위한 X좌표 변수 */
 	private int selectedDrawX;
+	/** 타이틀 이미지의 위치를 조정하기 위한 Y좌표 변수 */
 	private int selectedDrawY;
 
-	// 뒤로가기 버튼 이미지를 담을 수 있는 객체
+	/** backButton 이미지를 담는 객체 */
 	private ImageIcon backButtonImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/backButtonImage_2.png"));
-	// 왼쪽 버튼 이미지를 담을 수 있는 객체
+	/** leftButton 이미지를 담는 객체 */
 	private ImageIcon leftButtonImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/leftButtonImage_2.png"));
-	// 오른쪽 버튼 이미지를 담을 수 있는 객체
+	/** rightButton 이미지를 담는 객체 */
 	private ImageIcon rightButtonImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/rightButtonImage_2.png"));
-	// 노말 버튼 이미지를 담을 수 있는 객체
+	/** normalButton 이미지를 담는 객체 */
 	private ImageIcon normalButtonImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/normalButtonImage_2.png"));
-	// 챌린지 버튼 이미지를 담을 수 있는 객체
+	/** challengeButton 이미지를 담는 객체 */
 	private ImageIcon challengeButtonImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/challengeButtonImage_2.png"));
-	// 연습 버튼 이미지를 담을 수 있는 객체
+	/** practiceButton 이미지를 담는 객체 */
 	private ImageIcon practiceButtonImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/practiceButtonImage_2.png"));
 
-	// 마우스가 버튼에 진입했을 때의 이미지
+	/** 마우스가 backButton에 올라 갔을 때의 이미지를 담는 객체 */
 	private ImageIcon backButtonEnteredImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/backButtonEnteredImage_2.png"));
+	/** 마우스가 leftButton에 올라 갔을 때의 이미지를 담는 객체 */
 	private ImageIcon leftButtonEnteredImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/leftButtonEnteredImage_2.png"));
+	/** 마우스가 rightButton에 올라 갔을 때의 이미지를 담는 객체 */
 	private ImageIcon rightButtonEnteredImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/rightButtonEnteredImage_2.png"));
+	/** 마우스가 normalButton에 올라 갔을 때의 이미지를 담는 객체 */
 	private ImageIcon normalButtonEnteredImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/normalButtonEnteredImage_2.png"));
+	/** 마우스가 challengeButton에 올라 갔을 때의 이미지를 담는 객체 */
 	private ImageIcon challengeButtonEnteredImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/challengeButtonEnteredImage_2.png"));
+	/** 마우스가 practiceButton에 올라 갔을 때의 이미지를 담는 객체 */
 	private ImageIcon practiceButtonEnteredImage = new ImageIcon(
 			getClass().getClassLoader().getResource("images/practiceButtonEnteredImage_2.png"));
 
-	// JButton 구현
+	/** back JButton 객체 구현 */
 	private JButton backButton = new JButton(backButtonImage);
+	/** left JButton 객체 구현 */
 	private JButton leftButton = new JButton(leftButtonImage);
+	/** right JButton 객체 구현 */
 	private JButton rightButton = new JButton(rightButtonImage);
+	/** normal JButton 객체 구현 */
 	private JButton normalButton = new JButton(normalButtonImage);
+	/** challenge JButton 객체 구현 */
 	private JButton challengeButton = new JButton(challengeButtonImage);
+	/** practice JButton 객체 구현 */
 	private JButton practiceButton = new JButton(practiceButtonImage);
 
-	// 쓰레드 객체 선언
+	/** 화면 전환과 실행되는 Music의 제어를 위한 Thread 객체*/
 	private Thread thread;
 
-	// fadeIn과 fadeOut 을 위한 변수
+	/** fadeIn과 밝기 조절을 위한 변수 */
 	private float fadeValue;
+	/** fadeOut의 밝기 조절을 위한 변수 */
 	private boolean isFadeOut;
 
-	// MainScreen 제어를 위한 변수
+	/** MainScreen 전환을 제어할 boolean변수 */
 	private boolean isMainScreen;
-	// NormalGameScreen 제어를 위한 변수
+	/** NormalGameScreen 전환을 제어할 boolean변수 */
 	private boolean isNormalGameScreen;
-	// ChallengeGameScreen 제어를 위한 변수
+	/** ChallengeGameScreen 전환을 제어할 boolean변수 */
 	private boolean isChallengeGameScreen;
-	// PracticeGameScreen 제어를 위한 변수
+	/** PracticeGameScreen 전환을 제어할 boolean변수 */
 	private boolean isPracticeGameScreen;
+    
+	/** 하나의 곡에 대한 정보를 담기위한 ArrayList 객체 */
+	private ArrayList<Track> trackList = new ArrayList<Track>();
 
-	ArrayList<Track> trackList = new ArrayList<Track>();
-
-	// 첫 번째 곡을 의미, 인덱스로 시작 , ArrayList는 인덱스 0부터 시작
-	private int nowSelected = 0;
+	/** 현재 선택된 곡을 설정해주기 위한 변수 */
+	private int nowSelected ;
+	/** 곡 선택 화면에서 현재 선택한 음악을 담기 위한 객체 */
 	private Music selectedMusic;
 
-	// 자신에게 맞는 판넬로 제어해야 하므로 insideout객체 선언을 통해 제어
+	/** 프레임을 매개변수로 넘기기 위한 InsideOut 객체 */
 	private InsideOut insideOut;
+	
+	/** 곡 선택화면인 GameSelectScreen에 관한 구성 요소 및 정보를 담고 있는 생성자
+	 * 
+	 * @param InsideOut insideOut
+	 */
 
 	GameSelectScreenPanel(InsideOut insideOut) {
 		// 프레임을 매개변수로 받아 제어한다.
@@ -110,6 +136,9 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		setBackground(Color.BLACK);
 		// 화면 출력 설정 기본값은 false 이므로 설정 해줘야한다.
 		setVisible(true);
+		
+		// 현재 선택되어진 곡의 인덱스, ArrayList 인덱스는 0번부터 시작하므로 처음 넣어준 곡의 인덱스인 0부터 시작하도록 하였다.
+		nowSelected = 0;
 
 		// trackList를 통해 원하는 곡과 화면을 구현 
 		// 시작 트랙
@@ -125,13 +154,11 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		// Main 클래스의 위치를 기반으로 해서 Resource를 얻어서 그것의 이미지값을 변수에 대입시켜준다.
 		gameSelectBackGround = new ImageIcon(
 				getClass().getClassLoader().getResource("images/gameSelectScreenImage_2.png")).getImage();
-		musicSelectBackGround = new ImageIcon(
-				getClass().getClassLoader().getResource("images/sunburstGameselectImage_2.png")).getImage();
 
 
 		// 메뉴바 exitButton 설정
 		buttonSet(insideOut.getMenubarExitButton(), 1200, 0, 64, 28);
-		// 메뉴바 설정
+		// 메뉴바 추가
 		add(insideOut.getMenubar());
 		// leftButton의 위치 설정
 		buttonSet(leftButton, 100, 310, 120, 120); // 73, 98 (원래 크기)
@@ -346,10 +373,11 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 
 	}
 
-	/**
-	 * fadeIn 효과를 주기위한 메소드 temp를 사용한 이유는 fadeIn값이 1.0을 넘어가면 에러가 발생하기 때문에 float연산 특성상
-	 * 0.1씩 10번 증가시키면 1.0이 아니라 1.000001이 되서 에러가 발생한다. 따라서 temp를 증가시키고 fadeIn에 대입시키는
-	 * 방식을 사용한다. 여기서 temp가 1보다 커지면 temp를 1로 설정하고 대입시켜준다.
+	/** fadeIn 효과를 설정하기 위한 함수
+	 * 
+	 * temp를 사용한 이유는 fadeIn값이 1.0을 넘어가면 에러가 발생한다.
+	 * 하지만 float연산 특성상 0.1씩 10번 증가시키면 1.0이 아니라 1.000001이 되기 때문에 에러가 발생한다.
+	 * 따라서 temp를 증가시키고 fadeIn에 대입시키는 방식을 사용한다. 여기서 temp가 1보다 커지면 temp를 1로 설정하고 대입시켜준다.
 	 */
 	public void fadeIn() {
 		try {
@@ -368,8 +396,12 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 			e.printStackTrace();
 		}
 	}
-
-	public void fadeOut() {
+	
+	/** fadeOut 효과를 설정하기 위한 함수
+	 * 
+	 * 마찬가지로, float연산의 특성상 0이하로 내려가게 되면 0이 아닌 값이 나오기 때문에 0보다 작아지면 0으로 설정한다.
+	 */
+    public void fadeOut() {
 		try {
 			float temp = 1.0f;
 			fadeValue = 1.0f;
@@ -386,22 +418,27 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 			e.printStackTrace();
 		}
 	}
-
-	@Override
+    
+    /** GameSelectScreen의 곡에 관한 이미지를 그려주거나 투명도를 조정해 주는 paint함수 
+     * 
+     * @param Graphics g
+     * */
+   	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		// graphics를 2D로 변경
 		Graphics2D g2 = (Graphics2D) g;
 		// 투명도를 조절하기 위한 부분 fadeValue 가 1.0이면 불투명도 100%, 0.1이면 불투명도가 10% 이다.
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, fadeValue));
-		g2.drawImage(musicSelectBackGround, 0, 0, null);
+		// 현재 선택된 곡의 이미지를 그려줌
 		g2.drawImage(selectedImage, 0, 0, null);
 		// titleImage의 위치가 곡마다 다르므로 경우에 get메소드를 통해 처리를 해주었다.
 		g2.drawImage(selectedTitleImage, selectedDrawX, selectedDrawY, null);
+		// 현재 진행률을 나타내기 위한 원을 그려줌
 		g2.drawImage(gameSelectBackGround, 0, 0, null);
 	}
 
-	// run 함수에서 while문을 통해 계속 화면을 그려줌으로써 다음 화면으로 넘어갈 수 있게 해준다.
+	  /** 곡 선택 화면(GameSelectScreen)의 Thread가 실행 될 시 수행되는 함수 */
 	@Override
 	public void run() {
 		fadeIn();
@@ -430,7 +467,10 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 
 	}
 
-	// 노래를 선택하기 위해 만든 메소드 
+	  /** 자신이 플레이 하고 싶은 곡을 선택할 수 있도록 설정하기 위한 함수 
+	   * 
+	   * @param int nowSelected
+	   * */
 	public void selectTrack(int nowSelected) {
 		if (selectedMusic != null)
 			selectedMusic.close();
@@ -449,7 +489,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		selectedMusic.start(); // 무한 재생
 	}
 
-	// 왼쪽 버튼을 눌렀을 때의 이벤트 처리
+	/** 곡 선택화면에서 왼쪽 버튼을 눌렀을 때의 이벤트를 처리하는 함수 */
 	public void selectLeft() {
 		if (nowSelected == 0)
 			nowSelected = trackList.size() - 1; // 첫 번째곡에서 왼쪽 버튼을 누르면 가장 오른쪽 곡이 선택되어야 하기 때문
@@ -458,7 +498,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		selectTrack(nowSelected);
 	}
 
-	// 오른쪽 버튼을 눌렀을 때의 이벤트 처리
+	/** 곡 선택화면에서 오른쪽 버튼을 눌렀을 때의 이벤트를 처리하는 함수 */
 	public void selectRight() {
 		if (nowSelected == trackList.size() - 1)
 			nowSelected = 0; // 왼쪽과 반대
@@ -467,7 +507,14 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		selectTrack(nowSelected);
 	}
 
-	// 일일이 다 설정하기 힘드므로 메소드를 통해 손쉽게 버튼의 위치를 설정
+	/** JButton의 위치나 다른 요소들을 제어하기 위한 함수
+	 * 
+	 * @param JButton button
+	 * @param int x
+	 * @param int y
+	 * @param int width
+	 * @param int height
+	 */
 	public void buttonSet(JButton button, int x, int y, int width, int height) {
 		button.setBounds(x, y, width, height);
 		// 버튼 테두리 제거
@@ -479,11 +526,18 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		// 버튼 추가
 		add(button);
 	}
-
+    /** 곡 선택 화면의 Thread를 얻어오는 함수
+     * 
+     * @return thread
+     */
 	public Thread getThread() {
 		return thread;
 	}
-
+    
+	/** 곡 선택 화면의 Thread를 설정하는 함수 
+	 * 
+	 * @param Thread thread
+	 */
 	public void setThread(Thread thread) {
 		this.thread = thread;
 	}

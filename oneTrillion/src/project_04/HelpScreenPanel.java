@@ -40,7 +40,7 @@ public class HelpScreenPanel extends JPanel implements Runnable {
 	private boolean isFadeOut;
 
 	// boolean값을 통해 어떤 화면으로 전환할 지 가독성을 높일 수 있으며 값이 true가 되면 화면을 전환한다.
-	private boolean isMainScreen = false;
+	private boolean isMainScreen ;
 	
 	// Thread 객체
 	private Thread thread;
@@ -56,7 +56,8 @@ public class HelpScreenPanel extends JPanel implements Runnable {
 		
 		introMusic = new Music("introMusic.mp3", true, stopPoint);
 		introMusic.start();
-		
+		// MainScreen의 값을 false로 초기화 시켜준다.
+		isMainScreen = false;
 		// fadeOut의 값을 false로 초기화 시켜준다.
 		isFadeOut = false;
         // 컨테이너의 크기가 변경될때 컴포넌트들의 크기와 위치가 자동적으로 변경되는데 그걸 해제한다
