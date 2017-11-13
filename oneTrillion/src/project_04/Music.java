@@ -7,11 +7,11 @@ import javazoom.jl.player.advanced.AdvancedPlayer;
 import javazoom.jl.player.advanced.PlaybackEvent;
 import javazoom.jl.player.advanced.PlaybackListener;
 
-/**
- * mp3파일을 실행시켜주는 클래스로 JavaZoom에서 지원하는 외부라이브러리를 사용했다.
+/** mp3파일을 실행시켜주는 클래스로 JavaZoom에서 지원하는 외부라이브러리를 사용했다.
  * 
  * @author SungHo Yun
  * @version 0.4
+ * 
  */
 
 public class Music extends Thread {
@@ -41,8 +41,8 @@ public class Music extends Thread {
 	/** 노래의 제목을 저장하는 필드값이다. */
 	private String name;
 
-	/**
-	 * 생성자를 통해 곡의 제목과 반복유무 시작위치를 받는다.
+	/** 생성자를 통해 곡의 제목과 반복유무 시작위치를 받는다.
+	 * 
 	 * @param name
 	 * @param isLoop
 	 * @param startPoint
@@ -76,9 +76,7 @@ public class Music extends Thread {
 		}
 	}
 
-	/**
-	 * 음악을 종료시키는 메소드이다.
-	 */
+	/** 음악을 종료시키는 메소드이다. */
 	public void close() {
 		isLoop = false;
 		player.close();
@@ -86,9 +84,7 @@ public class Music extends Thread {
 		this.interrupt();
 	}
 
-	/**
-	 * 곡을 재생시킨다.
-	 */
+	/** 곡을 재생시킨다. */
 	@Override
 	public void run() {
 		try {
@@ -110,16 +106,16 @@ public class Music extends Thread {
 		}
 	}
 
-	/**
-	 * AdvancedPlyaer를 리턴해줘서 다른 클래스에서 stop메소드를 통해 노래를 멈출수 있게끔 한다. 
+	/** AdvancedPlyaer를 리턴해줘서 다른 클래스에서 stop메소드를 통해 노래를 멈출수 있게끔 한다. 
+	 * 
 	 * @return player
 	 */
 	public AdvancedPlayer getPlayer() {
 		return player;
 	}
 
-	/**
-	 * pausedOnFrame을 리턴하여 정지된 시점의 Frame을 얻을수 있게 한다.
+	/** pausedOnFrame을 리턴하여 정지된 시점의 Frame을 얻을수 있게 한다.
+	 * 
 	 * @return pausedOnFrame
 	 */
 	public int getPausedOnFrame() {

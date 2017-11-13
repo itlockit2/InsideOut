@@ -80,8 +80,8 @@ public class MainScreenPanel extends JPanel implements Runnable {
 	
 	/** 시작화면인 MainScreen의 구성 요소 및 정보를 담고 있는 생성자
 	 * 
-	 * @param InsideOut insideOut
-	 * @param int stopPoint 
+	 * @param insideOut
+	 * @param stopPoint 
 	 * */
 	public MainScreenPanel(InsideOut insideOut, int stopPoint) 	{
 		// 프레임을 매개변수로 받아 제어한다.
@@ -227,11 +227,11 @@ public class MainScreenPanel extends JPanel implements Runnable {
 
 	/** JButton의 위치나 다른 요소들을 제어하기 위한 함수
 	 *  
-	 * @param JButton button
-	 * @param int x
-	 * @param int y
-	 * @param int width
-	 * @param int height
+	 * @param button
+	 * @param x
+	 * @param y
+	 * @param width
+	 * @param height
 	 */
 	public void buttonSet(JButton button, int x, int y, int width, int height) {
 		button.setBounds(x, y, width, height);
@@ -293,7 +293,7 @@ public class MainScreenPanel extends JPanel implements Runnable {
 	
     /** MainScreen의 배경 이미지를 그려주거나 투명도를 조정해 주는 paint함수 
      * 
-     * @param Graphics g
+     * @param g
      * */
 	@Override
 	public void paintComponent(Graphics g) {
@@ -349,7 +349,7 @@ public class MainScreenPanel extends JPanel implements Runnable {
 
 	/** 시작 화면의 Thread를 설정하는 함수
 	 * 
-	 * @panel Thread thread
+	 * @param thread
 	 */
 	public void setThread(Thread thread) {
 		this.thread = thread;

@@ -159,7 +159,7 @@ public class InsideOut extends JFrame {
 	
 	/** HelpScreen(도움말 화면)으로 이동하기 위한 함수 
 	 * 
-	 * @param int introMusicStartPoint 
+	 * @param introMusicStartPoint 
 	 * */
 	public void changeHelpScreen(int introMusicStartPoint) {
 		// 현재 실행되고 있는 모든 판넬을 제거한다.
@@ -190,7 +190,7 @@ public class InsideOut extends JFrame {
 
 	/** MainScreen(시작 화면)으로 이동하기 위한 함수 
 	 * 
-	 * @param int introMusicStartPoint 
+	 * @param introMusicStartPoint 
 	 * */
 	public void changeMainScreen(int introMusicStartPoint) {
 		// 현재 실행되고 있는 모든 판넬을 제거한다.
@@ -215,7 +215,7 @@ public class InsideOut extends JFrame {
     
     /** MenuBar이미지를 설정하기 위한 setMenubar함수 
      * 
-     * @param JLabel menubar
+     * @param menubar
      * */
 	public void setMenubar(JLabel menubar) {
 		this.menubar = menubar;
@@ -231,7 +231,7 @@ public class InsideOut extends JFrame {
     
 	/** MenuBar의 Exit이미지 버튼를 설정하기 위한 setMenubarExitButton함수 
 	 * 
-	 * @param JButton menubarExitButton
+	 * @param menubarExitButton
 	 * */
 	public void setMenubarExitButton(JButton menubarExitButton) {
 		this.menubarExitButton = menubarExitButton;

@@ -5,7 +5,7 @@ package project_04;
  * @author Jimin Kim
  * @version 0.4
  * 
- * */
+ */
 public class Ball implements Runnable {
 
 	/** Ball을 그리기 위한 x좌표, y좌표, radius, 원의 중심 x좌표 Ox, 원의 중심 y좌표 Oy 변수들 */
@@ -76,7 +76,7 @@ public class Ball implements Runnable {
 
 	/** Ball의 x좌표를 설정하는 setX 함수 
 	 * 
-	 * @param int x
+	 * @param x
 	 * */
 	public void setX(int x) {
 		this.x = x;
@@ -93,8 +93,8 @@ public class Ball implements Runnable {
 
 	/** Ball의 y좌표를 설정하는 setY 함수
 	 * 
-	 * @param int y
-	 */
+	 * @param y
+	 * */
 	public void setY(int y) {
 		this.y = y;
 	}
@@ -109,7 +109,7 @@ public class Ball implements Runnable {
 
 	/** Ball의 Thread를 설정하는 함수
 	 * 
-	 * @param Thread thread
+	 * @param thread
 	 * */
 	public void setThread(Thread thread) {
 		this.thread = thread;
@@ -133,7 +133,7 @@ public class Ball implements Runnable {
     
 	/** Ball의 CircleY(원의 중심 y좌표)를 얻어오는 함수
 	 * 
-	 * @return circleX
+	 * @return circleY
 	 * */
 	public int getCircleY() {
 		return circleY;
