@@ -12,116 +12,115 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-/** °ÔÀÓÀÇ Àü¹İÀûÀÎ ÄÁÆ®·ÑÀ» ÇØÁÖ´Â Å¬·¡½º
+/** ê²Œì„ì˜ ì „ë°˜ì ì¸ ì»¨íŠ¸ë¡¤ì„ í•´ì£¼ëŠ” í´ë˜ìŠ¤
  *  
  *  @author Jimin Kim
  *  @version 0.4
- *
  */
 public class InsideOut extends JFrame {
 	
-	/** MainScreen(½ÃÀÛ È­¸é)À» Á¦¾îÇÏ±â À§ÇÑ mainScreenPanel °´Ã¼ */
+	/** MainScreen(ì‹œì‘ í™”ë©´)ì„ ì œì–´í•˜ê¸° ìœ„í•œ mainScreenPanel ê°ì²´ */
 	private MainScreenPanel mainScreenPanel;
-	/** HelpScreen(µµ¿ò¸» È­¸é)À» Á¦¾îÇÏ±â À§ÇÑ helpScreenPanel °´Ã¼ */
+	/** HelpScreen(ë„ì›€ë§ í™”ë©´)ì„ ì œì–´í•˜ê¸° ìœ„í•œ helpScreenPanel ê°ì²´ */
 	private HelpScreenPanel helpScreenPanel;
-	/** GameSelectScreen(°î ¼±ÅÃ È­¸é)À» Á¦¾îÇÏ±â À§ÇÑ gameSelectScreenPanel °´Ã¼ */
+	/** GameSelectScreen(ê³¡ ì„ íƒ í™”ë©´)ì„ ì œì–´í•˜ê¸° ìœ„í•œ gameSelectScreenPanel ê°ì²´ */
 	private GameSelectScreenPanel gameSelectScreenPanel;
-	/** GameScreen(ÇÃ·¹ÀÌ¾î°¡ ÇÃ·¹ÀÌ ÇÏ°Ô µÇ´Â È­¸é)À» Á¦¾îÇÏ±â À§ÇÑ gameScreenPanel °´Ã¼ */
+	/** GameScreen(í”Œë ˆì´ì–´ê°€ í”Œë ˆì´ í•˜ê²Œ ë˜ëŠ” í™”ë©´)ì„ ì œì–´í•˜ê¸° ìœ„í•œ gameScreenPanel ê°ì²´ */
 	private GameScreenPanel gameScreenPanel;
-	/** PanelÀ» ¾ò¾î¿À°í Frame¿¡ Ãß°¡ÇÏ¿© PanelÀÇ ³»¿ëÀ» Ç¥½ÃÇÒ ¼ö ÀÖµµ·Ï ¸¸µé¾î ÁÖ´Â °´Ã¼  */
+	/** Panelì„ ì–»ì–´ì˜¤ê³  Frameì— ì¶”ê°€í•˜ì—¬ Panelì˜ ë‚´ìš©ì„ í‘œì‹œí•  ìˆ˜ ìˆë„ë¡ ë§Œë“¤ì–´ ì£¼ëŠ” ê°ì²´  */
 	private Container contentpane;
 
-	/** ÇöÀç ÇÁ·Î±×·¥³»¿¡¼­ ¸¶¿ì½ºÀÇ X¿Í YÁÂÇ¥¸¦ ¹ŞÀ»¼ö ÀÖ´Â ÇÊµå¸¦ ¸¸µç´Ù. ¸Ş´º¹Ù¸¦ ¿Å±â±â À§ÇØ¼­ ÇÊ¿äÇÑ º¯¼ö */
+	/** í˜„ì¬ í”„ë¡œê·¸ë¨ë‚´ì—ì„œ ë§ˆìš°ìŠ¤ì˜ Xì™€ Yì¢Œí‘œë¥¼ ë°›ì„ìˆ˜ ìˆëŠ” í•„ë“œë¥¼ ë§Œë“ ë‹¤. ë©”ë‰´ë°”ë¥¼ ì˜®ê¸°ê¸° ìœ„í•´ì„œ í•„ìš”í•œ ë³€ìˆ˜ */
 	private int mouseX, mouseY;
 
-	/** MenuBar ÀÌ¹ÌÁö */
+	/** MenuBar ì´ë¯¸ì§€ */
 	private JLabel menubar;
 	
-	/** MenuBarÀÇ Exit¹öÆ° ±âº» ÀÌ¹ÌÁö */
+	/** MenuBarì˜ Exitë²„íŠ¼ ê¸°ë³¸ ì´ë¯¸ì§€ */
 	private ImageIcon menubarImageBasic = new ImageIcon(
 			getClass().getClassLoader().getResource("images/manubarExitButtonImage.png"));
-	/** MenuBarÀÇ ¸¶¿ì½º°¡ ¹öÆ°¿¡ ¿Ã¶ó°¬À» ¶§ÀÇ Exit¹öÆ° ÀÌ¹ÌÁö */
+	/** MenuBarì˜ ë§ˆìš°ìŠ¤ê°€ ë²„íŠ¼ì— ì˜¬ë¼ê°”ì„ ë•Œì˜ Exitë²„íŠ¼ ì´ë¯¸ì§€ */
 	private ImageIcon menubarImageEntered = new ImageIcon(
 			getClass().getClassLoader().getResource("images/manubarExitButtonImageEntered.png"));
 	
-	/** MenuBarÀÇ Exit¹öÆ° °´Ã¼ »ı¼º */
+	/** MenuBarì˜ Exitë²„íŠ¼ ê°ì²´ ìƒì„± */
 	private JButton menubarExitButton = new JButton(menubarImageBasic);
 
-	/** MainÇÔ¼ö¿¡¼­ °ÔÀÓ ½ÇÇà½Ã Ã³À½ ½ÃÀÛ È­¸é(MainScreen)À» Ãâ·ÂÇÏ±â À§ÇÑ »ı¼ºÀÚ */
+	/** Mainí•¨ìˆ˜ì—ì„œ ê²Œì„ ì‹¤í–‰ì‹œ ì²˜ìŒ ì‹œì‘ í™”ë©´(MainScreen)ì„ ì¶œë ¥í•˜ê¸° ìœ„í•œ ìƒì„±ì */
 	public InsideOut() {
-		// °ÔÀÓÀÌ¸§ ¼³Á¤
+		// ê²Œì„ì´ë¦„ ì„¤ì •
 		setTitle("Inside Out");
-		// °ÔÀÓÀ» ²ô¸é ¿ÏÀüÈ÷ Á¾·á, ¹İµå½Ã ÇÊ¿äÇÑ ÇÔ¼ö
+		// ê²Œì„ì„ ë„ë©´ ì™„ì „íˆ ì¢…ë£Œ, ë°˜ë“œì‹œ í•„ìš”í•œ í•¨ìˆ˜
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		// getContentPane À¸·Î contentpane(Panel) Á¤º¸¸¦ ¾ò¾î¿Â´Ù.
+		// getContentPane ìœ¼ë¡œ contentpane(Panel) ì •ë³´ë¥¼ ì–»ì–´ì˜¨ë‹¤.
 		contentpane = getContentPane();
-		// °ÔÀÓÃ¢ Å©±â ¼³Á¤
+		// ê²Œì„ì°½ í¬ê¸° ì„¤ì •
 		setSize(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
-		// ¹è°æÈ­¸éÀ» °ËÁ¤À¸·Î ¼³Á¤ÇØÁØ´Ù.
+		// ë°°ê²½í™”ë©´ì„ ê²€ì •ìœ¼ë¡œ ì„¤ì •í•´ì¤€ë‹¤.
 		setBackground(Color.BLACK);
-		// °ÔÀÓÃ¢ÀÌ Á¤ Áß¾Ó¿¡ Ãâ·Â
+		// ê²Œì„ì°½ì´ ì • ì¤‘ì•™ì— ì¶œë ¥
 		setLocationRelativeTo(null);
-		// ÄÁÅ×ÀÌ³ÊÀÇ Å©±â°¡ º¯°æµÉ¶§ ÄÄÆ÷³ÍÆ®µéÀÇ Å©±â¿Í À§Ä¡°¡ ÀÚµ¿ÀûÀ¸·Î º¯°æµÇ´Âµ¥ ±×°É ÇØÁ¦ÇÑ´Ù.
+		// ì»¨í…Œì´ë„ˆì˜ í¬ê¸°ê°€ ë³€ê²½ë ë•Œ ì»´í¬ë„ŒíŠ¸ë“¤ì˜ í¬ê¸°ì™€ ìœ„ì¹˜ê°€ ìë™ì ìœ¼ë¡œ ë³€ê²½ë˜ëŠ”ë° ê·¸ê±¸ í•´ì œí•œë‹¤.
 		setLayout(null);
-		// ¸Ş´º¹Ù°¡ º¸ÀÌÁö ¾Ê°Ô²û ¼³Á¤
+		// ë©”ë‰´ë°”ê°€ ë³´ì´ì§€ ì•Šê²Œë” ì„¤ì •
 		setUndecorated(true);
-		// »ç¿ëÀÚ°¡ °ÔÀÓÃ¢À» ÀÓÀÇ·Î ÁÙÀÌ°í ÇÏ´Â°Ô ºÒ°¡´É, true·Î ÇÏ¸é °¡´É
+		// ì‚¬ìš©ìê°€ ê²Œì„ì°½ì„ ì„ì˜ë¡œ ì¤„ì´ê³  í•˜ëŠ”ê²Œ ë¶ˆê°€ëŠ¥, trueë¡œ í•˜ë©´ ê°€ëŠ¥
 		setResizable(false);
 
-		// ¸Ş´º¹Ù ÀÌ¹ÌÁö¸¦ Ãß°¡½ÃÄÑÁØ´Ù.
+		// ë©”ë‰´ë°” ì´ë¯¸ì§€ë¥¼ ì¶”ê°€ì‹œì¼œì¤€ë‹¤.
 		menubar = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("images/menubarImage.png")));
-		// ¸Ş´º¹ÙÀÇ À§Ä¡¸¦ ÁöÁ¤ÇØÁØ´Ù.
+		// ë©”ë‰´ë°”ì˜ ìœ„ì¹˜ë¥¼ ì§€ì •í•´ì¤€ë‹¤.
 		menubar.setBounds(0, 0, 1280, 28);
-		// ¸Ş´º¹Ù¸¦ Ãß°¡½ÃÄÑÁØ´Ù.
+		// ë©”ë‰´ë°”ë¥¼ ì¶”ê°€ì‹œì¼œì¤€ë‹¤.
 		add(menubar);
-		// ¸Ş´º¹Ù ÀÌº¥Æ®µéÀ» Ã³¸®ÇØÁØ´Ù.
-		// menuBar¸¦ ¸¶¿ì½º¸¦ ÅëÇØ¼­ Á¶ÀÛÇÒ¼ö ÀÖµµ·Ï ÀÌº¥Æ®Ã³¸®¸¦ ÇØÁØ´Ù.
+		// ë©”ë‰´ë°” ì´ë²¤íŠ¸ë“¤ì„ ì²˜ë¦¬í•´ì¤€ë‹¤.
+		// menuBarë¥¼ ë§ˆìš°ìŠ¤ë¥¼ í†µí•´ì„œ ì¡°ì‘í• ìˆ˜ ìˆë„ë¡ ì´ë²¤íŠ¸ì²˜ë¦¬ë¥¼ í•´ì¤€ë‹¤.
 		menubar.addMouseListener(new MouseAdapter() {
-			// ¸¶¿ì½º¸¦ ÀÔ·ÂÇßÀ»¶§ ÄÄÆ÷³ÍÆ®³»ÀÇ ¸¶¿ì½ºÀÇ xÁÂÇ¥¿Í yÁÂÇ¥¸¦ °¡Á®¿Â´Ù
+			// ë§ˆìš°ìŠ¤ë¥¼ ì…ë ¥í–ˆì„ë•Œ ì»´í¬ë„ŒíŠ¸ë‚´ì˜ ë§ˆìš°ìŠ¤ì˜ xì¢Œí‘œì™€ yì¢Œí‘œë¥¼ ê°€ì ¸ì˜¨ë‹¤
 			@Override
 			public void mousePressed(MouseEvent e) {
 				mouseX = e.getX();
 				mouseY = e.getY();
 			}
 		});
-		// menuBar¸¦ µå·¡±× ÇßÀ»¶§ ÀÌº¥Æ® Ã³¸®¸¦ ÇØÁØ´Ù.
+		// menuBarë¥¼ ë“œë˜ê·¸ í–ˆì„ë•Œ ì´ë²¤íŠ¸ ì²˜ë¦¬ë¥¼ í•´ì¤€ë‹¤.
 		menubar.addMouseMotionListener(new MouseMotionAdapter() {
-			// ¸¶¿ì½º¸¦ ÀÔ·ÂÇßÀ»¶§ ½ºÅ©¸°(¸ğ´ÏÅÍ)³»ÀÇ ¸¶¿ì½ºÀÇ xÁÂÇ¥¿Í yÁÂÇ¥¸¦ °¡Á®¿Â´Ù
+			// ë§ˆìš°ìŠ¤ë¥¼ ì…ë ¥í–ˆì„ë•Œ ìŠ¤í¬ë¦°(ëª¨ë‹ˆí„°)ë‚´ì˜ ë§ˆìš°ìŠ¤ì˜ xì¢Œí‘œì™€ yì¢Œí‘œë¥¼ ê°€ì ¸ì˜¨ë‹¤
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				int x = e.getXOnScreen();
 				int y = e.getYOnScreen();
-				// ½ºÅ©¸°³»ÀÇ ¸¶¿ì½ºÀÇ ÁÂÇ¥¿Í ÄÄÆ÷³ÍÆ®³»ÀÇ ¸¶¿ì½ºÀÇ ÁÂÇ¥ÀÇ Â÷°¡ °ÔÀÓÃ¢ÀÇ À§Ä¡ÀÌ´Ù.
+				// ìŠ¤í¬ë¦°ë‚´ì˜ ë§ˆìš°ìŠ¤ì˜ ì¢Œí‘œì™€ ì»´í¬ë„ŒíŠ¸ë‚´ì˜ ë§ˆìš°ìŠ¤ì˜ ì¢Œí‘œì˜ ì°¨ê°€ ê²Œì„ì°½ì˜ ìœ„ì¹˜ì´ë‹¤.
 				setLocation(x - mouseX, y - mouseY);
 			}
 		});
 		
-		// ¸Ş´º¹Ù¿¡ ÀÖ´Â menubarExitButton ÀÌº¥Æ® Ã³¸®
+		// ë©”ë‰´ë°”ì— ìˆëŠ” menubarExitButton ì´ë²¤íŠ¸ ì²˜ë¦¬
 		menubarExitButton.addMouseListener(new MouseAdapter() {
-			// ¸¶¿ì½º°¡ ¹öÆ°¿¡ µé¾î¿ÓÀ»¶§ ÀÌº¥Æ® Ã³¸®
+			// ë§ˆìš°ìŠ¤ê°€ ë²„íŠ¼ì— ë“¤ì–´ì™“ì„ë•Œ ì´ë²¤íŠ¸ ì²˜ë¦¬
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				// EnteredÀÌ¹ÌÁö·Î º¯°æ ½ÃÄÑÁØ´Ù.
+				// Enteredì´ë¯¸ì§€ë¡œ ë³€ê²½ ì‹œì¼œì¤€ë‹¤.
 				menubarExitButton.setIcon(menubarImageEntered);
-				// Ä¿¼­ÀÇ ¸ğ¾çÀ» ¹Ù²ãÁØ´Ù
+				// ì»¤ì„œì˜ ëª¨ì–‘ì„ ë°”ê¿”ì¤€ë‹¤
 				menubarExitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-				// È¿°úÀ½ Àç»ı
+				// íš¨ê³¼ìŒ ì¬ìƒ
 			}
 
-			// ¸¶¿ì½º°¡ ¹öÆ°¿¡ ³ª°¬À»¶§ ÀÌº¥Æ® Ã³¸®
+			// ë§ˆìš°ìŠ¤ê°€ ë²„íŠ¼ì— ë‚˜ê°”ì„ë•Œ ì´ë²¤íŠ¸ ì²˜ë¦¬
 			@Override
 			public void mouseExited(MouseEvent e) {
 				menubarExitButton.setIcon(menubarImageBasic);
-				// Ä¿¼­ÀÇ ¸ğ¾çÀ» ¹Ù²ãÁØ´Ù
+				// ì»¤ì„œì˜ ëª¨ì–‘ì„ ë°”ê¿”ì¤€ë‹¤
 				menubarExitButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 
 			}
 
-			// ¹öÆ°À» Å¬¸¯ÇßÀ»¶§ ÀÌº¥Æ® Ã³¸®
+			// ë²„íŠ¼ì„ í´ë¦­í–ˆì„ë•Œ ì´ë²¤íŠ¸ ì²˜ë¦¬
 			@Override
 			public void mousePressed(MouseEvent e) {
-				// È¿°úÀ½ Àç»ı
-				// ÇÁ·Î±×·¥ÀÌ ¹Ù·Î ²¨ÁöÁö ¾Ê°í 1ÃÊÁ¤µµ ÀÖ´Ù°¡ ²¨Áö°Ô±İ ¼³Á¤
+				// íš¨ê³¼ìŒ ì¬ìƒ
+				// í”„ë¡œê·¸ë¨ì´ ë°”ë¡œ êº¼ì§€ì§€ ì•Šê³  1ì´ˆì •ë„ ìˆë‹¤ê°€ êº¼ì§€ê²Œê¸ˆ ì„¤ì •
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException ex) {
@@ -133,79 +132,79 @@ public class InsideOut extends JFrame {
 		
 		});
 
-		// ¸ŞÀÎ ÆĞ³Î »ı¼º
+		// ë©”ì¸ íŒ¨ë„ ìƒì„±
 		mainScreenPanel = new MainScreenPanel(this, 0);
-		// PanelÀ» Ãß°¡ÇØÁØ´Ù.
+		// Panelì„ ì¶”ê°€í•´ì¤€ë‹¤.
 		contentpane.add(mainScreenPanel);
-		// MainPanelÀÇ Thread ½ÇÇà
+		// MainPanelì˜ Thread ì‹¤í–‰
 		mainScreenPanel.getThread().start();
-		// È­¸é Ãâ·Â ¼³Á¤ ±âº»°ªÀº false ÀÌ¹Ç·Î ¼³Á¤ ÇØÁà¾ßÇÑ´Ù. µÇµµ·Ï ¸Ç¸¶Áö¸·¿¡ ÇØÁØ´Ù.
+		// í™”ë©´ ì¶œë ¥ ì„¤ì • ê¸°ë³¸ê°’ì€ false ì´ë¯€ë¡œ ì„¤ì • í•´ì¤˜ì•¼í•œë‹¤. ë˜ë„ë¡ ë§¨ë§ˆì§€ë§‰ì— í•´ì¤€ë‹¤.
 		setVisible(true);
 	}
 	
-	/** GameSelectScreen(°î ¼±ÅÃ È­¸é)À¸·Î ÀÌµ¿ÇÏ±â À§ÇÑ ÇÔ¼ö */
+	/** GameSelectScreen(ê³¡ ì„ íƒ í™”ë©´)ìœ¼ë¡œ ì´ë™í•˜ê¸° ìœ„í•œ í•¨ìˆ˜ */
 	public void changeGameSelectScreen() {
-		// ÇöÀç ½ÇÇàµÇ°í ÀÖ´Â ¸ğµç ÆÇ³ÚÀ» Á¦°ÅÇÑ´Ù.
+		// í˜„ì¬ ì‹¤í–‰ë˜ê³  ìˆëŠ” ëª¨ë“  íŒë„¬ì„ ì œê±°í•œë‹¤.
 		contentpane.removeAll();
-		// »õ·Ó°Ô GameSelectScreen ÆÇ³Ú °´Ã¼¸¦ ¸¸µé¾î¼­ »ı¼ºÀÚ¸¦ ½ÇÇà
+		// ìƒˆë¡­ê²Œ GameSelectScreen íŒë„¬ ê°ì²´ë¥¼ ë§Œë“¤ì–´ì„œ ìƒì„±ìë¥¼ ì‹¤í–‰
 		gameSelectScreenPanel = new GameSelectScreenPanel(this);
-		// PanelÀ» Ãß°¡ÇØÁØ´Ù.
+		// Panelì„ ì¶”ê°€í•´ì¤€ë‹¤.
 		contentpane.add(gameSelectScreenPanel);
-		// gameSelectScreenPanelÀÇ Thread ½ÇÇà
+		// gameSelectScreenPanelì˜ Thread ì‹¤í–‰
 		gameSelectScreenPanel.getThread().start();
-		// È­¸é Ãâ·Â ¼³Á¤ ±âº»°ªÀº falseÀÌ¹Ç·Î true·Î ¼³Á¤ ÇØÁà¾ßÇÑ´Ù.
+		// í™”ë©´ ì¶œë ¥ ì„¤ì • ê¸°ë³¸ê°’ì€ falseì´ë¯€ë¡œ trueë¡œ ì„¤ì • í•´ì¤˜ì•¼í•œë‹¤.
 		setVisible(true);
 	}
 	
-	/** HelpScreen(µµ¿ò¸» È­¸é)À¸·Î ÀÌµ¿ÇÏ±â À§ÇÑ ÇÔ¼ö 
+	/** HelpScreen(ë„ì›€ë§ í™”ë©´)ìœ¼ë¡œ ì´ë™í•˜ê¸° ìœ„í•œ í•¨ìˆ˜ 
 	 * 
 	 * @param introMusicStartPoint 
 	 * */
 	public void changeHelpScreen(int introMusicStartPoint) {
-		// ÇöÀç ½ÇÇàµÇ°í ÀÖ´Â ¸ğµç ÆÇ³ÚÀ» Á¦°ÅÇÑ´Ù.
+		// í˜„ì¬ ì‹¤í–‰ë˜ê³  ìˆëŠ” ëª¨ë“  íŒë„¬ì„ ì œê±°í•œë‹¤.
 		contentpane.removeAll();
-		// »õ·Ó°Ô HelpScreen ÆÇ³Ú °´Ã¼¸¦ ¸¸µé¾î¼­ »ı¼ºÀÚ¸¦ ½ÇÇà
+		// ìƒˆë¡­ê²Œ HelpScreen íŒë„¬ ê°ì²´ë¥¼ ë§Œë“¤ì–´ì„œ ìƒì„±ìë¥¼ ì‹¤í–‰
 		helpScreenPanel = new HelpScreenPanel(this, introMusicStartPoint);
-		// PanelÀ» Ãß°¡ÇØÁØ´Ù.
+		// Panelì„ ì¶”ê°€í•´ì¤€ë‹¤.
 		contentpane.add(helpScreenPanel);
-		// helpScreenPanelÀÇ Thread ½ÇÇà
+		// helpScreenPanelì˜ Thread ì‹¤í–‰
 		helpScreenPanel.getThread().start();
-		// È­¸é Ãâ·Â ¼³Á¤ ±âº»°ªÀº falseÀÌ¹Ç·Î true·Î ¼³Á¤ ÇØÁà¾ßÇÑ´Ù.
+		// í™”ë©´ ì¶œë ¥ ì„¤ì • ê¸°ë³¸ê°’ì€ falseì´ë¯€ë¡œ trueë¡œ ì„¤ì • í•´ì¤˜ì•¼í•œë‹¤.
 		setVisible(true);
 	}
     
-	/** GameScreen(ÇÃ·¹ÀÌ¾î°¡ ÇÃ·¹ÀÌ ÇÏ°Ô µÇ´Â È­¸é)À¸·Î ÀÌµ¿ÇÏ±â À§ÇÑ ÇÔ¼ö */
+	/** GameScreen(í”Œë ˆì´ì–´ê°€ í”Œë ˆì´ í•˜ê²Œ ë˜ëŠ” í™”ë©´)ìœ¼ë¡œ ì´ë™í•˜ê¸° ìœ„í•œ í•¨ìˆ˜ */
 	public void changeGameScreen() {
-		// ÇöÀç ½ÇÇàµÇ°í ÀÖ´Â ¸ğµç ÆÇ³ÚÀ» Á¦°ÅÇÑ´Ù.
+		// í˜„ì¬ ì‹¤í–‰ë˜ê³  ìˆëŠ” ëª¨ë“  íŒë„¬ì„ ì œê±°í•œë‹¤.
 		contentpane.removeAll();
-		// »õ·Ó°Ô GameScreen ÆÇ³Ú °´Ã¼¸¦ ¸¸µé¾î¼­ »ı¼ºÀÚ¸¦ ½ÇÇà
+		// ìƒˆë¡­ê²Œ GameScreen íŒë„¬ ê°ì²´ë¥¼ ë§Œë“¤ì–´ì„œ ìƒì„±ìë¥¼ ì‹¤í–‰
 		gameScreenPanel = new GameScreenPanel(this);
-		// PanelÀ» Ãß°¡ÇØÁØ´Ù.
+		// Panelì„ ì¶”ê°€í•´ì¤€ë‹¤.
 		contentpane.add(gameScreenPanel);
-		// gameScreenPanelÀÇ Thread ½ÇÇà
+		// gameScreenPanelì˜ Thread ì‹¤í–‰
 		gameScreenPanel.getThread().start();
-		// È­¸é Ãâ·Â ¼³Á¤ ±âº»°ªÀº falseÀÌ¹Ç·Î true·Î ¼³Á¤ ÇØÁà¾ßÇÑ´Ù.
+		// í™”ë©´ ì¶œë ¥ ì„¤ì • ê¸°ë³¸ê°’ì€ falseì´ë¯€ë¡œ trueë¡œ ì„¤ì • í•´ì¤˜ì•¼í•œë‹¤.
 		setVisible(true);
 	}
 
-	/** MainScreen(½ÃÀÛ È­¸é)À¸·Î ÀÌµ¿ÇÏ±â À§ÇÑ ÇÔ¼ö 
+	/** MainScreen(ì‹œì‘ í™”ë©´)ìœ¼ë¡œ ì´ë™í•˜ê¸° ìœ„í•œ í•¨ìˆ˜ 
 	 * 
 	 * @param introMusicStartPoint 
 	 * */
 	public void changeMainScreen(int introMusicStartPoint) {
-		// ÇöÀç ½ÇÇàµÇ°í ÀÖ´Â ¸ğµç ÆÇ³ÚÀ» Á¦°ÅÇÑ´Ù.
+		// í˜„ì¬ ì‹¤í–‰ë˜ê³  ìˆëŠ” ëª¨ë“  íŒë„¬ì„ ì œê±°í•œë‹¤.
 		contentpane.removeAll();
-		// »õ·Ó°Ô MainScreen ÆÇ³Ú °´Ã¼¸¦ ¸¸µé¾î¼­ »ı¼ºÀÚ¸¦ ½ÇÇà
+		// ìƒˆë¡­ê²Œ MainScreen íŒë„¬ ê°ì²´ë¥¼ ë§Œë“¤ì–´ì„œ ìƒì„±ìë¥¼ ì‹¤í–‰
 		mainScreenPanel = new MainScreenPanel(this, introMusicStartPoint);
-		// PanelÀ» Ãß°¡ÇØÁØ´Ù.
+		// Panelì„ ì¶”ê°€í•´ì¤€ë‹¤.
 		contentpane.add(mainScreenPanel);
-		// mainScreenPanelÀÇ Thread ½ÇÇà
+		// mainScreenPanelì˜ Thread ì‹¤í–‰
 		mainScreenPanel.getThread().start();
-		// È­¸é Ãâ·Â ¼³Á¤ ±âº»°ªÀº falseÀÌ¹Ç·Î true·Î ¼³Á¤ ÇØÁà¾ßÇÑ´Ù.
+		// í™”ë©´ ì¶œë ¥ ì„¤ì • ê¸°ë³¸ê°’ì€ falseì´ë¯€ë¡œ trueë¡œ ì„¤ì • í•´ì¤˜ì•¼í•œë‹¤.
 		setVisible(true);
 	}
 	
-    /** MenuBarÀÌ¹ÌÁö¸¦ ¾ò¾î¿À±â À§ÇÑ getMenubarÇÔ¼ö 
+    /** MenuBarì´ë¯¸ì§€ë¥¼ ì–»ì–´ì˜¤ê¸° ìœ„í•œ getMenubarí•¨ìˆ˜ 
      * 
      * @return menubar
      * */
@@ -213,7 +212,7 @@ public class InsideOut extends JFrame {
 		return menubar;
 	}
     
-    /** MenuBarÀÌ¹ÌÁö¸¦ ¼³Á¤ÇÏ±â À§ÇÑ setMenubarÇÔ¼ö 
+    /** MenuBarì´ë¯¸ì§€ë¥¼ ì„¤ì •í•˜ê¸° ìœ„í•œ setMenubarí•¨ìˆ˜ 
      * 
      * @param menubar
      * */
@@ -221,7 +220,7 @@ public class InsideOut extends JFrame {
 		this.menubar = menubar;
 	}
     
-	/** MenuBarÀÇ ExitÀÌ¹ÌÁö ¹öÆ°¸¦ ¾ò¾î¿À±â À§ÇÑ getMenubarExitButtonÇÔ¼ö 
+	/** MenuBarì˜ Exitì´ë¯¸ì§€ ë²„íŠ¼ë¥¼ ì–»ì–´ì˜¤ê¸° ìœ„í•œ getMenubarExitButtoní•¨ìˆ˜ 
 	 * 
 	 * @return menubarExitButton
 	 * */
@@ -229,7 +228,7 @@ public class InsideOut extends JFrame {
 		return menubarExitButton;
 	}
     
-	/** MenuBarÀÇ ExitÀÌ¹ÌÁö ¹öÆ°¸¦ ¼³Á¤ÇÏ±â À§ÇÑ setMenubarExitButtonÇÔ¼ö 
+	/** MenuBarì˜ Exitì´ë¯¸ì§€ ë²„íŠ¼ë¥¼ ì„¤ì •í•˜ê¸° ìœ„í•œ setMenubarExitButtoní•¨ìˆ˜ 
 	 * 
 	 * @param menubarExitButton
 	 * */
