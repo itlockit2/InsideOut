@@ -13,60 +13,59 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-/** °ÔÀÓÀ» ¾î¶»°Ô ÁøÇàÇØ¾ß ÇÏ´ÂÁö ¾Ë·ÁÁÖ´Â Å¬·¡½º
+/** ê²Œì„ì„ ì–´ë–»ê²Œ ì§„í–‰í•´ì•¼ í•˜ëŠ”ì§€ ì•Œë ¤ì£¼ëŠ” í´ë˜ìŠ¤
  *  
  *  @author SungHo Yun
  *  @version 0.4
- *
  */
 public class HelpScreenPanel extends JPanel implements Runnable {
 
-	/** HelpScreenÀÇ ¹è°æ ÀÌ¹ÌÁö¸¦ ´ãÀ» ¼ö ÀÖ´Â °´Ã¼  ¹è°æÀÌ¹ÌÁö´Â ¾î¶»°Ô ÇÃ·¹ÀÌÇØ¾ß ÇÏ´ÂÁö ÀûÇôÀÖ´Â »çÁøÆÄÀÏÀÌ´Ù.*/
+	/** HelpScreenì˜ ë°°ê²½ ì´ë¯¸ì§€ë¥¼ ë‹´ì„ ìˆ˜ ìˆëŠ” ê°ì²´  ë°°ê²½ì´ë¯¸ì§€ëŠ” ì–´ë–»ê²Œ í”Œë ˆì´í•´ì•¼ í•˜ëŠ”ì§€ ì í˜€ìˆëŠ” ì‚¬ì§„íŒŒì¼ì´ë‹¤.*/
 	private Image helpScreenBackGround;
 
-	/** Back ¹öÆ° ÀÌ¹ÌÁö¸¦ ´ãÀ» ¼ö ÀÖ´Â °´Ã¼ */
+	/** Back ë²„íŠ¼ ì´ë¯¸ì§€ë¥¼ ë‹´ì„ ìˆ˜ ìˆëŠ” ê°ì²´ */
 	private ImageIcon backButtonImage;
 
-	/** ¸¶¿ì½º°¡ Back ¹öÆ°¿¡ ÁøÀÔÇßÀ»¶§ ÀÌ¹ÌÁö */
+	/** ë§ˆìš°ìŠ¤ê°€ Back ë²„íŠ¼ì— ì§„ì…í–ˆì„ë•Œ ì´ë¯¸ì§€ */
 	private ImageIcon backButtonEnteredImage;
 
-	/** JButtonÀ» ÅëÇÑ backButton ±¸Çö */
+	/** JButtonì„ í†µí•œ backButton êµ¬í˜„ */
 	private JButton backButton;
 
-	/** À½¾ÇÀ» ´ãÀ» ¼ö ÀÖ´Â °´Ã¼ , introMusicÀÇ ÇöÀç ÁøÇà ½Ã°£À» ¹Ş¾Æ¼­ °è¼Ó ÁøÇà½ÃÄÑÁÖ¾î¾ß ÇÏ¹Ç·Î °´Ã¼¸¦ ¸¸µç´Ù. */
+	/** ìŒì•…ì„ ë‹´ì„ ìˆ˜ ìˆëŠ” ê°ì²´ , introMusicì˜ í˜„ì¬ ì§„í–‰ ì‹œê°„ì„ ë°›ì•„ì„œ ê³„ì† ì§„í–‰ì‹œì¼œì£¼ì–´ì•¼ í•˜ë¯€ë¡œ ê°ì²´ë¥¼ ë§Œë“ ë‹¤. */
 	private Music introMusic;
 
-	/** À½¾ÇÀÌ ÁßÁö µÇ¾úÀ»¶§ÀÇ frameÀ» ´ãÀ»¼ö ÀÖ´Â °´Ã¼ */
+	/** ìŒì•…ì´ ì¤‘ì§€ ë˜ì—ˆì„ë•Œì˜ frameì„ ë‹´ì„ìˆ˜ ìˆëŠ” ê°ì²´ */
 	private int stopPoint;
 	
-	/** fadeIn°ú fadeOut À» À§ÇÑ º¯¼ö  fade Value¿¡ µû¶ó Åõ¸íµµ°¡ °áÁ¤µÈ´Ù.*/
+	/** fadeInê³¼ fadeOut ì„ ìœ„í•œ ë³€ìˆ˜  fade Valueì— ë”°ë¼ íˆ¬ëª…ë„ê°€ ê²°ì •ëœë‹¤.*/
 	private float fadeValue;
-	/** fadeIn°ú fadeOut À» À§ÇÑ º¯¼ö  isFadeOut¿¡ FadeInÀ» ÇÒ°ÇÁö FadeOutÀ» ÇÑ°ÇÁö °áÁ¤µÈ´Ù..*/
+	/** fadeInê³¼ fadeOut ì„ ìœ„í•œ ë³€ìˆ˜  isFadeOutì— FadeInì„ í• ê±´ì§€ FadeOutì„ í•œê±´ì§€ ê²°ì •ëœë‹¤..*/
 	private boolean isFadeOut;
 
-	/** boolean°ªÀ» ÅëÇØ ¾î¶² È­¸éÀ¸·Î ÀüÈ¯ÇÒ Áö °¡µ¶¼ºÀ» ³ôÀÏ ¼ö ÀÖÀ¸¸ç °ªÀÌ true°¡ µÇ¸é È­¸éÀ» ÀüÈ¯ÇÑ´Ù. */
+	/** booleanê°’ì„ í†µí•´ ì–´ë–¤ í™”ë©´ìœ¼ë¡œ ì „í™˜í•  ì§€ ê°€ë…ì„±ì„ ë†’ì¼ ìˆ˜ ìˆìœ¼ë©° ê°’ì´ trueê°€ ë˜ë©´ í™”ë©´ì„ ì „í™˜í•œë‹¤. */
 	private boolean isMainScreen ;
 	
-	/** Thread °´Ã¼ */
+	/** Thread ê°ì²´ */
 	private Thread thread;
 
-	/** È­¸éÁ¦¾î¸¦ À§ÇÑ °´Ã¼ 
-	 * FrameÀÎ InsideOutÀ» °¡Áö°í ÀÖ¾î¾ß insideOut¿¡ ÀÖ´Â ÆĞ³Î º¯°æ ¸Ş¼Òµå¸¦ »ç¿ëÇÒ¼ö ÀÖ´Ù. */
+	/** í™”ë©´ì œì–´ë¥¼ ìœ„í•œ ê°ì²´ 
+	 * Frameì¸ InsideOutì„ ê°€ì§€ê³  ìˆì–´ì•¼ insideOutì— ìˆëŠ” íŒ¨ë„ ë³€ê²½ ë©”ì†Œë“œë¥¼ ì‚¬ìš©í• ìˆ˜ ìˆë‹¤. */
 	private InsideOut insideOut;
 
-	/** HelpScreenPanelÀÇ »ı¼ºÀÚ·Î ÇÊµå°ªµéÀ» ÃÊ±âÈ­ ½ÃÄÑÁÖ°í.
-	 * insideOutÀ» ¸Å°³º¯¼ö·Î ¹Ş¾Æ È­¸éÁ¦¾î¸¦ ÇÏ°í
-	 * stopPoint¸¦ ¸Å°³º¯¼ö·Î ¹Ş¾Æ ±× ½ÃÁ¡ºÎÅÍ ³ë·¡¸¦ ½ÃÀÛ½ÃÅ²´Ù.
+	/** HelpScreenPanelì˜ ìƒì„±ìë¡œ í•„ë“œê°’ë“¤ì„ ì´ˆê¸°í™” ì‹œì¼œì£¼ê³ .
+	 * insideOutì„ ë§¤ê°œë³€ìˆ˜ë¡œ ë°›ì•„ í™”ë©´ì œì–´ë¥¼ í•˜ê³ 
+	 * stopPointë¥¼ ë§¤ê°œë³€ìˆ˜ë¡œ ë°›ì•„ ê·¸ ì‹œì ë¶€í„° ë…¸ë˜ë¥¼ ì‹œì‘ì‹œí‚¨ë‹¤.
 	 * 
 	 * @param insideOut
 	 * @param stopPoint
 	 */
 	HelpScreenPanel(InsideOut insideOut, int stopPoint) {
-		// ÇÁ·¹ÀÓÀ» ¸Å°³º¯¼ö·Î ¹Ş¾Æ Á¦¾îÇÑ´Ù.
+		// í”„ë ˆì„ì„ ë§¤ê°œë³€ìˆ˜ë¡œ ë°›ì•„ ì œì–´í•œë‹¤.
 		this.insideOut = insideOut;
-		// introMusic ½ÃÀÛÁ¡À» Á¤ÀÇÇØÁØ´Ù
+		// introMusic ì‹œì‘ì ì„ ì •ì˜í•´ì¤€ë‹¤
 		this.stopPoint = stopPoint;
-		// backButton ÀÌ¹ÌÁö¸¦ ÃÊ±âÈ­ ½ÃÄÑÁØ´Ù.
+		// backButton ì´ë¯¸ì§€ë¥¼ ì´ˆê¸°í™” ì‹œì¼œì¤€ë‹¤.
 		backButtonImage = new ImageIcon(
 				getClass().getClassLoader().getResource("images/backButtonImage_2.png"));
 		backButtonEnteredImage = new ImageIcon(
@@ -75,61 +74,61 @@ public class HelpScreenPanel extends JPanel implements Runnable {
 		
 		introMusic = new Music("introMusic.mp3", true, stopPoint);
 		introMusic.start();
-		// MainScreenÀÇ °ªÀ» false·Î ÃÊ±âÈ­ ½ÃÄÑÁØ´Ù.
+		// MainScreenì˜ ê°’ì„ falseë¡œ ì´ˆê¸°í™” ì‹œì¼œì¤€ë‹¤.
 		isMainScreen = false;
-		// fadeOutÀÇ °ªÀ» false·Î ÃÊ±âÈ­ ½ÃÄÑÁØ´Ù.
+		// fadeOutì˜ ê°’ì„ falseë¡œ ì´ˆê¸°í™” ì‹œì¼œì¤€ë‹¤.
 		isFadeOut = false;
-        // ÄÁÅ×ÀÌ³ÊÀÇ Å©±â°¡ º¯°æµÉ¶§ ÄÄÆ÷³ÍÆ®µéÀÇ Å©±â¿Í À§Ä¡°¡ ÀÚµ¿ÀûÀ¸·Î º¯°æµÇ´Âµ¥ ±×°É ÇØÁ¦ÇÑ´Ù
+        // ì»¨í…Œì´ë„ˆì˜ í¬ê¸°ê°€ ë³€ê²½ë ë•Œ ì»´í¬ë„ŒíŠ¸ë“¤ì˜ í¬ê¸°ì™€ ìœ„ì¹˜ê°€ ìë™ì ìœ¼ë¡œ ë³€ê²½ë˜ëŠ”ë° ê·¸ê±¸ í•´ì œí•œë‹¤
 		setLayout(null);
-		// °ÔÀÓÃ¢ Å©±â ¼³Á¤
+		// ê²Œì„ì°½ í¬ê¸° ì„¤ì •
 		setSize(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
 		setBounds(0, 0, Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
-		// °ÔÀÓ ¹è°æÈ­¸é »ö±ò °ËÁ¤À¸·Î ÁöÁ¤
+		// ê²Œì„ ë°°ê²½í™”ë©´ ìƒ‰ê¹” ê²€ì •ìœ¼ë¡œ ì§€ì •
 		setBackground(Color.BLACK);
-		// È­¸é Ãâ·Â ¼³Á¤ ±âº»°ªÀº false ÀÌ¹Ç·Î ¼³Á¤ ÇØÁà¾ßÇÑ´Ù.
+		// í™”ë©´ ì¶œë ¥ ì„¤ì • ê¸°ë³¸ê°’ì€ false ì´ë¯€ë¡œ ì„¤ì • í•´ì¤˜ì•¼í•œë‹¤.
 		setVisible(true);
 
-        // helpScreen È­¸é ¼³Á¤ 
+        // helpScreen í™”ë©´ ì„¤ì • 
 		helpScreenBackGround = new ImageIcon(getClass().getClassLoader().getResource("images/helpScreen.png")).getImage();
 		
-		// ¸Ş´º¹Ù exitButton ¼³Á¤
+		// ë©”ë‰´ë°” exitButton ì„¤ì •
 		buttonSet(insideOut.getMenubarExitButton(), 1200, 0, 64, 28);
-		// ¸Ş´º¹Ù ¼³Á¤
+		// ë©”ë‰´ë°” ì„¤ì •
 		add(insideOut.getMenubar());
 		
-		// ¾²·¹µå¸¦ ¸¸µé°í ½ÇÇà½ÃÄÑÁØ´Ù.
+		// ì“°ë ˆë“œë¥¼ ë§Œë“¤ê³  ì‹¤í–‰ì‹œì¼œì¤€ë‹¤.
 		setThread(new Thread(this));
 
-		// backButtonÀÇ À§Ä¡ ¼³Á¤
+		// backButtonì˜ ìœ„ì¹˜ ì„¤ì •
 		
 		buttonSet(backButton, 20, 60, 228, 57);
 		/**
-		 * backButtonÀÇ ¸¶¿ì½º ÀÌº¥Æ®¸¦ Ã³¸®ÇØÁØ´Ù.
+		 * backButtonì˜ ë§ˆìš°ìŠ¤ ì´ë²¤íŠ¸ë¥¼ ì²˜ë¦¬í•´ì¤€ë‹¤.
 		 */
 		backButton.addMouseListener(new MouseAdapter() {
 			/**
-			 * ¸¶¿ì½º°¡ ¾ÆÀÌÄÜ À§¿¡ ÀÖÀ»¶§ ÀÌº¥Æ® Ã³¸®
+			 * ë§ˆìš°ìŠ¤ê°€ ì•„ì´ì½˜ ìœ„ì— ìˆì„ë•Œ ì´ë²¤íŠ¸ ì²˜ë¦¬
 			 */
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				// ¾ÆÀÌÄÜ ÀÌ¹ÌÁö¸¦ Entered ÀÌ¹ÌÁö·Î º¯°æ
+				// ì•„ì´ì½˜ ì´ë¯¸ì§€ë¥¼ Entered ì´ë¯¸ì§€ë¡œ ë³€ê²½
 				backButton.setIcon(backButtonEnteredImage);
-				// Ä¿¼­ ÀÌ¹ÌÁöµµ HAND_CURSOR·Î º¯°æÇØ¼­ Á»´õ ¾Ë¾Æº¸±â ½±°ÔÇÑ´Ù.
+				// ì»¤ì„œ ì´ë¯¸ì§€ë„ HAND_CURSORë¡œ ë³€ê²½í•´ì„œ ì¢€ë” ì•Œì•„ë³´ê¸° ì‰½ê²Œí•œë‹¤.
 				backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
 			/**
-			 * ¸¶¿ì½º°¡ ¾ÆÀÌÄÜ¿¡ ¹ş¾î³µÀ»¶§ÀÇ ÀÌº¥Æ® Ã³¸®
+			 * ë§ˆìš°ìŠ¤ê°€ ì•„ì´ì½˜ì— ë²—ì–´ë‚¬ì„ë•Œì˜ ì´ë²¤íŠ¸ ì²˜ë¦¬
 			 */
 			@Override
 			public void mouseExited(MouseEvent e) {
-				// ¾ÆÀÌÄÜ ÀÌ¹ÌÁö¸¦ ±âº»ÀÌ¹ÌÁ¹ º¯°æ
+				// ì•„ì´ì½˜ ì´ë¯¸ì§€ë¥¼ ê¸°ë³¸ì´ë¯¸ì¡¸ ë³€ê²½
 				backButton.setIcon(backButtonImage);
 				backButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 
 			/**
-			 *  ¸¶¿ì½º°¡ backButton ¾ÆÀÌÄÜ ´­·¶À»¶§ ÀÌº¥Æ® Ã³¸®
+			 *  ë§ˆìš°ìŠ¤ê°€ backButton ì•„ì´ì½˜ ëˆŒë €ì„ë•Œ ì´ë²¤íŠ¸ ì²˜ë¦¬
 			 */
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -141,8 +140,8 @@ public class HelpScreenPanel extends JPanel implements Runnable {
 	}
 	
 
-	/** ¹öÆ° ¼ÂÆÃ ¸Ş¼Òµå ¸ğµç ¹öÆ°¸¶´Ù ¼³Á¤°ªÀ» ³Ö±â Æí¸®ÇÏµµ·Ï ¸Ş¼Òµå·Î ¸¸µé¾ú´Ù.
-	 * JButton°ú À§Ä¡ÁÂÇ¥¿Í Å©±â¸¦ ÁöÁ¤ÇØÁÖ¸é ÀÚµ¿À¸·Î ³Ö¾îÁØ´Ù.
+	/** ë²„íŠ¼ ì…‹íŒ… ë©”ì†Œë“œ ëª¨ë“  ë²„íŠ¼ë§ˆë‹¤ ì„¤ì •ê°’ì„ ë„£ê¸° í¸ë¦¬í•˜ë„ë¡ ë©”ì†Œë“œë¡œ ë§Œë“¤ì—ˆë‹¤.
+	 * JButtonê³¼ ìœ„ì¹˜ì¢Œí‘œì™€ í¬ê¸°ë¥¼ ì§€ì •í•´ì£¼ë©´ ìë™ìœ¼ë¡œ ë„£ì–´ì¤€ë‹¤.
 	 * 
 	 * @param button
 	 * @param x
@@ -152,21 +151,21 @@ public class HelpScreenPanel extends JPanel implements Runnable {
 	 */
 	public void buttonSet(JButton button, int x, int y, int width, int height) {
 		button.setBounds(x, y, width, height);
-		// ¹öÆ° Å×µÎ¸® Á¦°Å
+		// ë²„íŠ¼ í…Œë‘ë¦¬ ì œê±°
 		button.setBorderPainted(false);
-		// ´©¸£´Â ´À³¦ Á¦°Å
+		// ëˆ„ë¥´ëŠ” ëŠë‚Œ ì œê±°
 		button.setContentAreaFilled(false);
-		// ±Û¾¾ Å×µÎ¸® Á¦°Å
+		// ê¸€ì”¨ í…Œë‘ë¦¬ ì œê±°
 		button.setFocusPainted(false);
-		// ¹öÆ° Ãß°¡
+		// ë²„íŠ¼ ì¶”ê°€
 		add(button);
 	}
 	
 
 	/**
-	 * fadeIn È¿°ú¸¦ ÁÖ±âÀ§ÇÑ ¸Ş¼Òµå temp¸¦ »ç¿ëÇÑ ÀÌÀ¯´Â fadeIn°ªÀÌ 1.0À» ³Ñ¾î°¡¸é ¿¡·¯°¡ ¹ß»ıÇÏ±â ¶§¹®¿¡ float¿¬»ê Æ¯¼º»ó
-	 * 0.1¾¿ 10¹ø Áõ°¡½ÃÅ°¸é 1.0ÀÌ ¾Æ´Ï¶ó 1.000001ÀÌ µÇ¼­ ¿¡·¯°¡ ¹ß»ıÇÑ´Ù. µû¶ó¼­ temp¸¦ Áõ°¡½ÃÅ°°í fadeIn¿¡ ´ëÀÔ½ÃÅ°´Â
-	 * ¹æ½ÄÀ» »ç¿ëÇÑ´Ù. ¿©±â¼­ temp°¡ 1º¸´Ù Ä¿Áö¸é temp¸¦ 1·Î ¼³Á¤ÇÏ°í ´ëÀÔ½ÃÄÑÁØ´Ù.
+	 * fadeIn íš¨ê³¼ë¥¼ ì£¼ê¸°ìœ„í•œ ë©”ì†Œë“œ tempë¥¼ ì‚¬ìš©í•œ ì´ìœ ëŠ” fadeInê°’ì´ 1.0ì„ ë„˜ì–´ê°€ë©´ ì—ëŸ¬ê°€ ë°œìƒí•˜ê¸° ë•Œë¬¸ì— floatì—°ì‚° íŠ¹ì„±ìƒ
+	 * 0.1ì”© 10ë²ˆ ì¦ê°€ì‹œí‚¤ë©´ 1.0ì´ ì•„ë‹ˆë¼ 1.000001ì´ ë˜ì„œ ì—ëŸ¬ê°€ ë°œìƒí•œë‹¤. ë”°ë¼ì„œ tempë¥¼ ì¦ê°€ì‹œí‚¤ê³  fadeInì— ëŒ€ì…ì‹œí‚¤ëŠ”
+	 * ë°©ì‹ì„ ì‚¬ìš©í•œë‹¤. ì—¬ê¸°ì„œ tempê°€ 1ë³´ë‹¤ ì»¤ì§€ë©´ tempë¥¼ 1ë¡œ ì„¤ì •í•˜ê³  ëŒ€ì…ì‹œì¼œì¤€ë‹¤.
 	 */
 	public void fadeIn() {
 		try {
@@ -186,9 +185,9 @@ public class HelpScreenPanel extends JPanel implements Runnable {
 		}
 	}
 	/**
-	 * fadeOut È¿°ú¸¦ ÁÖ±âÀ§ÇÑ ¸Ş¼Òµå temp¸¦ »ç¿ëÇÑ ÀÌÀ¯´Â fadeOut°ªÀÌ 0À» ³Ñ¾î°¡¸é ¿¡·¯°¡ ¹ß»ıÇÏ±â ¶§¹®¿¡ float¿¬»ê Æ¯¼º»ó
-	 * 0.1¾¿ 10¹ø °¨¼Ò½ÃÅ°¸é 1.0ÀÌ ¾Æ´Ï¶ó -0.000001ÀÌ µÇ¼­ ¿¡·¯°¡ ¹ß»ıÇÑ´Ù. µû¶ó¼­ temp¸¦ °¨¼Ò½ÃÅ°°í fadeOut¿¡ ´ëÀÔ½ÃÅ°´Â
-	 * ¹æ½ÄÀ» »ç¿ëÇÑ´Ù. ¿©±â¼­ temp°¡ 0º¸´Ù ÀÛ¾ÆÁö¸é temp¸¦ 0·Î ¼³Á¤ÇÏ°í ´ëÀÔ½ÃÄÑÁØ´Ù.
+	 * fadeOut íš¨ê³¼ë¥¼ ì£¼ê¸°ìœ„í•œ ë©”ì†Œë“œ tempë¥¼ ì‚¬ìš©í•œ ì´ìœ ëŠ” fadeOutê°’ì´ 0ì„ ë„˜ì–´ê°€ë©´ ì—ëŸ¬ê°€ ë°œìƒí•˜ê¸° ë•Œë¬¸ì— floatì—°ì‚° íŠ¹ì„±ìƒ
+	 * 0.1ì”© 10ë²ˆ ê°ì†Œì‹œí‚¤ë©´ 1.0ì´ ì•„ë‹ˆë¼ -0.000001ì´ ë˜ì„œ ì—ëŸ¬ê°€ ë°œìƒí•œë‹¤. ë”°ë¼ì„œ tempë¥¼ ê°ì†Œì‹œí‚¤ê³  fadeOutì— ëŒ€ì…ì‹œí‚¤ëŠ”
+	 * ë°©ì‹ì„ ì‚¬ìš©í•œë‹¤. ì—¬ê¸°ì„œ tempê°€ 0ë³´ë‹¤ ì‘ì•„ì§€ë©´ tempë¥¼ 0ë¡œ ì„¤ì •í•˜ê³  ëŒ€ì…ì‹œì¼œì¤€ë‹¤.
 	 */
 	public void fadeOut() {
 		try {
@@ -208,27 +207,27 @@ public class HelpScreenPanel extends JPanel implements Runnable {
 		}
 	}
 
-	/** helpScreenBackGround ÀÌ¹ÌÁö¸¦ ±×·ÁÁØ´Ù. */
+	/** helpScreenBackGround ì´ë¯¸ì§€ë¥¼ ê·¸ë ¤ì¤€ë‹¤. */
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		// graphics¸¦ 2D·Î º¯°æ
+		// graphicsë¥¼ 2Dë¡œ ë³€ê²½
 		Graphics2D g2 = (Graphics2D) g;
-			// Åõ¸íµµ¸¦ Á¶ÀıÇÏ±â À§ÇÑ ºÎºĞ fadeValue °¡ 1.0ÀÌ¸é ºÒÅõ¸íµµ 100%, 0.1ÀÌ¸é ºÒÅõ¸íµµ°¡ 10% ÀÌ´Ù.
+			// íˆ¬ëª…ë„ë¥¼ ì¡°ì ˆí•˜ê¸° ìœ„í•œ ë¶€ë¶„ fadeValue ê°€ 1.0ì´ë©´ ë¶ˆíˆ¬ëª…ë„ 100%, 0.1ì´ë©´ ë¶ˆíˆ¬ëª…ë„ê°€ 10% ì´ë‹¤.
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, fadeValue));
 			g2.drawImage(helpScreenBackGround, 0, 0, null);
 		}
     
-	/** ¾²·¹µå¸¦ ÅëÇØ À½¾ÇÁßÁö¿Í È­¸éÀüÈ¯À» ÇÑ´Ù. */
+	/** ì“°ë ˆë“œë¥¼ í†µí•´ ìŒì•…ì¤‘ì§€ì™€ í™”ë©´ì „í™˜ì„ í•œë‹¤. */
 	@Override
 	public void run() {
-		// fadeIn È¿°ú¸¦ ³Ö¾îÁØ´Ù.
+		// fadeIn íš¨ê³¼ë¥¼ ë„£ì–´ì¤€ë‹¤.
 		fadeIn();
     while (true) {
 			try {
 				if (isFadeOut && isMainScreen) {
 					fadeOut();
-					// À½¾Ç ÁøÇàÀ» ¹Ş¾Æ¼­ ½ÇÇà
+					// ìŒì•… ì§„í–‰ì„ ë°›ì•„ì„œ ì‹¤í–‰
 					introMusic.getPlayer().stop();
 					stopPoint = introMusic.getPausedOnFrame();
 					introMusic.close();
@@ -243,7 +242,7 @@ public class HelpScreenPanel extends JPanel implements Runnable {
 		}
 	}
 			
-    /** µµ¿ò¸» È­¸éÀÇ Thread¸¦ ¾ò¾î¿À´Â ÇÔ¼ö
+    /** ë„ì›€ë§ í™”ë©´ì˜ Threadë¥¼ ì–»ì–´ì˜¤ëŠ” í•¨ìˆ˜
      * 
      * @return thread
      */
@@ -251,7 +250,7 @@ public class HelpScreenPanel extends JPanel implements Runnable {
 		return thread;
 	}
 	
-	/** µµ¿ò¸» È­¸éÀÇ Thread¸¦ ¼³Á¤ÇÏ´Â ÇÔ¼ö 
+	/** ë„ì›€ë§ í™”ë©´ì˜ Threadë¥¼ ì„¤ì •í•˜ëŠ” í•¨ìˆ˜ 
 	 * 
 	 * @param thread
 	 */
