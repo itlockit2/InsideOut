@@ -7,41 +7,40 @@ import javazoom.jl.player.advanced.AdvancedPlayer;
 import javazoom.jl.player.advanced.PlaybackEvent;
 import javazoom.jl.player.advanced.PlaybackListener;
 
-/** mp3ÆÄÀÏÀ» ½ÇÇà½ÃÄÑÁÖ´Â Å¬·¡½º·Î JavaZoom¿¡¼­ Áö¿øÇÏ´Â ¿ÜºÎ¶óÀÌºê·¯¸®¸¦ »ç¿ëÇß´Ù.
+/** mp3íŒŒì¼ì„ ì‹¤í–‰ì‹œì¼œì£¼ëŠ” í´ë˜ìŠ¤ë¡œ JavaZoomì—ì„œ ì§€ì›í•˜ëŠ” ì™¸ë¶€ë¼ì´ë¸ŒëŸ¬ë¦¬ë¥¼ ì‚¬ìš©í–ˆë‹¤.
  * 
  * @author SungHo Yun
  * @version 0.4
- * 
  */
 
 public class Music extends Thread {
-	/** AdvancedPlayer Å¬·¡½º´Â Javazoom ¿¡¼­ °³¹ßÇÏ¿© Áö¿øÇÏ´Â ¶óÀÌºê·¯¸®¿¡ ÀÖ´Â Å¬·¡½ºÁß ÇÏ³ªÀÌ´Ù 
-	 *  ±âÁ¸¿¡´Â Player Å¬·¡½º¸¦ ÅëÇØ¼­ °³¹ßÀ» ÇßÁö¸¸ PlayerÅ¬·¡½º·Î´Â Æ¯Á¤ ±¸°£¿¡¼­ºÎÅÍÀÇ ³ë·¡ ½ÃÀÛÀÌ ºÒ°¡´ÉÇÏ¹Ç·Î 
-	 *  AdvancedPlayer¸¦ ÅëÇØ °³¹ß Çß´Ù.
-	 *  BufferedInputStreamÀ» ¸Å°³º¯¼ö·Î ¹Ş¾Æ ÇØ´ç ¹öÆÛ¿¡ ÀÖ´Â ³»¿ëÀ» ½ÇÇà½ÃÅ²´Ù.
+	/** AdvancedPlayer í´ë˜ìŠ¤ëŠ” Javazoom ì—ì„œ ê°œë°œí•˜ì—¬ ì§€ì›í•˜ëŠ” ë¼ì´ë¸ŒëŸ¬ë¦¬ì— ìˆëŠ” í´ë˜ìŠ¤ì¤‘ í•˜ë‚˜ì´ë‹¤ 
+	 *  ê¸°ì¡´ì—ëŠ” Player í´ë˜ìŠ¤ë¥¼ í†µí•´ì„œ ê°œë°œì„ í–ˆì§€ë§Œ Playerí´ë˜ìŠ¤ë¡œëŠ” íŠ¹ì • êµ¬ê°„ì—ì„œë¶€í„°ì˜ ë…¸ë˜ ì‹œì‘ì´ ë¶ˆê°€ëŠ¥í•˜ë¯€ë¡œ 
+	 *  AdvancedPlayerë¥¼ í†µí•´ ê°œë°œ í–ˆë‹¤.
+	 *  BufferedInputStreamì„ ë§¤ê°œë³€ìˆ˜ë¡œ ë°›ì•„ í•´ë‹¹ ë²„í¼ì— ìˆëŠ” ë‚´ìš©ì„ ì‹¤í–‰ì‹œí‚¨ë‹¤.
 	 */
 	private AdvancedPlayer player;
 	
-	/** playerEvent¸¦ ÅëÇØ ³ë·¡°¡ Á¤Áö ÇßÀ»¶§ Á¤º¸¸¦ °¡Á®¿Ã¼ö ÀÖ´Ù. */
+	/** playerEventë¥¼ í†µí•´ ë…¸ë˜ê°€ ì •ì§€ í–ˆì„ë•Œ ì •ë³´ë¥¼ ê°€ì ¸ì˜¬ìˆ˜ ìˆë‹¤. */
 	private PlaybackEvent playerEvent;
 	
-	/** ÇÑ¹ø¸¸ Àç»ıÀÌ µÇ´ÂÁö ¹«ÇÑÁ¤ Àç»ıÀÌ µÇ´ÂÁö °áÁ¤ÇÏ´Â °ª 
-	 *  isLoopÀÇ °ªÀÌ TrueÀÌ¸é ¹İº¹Àç»ı FalseÀÌ¸é ÇÑ¹ø¸¸ ½ÃÀÛµÈ´Ù.
+	/** í•œë²ˆë§Œ ì¬ìƒì´ ë˜ëŠ”ì§€ ë¬´í•œì • ì¬ìƒì´ ë˜ëŠ”ì§€ ê²°ì •í•˜ëŠ” ê°’ 
+	 *  isLoopì˜ ê°’ì´ Trueì´ë©´ ë°˜ë³µì¬ìƒ Falseì´ë©´ í•œë²ˆë§Œ ì‹œì‘ëœë‹¤.
 	 * */
 	private boolean isLoop;
 	
-	/** ³ë·¡°¡ Á¤ÁöµÇ¾úÀ»¶§ÀÇ Frame °ªÀ» ÀúÀåÇÏ±â À§ÇÑ º¯¼ö */
+	/** ë…¸ë˜ê°€ ì •ì§€ë˜ì—ˆì„ë•Œì˜ Frame ê°’ì„ ì €ì¥í•˜ê¸° ìœ„í•œ ë³€ìˆ˜ */
 	private int pausedOnFrame = 0;
 
-	/** InputStreamÀ» ÅëÇØ ÆÄÀÏ·ÎºÎÅÍ °ªÀ» ¹Ş¾Æ¿Â´Ù */
+	/** InputStreamì„ í†µí•´ íŒŒì¼ë¡œë¶€í„° ê°’ì„ ë°›ì•„ì˜¨ë‹¤ */
 	private InputStream is;
-	/** InputStreamÀ¸·Î ¹Ş¾Æ¿Â °ªÀ» ¹öÆÛ¿¡ ´ã´Â´Ù. */
+	/** InputStreamìœ¼ë¡œ ë°›ì•„ì˜¨ ê°’ì„ ë²„í¼ì— ë‹´ëŠ”ë‹¤. */
 	private BufferedInputStream bis;
 	
-	/** ³ë·¡ÀÇ Á¦¸ñÀ» ÀúÀåÇÏ´Â ÇÊµå°ªÀÌ´Ù. */
+	/** ë…¸ë˜ì˜ ì œëª©ì„ ì €ì¥í•˜ëŠ” í•„ë“œê°’ì´ë‹¤. */
 	private String name;
 
-	/** »ı¼ºÀÚ¸¦ ÅëÇØ °îÀÇ Á¦¸ñ°ú ¹İº¹À¯¹« ½ÃÀÛÀ§Ä¡¸¦ ¹Ş´Â´Ù.
+	/** ìƒì„±ìë¥¼ í†µí•´ ê³¡ì˜ ì œëª©ê³¼ ë°˜ë³µìœ ë¬´ ì‹œì‘ìœ„ì¹˜ë¥¼ ë°›ëŠ”ë‹¤.
 	 * 
 	 * @param name
 	 * @param isLoop
@@ -50,23 +49,23 @@ public class Music extends Thread {
 	public Music(String name, boolean isLoop, int startPoint) {
 
 		try {
-			// name ÃÊ±âÈ­
+			// name ì´ˆê¸°í™”
 			this.name = name;
-			// isLoop°ª ÃÊ±âÈ­
+			// isLoopê°’ ì´ˆê¸°í™”
 			this.isLoop = isLoop;
-			// startPoint ÃÊ±âÈ­
+			// startPoint ì´ˆê¸°í™”
 			pausedOnFrame = startPoint;
-			// fis¸¦ »ç¿ëÇÏ¸é JarÆÄÀÏÀ» ÀÌ¿ëÇÏ°Ô µÉ¶§ ¿¡·¯°¡ ¹ß»ıÇÏ¹Ç·Î InputStreamÀ» »ç¿ëÇÑ´Ù.
+			// fisë¥¼ ì‚¬ìš©í•˜ë©´ JaríŒŒì¼ì„ ì´ìš©í•˜ê²Œ ë ë•Œ ì—ëŸ¬ê°€ ë°œìƒí•˜ë¯€ë¡œ InputStreamì„ ì‚¬ìš©í•œë‹¤.
 			is = getClass().getClassLoader().getResourceAsStream("music/" + name);
-			// InputStream¸¦ bis¹öÆÛ¿¡ ´ã¾Æ¼­ ÀĞÀ»¼ö ÀÖ°Ô ÇÑ´Ù
+			// InputStreamë¥¼ bisë²„í¼ì— ë‹´ì•„ì„œ ì½ì„ìˆ˜ ìˆê²Œ í•œë‹¤
 			bis = new BufferedInputStream(is);
-			// player´Â ÀÌ ¹öÆÛ¸¦ ´ãÀ»¼ö ÀÖ°Ô ÇØÁØ´Ù.
+			// playerëŠ” ì´ ë²„í¼ë¥¼ ë‹´ì„ìˆ˜ ìˆê²Œ í•´ì¤€ë‹¤.
 			player = new AdvancedPlayer(bis);
 			
 			player.setPlayBackListener(new PlaybackListener() {
 			    @Override
 			    public void playbackFinished(PlaybackEvent event) {
-			    	// pausedOnFrameÀº ³ë·¡°¡ ½ÃÀÛµÇ°í ºÎÅÍÀÇ Frame°ªÀ» °¡Á®¿À±â ¶§¹®¿¡ ±âÁ¸°ª¿¡ Ãß°¡ÇØÁà¾ß ÇÑ´Ù.
+			    	// pausedOnFrameì€ ë…¸ë˜ê°€ ì‹œì‘ë˜ê³  ë¶€í„°ì˜ Frameê°’ì„ ê°€ì ¸ì˜¤ê¸° ë•Œë¬¸ì— ê¸°ì¡´ê°’ì— ì¶”ê°€í•´ì¤˜ì•¼ í•œë‹¤.
 			        pausedOnFrame += event.getFrame();
 			    }
 			});
@@ -76,28 +75,28 @@ public class Music extends Thread {
 		}
 	}
 
-	/** À½¾ÇÀ» Á¾·á½ÃÅ°´Â ¸Ş¼ÒµåÀÌ´Ù. */
+	/** ìŒì•…ì„ ì¢…ë£Œì‹œí‚¤ëŠ” ë©”ì†Œë“œì´ë‹¤. */
 	public void close() {
 		isLoop = false;
 		player.close();
-		// ¾²·¹µå¸¦ ÁßÁö»óÅÂ·Î ¸¸µç´Ù.
+		// ì“°ë ˆë“œë¥¼ ì¤‘ì§€ìƒíƒœë¡œ ë§Œë“ ë‹¤.
 		this.interrupt();
 	}
 
-	/** °îÀ» Àç»ı½ÃÅ²´Ù. */
+	/** ê³¡ì„ ì¬ìƒì‹œí‚¨ë‹¤. */
 	@Override
 	public void run() {
 		try {
-			// isLoop°¡ trueÀÌ¸é °îÀº ¹«ÇÑÀç»ıµÈ´Ù.
+			// isLoopê°€ trueì´ë©´ ê³¡ì€ ë¬´í•œì¬ìƒëœë‹¤.
 			do {
-				/** pausedOnFrameÀ» ÀÌº¥Æ®¸¦ ÅëÇØ¼­ °¡Á®¿Ã¶§´Â 1ÃÊ ÀÏ¶§ 1000 ÀÌÁö¸¸
-				 * player.play ¸Å°³º¯¼ö·Î ³ÖÀ»¶§´Â 1ÃÊ°¡ 100ÀÌ¹Ç·Î /10À» ÇØÁà¾ßÇÑ´Ù. 
+				/** pausedOnFrameì„ ì´ë²¤íŠ¸ë¥¼ í†µí•´ì„œ ê°€ì ¸ì˜¬ë•ŒëŠ” 1ì´ˆ ì¼ë•Œ 1000 ì´ì§€ë§Œ
+				 * player.play ë§¤ê°œë³€ìˆ˜ë¡œ ë„£ì„ë•ŒëŠ” 1ì´ˆê°€ 100ì´ë¯€ë¡œ /10ì„ í•´ì¤˜ì•¼í•œë‹¤. 
 				 */
 				player.play(pausedOnFrame/10, Integer.MAX_VALUE);
 				is = getClass().getClassLoader().getResourceAsStream("music/" + name);
-				// fis¸¦ ¹öÆÛ¿¡ ´ã¾Æ¼­ ÀĞÀ»¼ö ÀÖ°Ô ÇÑ´Ù
+				// fisë¥¼ ë²„í¼ì— ë‹´ì•„ì„œ ì½ì„ìˆ˜ ìˆê²Œ í•œë‹¤
 				bis = new BufferedInputStream(is);
-				// player´Â ÀÌ ¹öÆÛ¸¦ ´ãÀ»¼ö ÀÖ°Ô ÇØÁØ´Ù.
+				// playerëŠ” ì´ ë²„í¼ë¥¼ ë‹´ì„ìˆ˜ ìˆê²Œ í•´ì¤€ë‹¤.
 				player = new AdvancedPlayer(bis);
 			} while (isLoop);
 
@@ -106,7 +105,7 @@ public class Music extends Thread {
 		}
 	}
 
-	/** AdvancedPlyaer¸¦ ¸®ÅÏÇØÁà¼­ ´Ù¸¥ Å¬·¡½º¿¡¼­ stop¸Ş¼Òµå¸¦ ÅëÇØ ³ë·¡¸¦ ¸ØÃâ¼ö ÀÖ°Ô²û ÇÑ´Ù. 
+	/** AdvancedPlyaerë¥¼ ë¦¬í„´í•´ì¤˜ì„œ ë‹¤ë¥¸ í´ë˜ìŠ¤ì—ì„œ stopë©”ì†Œë“œë¥¼ í†µí•´ ë…¸ë˜ë¥¼ ë©ˆì¶œìˆ˜ ìˆê²Œë” í•œë‹¤. 
 	 * 
 	 * @return player
 	 */
@@ -114,7 +113,7 @@ public class Music extends Thread {
 		return player;
 	}
 
-	/** pausedOnFrameÀ» ¸®ÅÏÇÏ¿© Á¤ÁöµÈ ½ÃÁ¡ÀÇ FrameÀ» ¾òÀ»¼ö ÀÖ°Ô ÇÑ´Ù.
+	/** pausedOnFrameì„ ë¦¬í„´í•˜ì—¬ ì •ì§€ëœ ì‹œì ì˜ Frameì„ ì–»ì„ìˆ˜ ìˆê²Œ í•œë‹¤.
 	 * 
 	 * @return pausedOnFrame
 	 */
