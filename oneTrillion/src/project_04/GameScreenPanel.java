@@ -15,64 +15,63 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-/** °ÔÀÓÀ» ÁøÇàÇÏ´Â ÆÇ³ÚÀÌ´Ù.
+/** ê²Œì„ì„ ì§„í–‰í•˜ëŠ” íŒë„¬ì´ë‹¤.
  *
  * @author SungHo Yun
  * @version 0.4
- *
  */
 public class GameScreenPanel extends JPanel implements Runnable {
 
-	/** µÚ·Î°¡±â ¹öÆ° ÀÌ¹ÌÁö¸¦ ´ãÀ» ¼ö ÀÖ´Â °´Ã¼ */
+	/** ë’¤ë¡œê°€ê¸° ë²„íŠ¼ ì´ë¯¸ì§€ë¥¼ ë‹´ì„ ìˆ˜ ìˆëŠ” ê°ì²´ */
 	private ImageIcon backButtonImage;
-	/** °ÔÀÓ ½ÃÀÛ ¹öÆ° ÀÌ¹ÌÁö¸¦ ´ãÀ» ¼ö ÀÖ´Â °´Ã¼ */
+	/** ê²Œì„ ì‹œì‘ ë²„íŠ¼ ì´ë¯¸ì§€ë¥¼ ë‹´ì„ ìˆ˜ ìˆëŠ” ê°ì²´ */
 	private ImageIcon gamePlayButtonImage;
-	/** ¸¶¿ì½º°¡ Back ¹öÆ°¿¡ ÁøÀÔÇßÀ» ¶§ÀÇ ÀÌ¹ÌÁö */
+	/** ë§ˆìš°ìŠ¤ê°€ Back ë²„íŠ¼ì— ì§„ì…í–ˆì„ ë•Œì˜ ì´ë¯¸ì§€ */
 	private ImageIcon backButtonEnteredImage;
-	/** °ÔÀÓ ½ÃÀÛ ¹öÆ°¿¡ ÁøÀÔÇßÀ» ¶§ÀÇ ÀÌ¹ÌÁö */
+	/** ê²Œì„ ì‹œì‘ ë²„íŠ¼ì— ì§„ì…í–ˆì„ ë•Œì˜ ì´ë¯¸ì§€ */
 	private ImageIcon gamePlayButtonEnteredImage;
 
-	/** JButtonÀ¸·Î backButton ±¸Çö */
+	/** JButtonìœ¼ë¡œ backButton êµ¬í˜„ */
 	private JButton backButton;
-	/** JButtonÀ¸·Î gamePlayButton ±¸Çö */
+	/** JButtonìœ¼ë¡œ gamePlayButton êµ¬í˜„ */
 	private JButton gamePlayButton;
 
-	/** Thread °´Ã¼ */
+	/** Thread ê°ì²´ */
 	private Thread thread;
 
-	/** Ball À§Ä¡ Á¦¾î¸¦ À§ÇÑ °´Ã¼ */
+	/** Ball ìœ„ì¹˜ ì œì–´ë¥¼ ìœ„í•œ ê°ì²´ */
 	private Ball ball;
 
-	/** °ÔÀÓÀÇ ½ºÅ×ÀÌÁöÀÎ ¿øÀÇ Á¦¾î¸¦ À§ÇÑ °´Ã¼*/
+	/** ê²Œì„ì˜ ìŠ¤í…Œì´ì§€ì¸ ì›ì˜ ì œì–´ë¥¼ ìœ„í•œ ê°ì²´*/
 	private Circle circle;
-	/** Àå¾Ö¹° ±¸ÇöÀ» À§ÇÑ °´Ã¼ */
+	/** ì¥ì• ë¬¼ êµ¬í˜„ì„ ìœ„í•œ ê°ì²´ */
 	ArrayList<Obstacle> obstacles;
 
-	/** fadeIn°ú fadeOut À» À§ÇÑ º¯¼ö fade Value¿¡ µû¶ó Åõ¸íµµ°¡ °áÁ¤µÈ´Ù. */
+	/** fadeInê³¼ fadeOut ì„ ìœ„í•œ ë³€ìˆ˜ fade Valueì— ë”°ë¼ íˆ¬ëª…ë„ê°€ ê²°ì •ëœë‹¤. */
 	private float fadeValue;
-	/** fadeIn°ú fadeOut À» À§ÇÑ º¯¼ö isFadeOut¿¡ FadeInÀ» ÇÒ°ÇÁö FadeOutÀ» ÇÑ°ÇÁö °áÁ¤µÈ´Ù.. */
+	/** fadeInê³¼ fadeOut ì„ ìœ„í•œ ë³€ìˆ˜ isFadeOutì— FadeInì„ í• ê±´ì§€ FadeOutì„ í•œê±´ì§€ ê²°ì •ëœë‹¤.. */
 	private boolean isFadeOut;
 
-	/** Screen Á¦¾î¸¦ À§ÇÑ º¯¼ö */
+	/** Screen ì œì–´ë¥¼ ìœ„í•œ ë³€ìˆ˜ */
 	private boolean isGameSelectScreen;
 
-	/** È­¸éÁ¦¾î¸¦ À§ÇÑ °´Ã¼ FrameÀÎ InsideOutÀ» °¡Áö°í ÀÖ¾î¾ß insideOut¿¡ ÀÖ´Â ÆĞ³Î º¯°æ ¸Ş¼Òµå¸¦ »ç¿ëÇÒ¼ö ÀÖ´Ù. */
+	/** í™”ë©´ì œì–´ë¥¼ ìœ„í•œ ê°ì²´ Frameì¸ InsideOutì„ ê°€ì§€ê³  ìˆì–´ì•¼ insideOutì— ìˆëŠ” íŒ¨ë„ ë³€ê²½ ë©”ì†Œë“œë¥¼ ì‚¬ìš©í• ìˆ˜ ìˆë‹¤. */
 	private InsideOut insideOut;
 
-	/** GameScreenPanelÀÇ »ı¼ºÀÚ·Î ÇÊµå°ªµéÀ» ÃÊ±âÈ­ ½ÃÄÑÁÖ°í, insideOutÀ» ¸Å°³º¯¼ö·Î ¹Ş¾Æ È­¸éÁ¦¾î¸¦ ÇÑ´Ù
+	/** GameScreenPanelì˜ ìƒì„±ìë¡œ í•„ë“œê°’ë“¤ì„ ì´ˆê¸°í™” ì‹œì¼œì£¼ê³ , insideOutì„ ë§¤ê°œë³€ìˆ˜ë¡œ ë°›ì•„ í™”ë©´ì œì–´ë¥¼ í•œë‹¤
 	 *  
 	 * @param insideOut
 	 */
 	public GameScreenPanel(InsideOut insideOut) {
-		// ÇÁ·¹ÀÓÀ» ¸Å°³º¯¼ö·Î ¹Ş¾Æ Á¦¾îÇÑ´Ù.
+		// í”„ë ˆì„ì„ ë§¤ê°œë³€ìˆ˜ë¡œ ë°›ì•„ ì œì–´í•œë‹¤.
 		this.insideOut = insideOut;
-		// fadeOut°ªÀ» false·Î ÃÊ±âÈ­ ½ÃÄÑ¹®´Ù
+		// fadeOutê°’ì„ falseë¡œ ì´ˆê¸°í™” ì‹œì¼œë¬¸ë‹¤
 		isFadeOut = false;
-		// isGameSelectScreenÀÇ °ªÀ» false·Î ÃÊ±âÈ­ ½ÃÄÑÁØ´Ù.
+		// isGameSelectScreenì˜ ê°’ì„ falseë¡œ ì´ˆê¸°í™” ì‹œì¼œì¤€ë‹¤.
 		isGameSelectScreen = false;
-		// ¾²·¹µå¸¦ ¸¸µé°í ½ÇÇà½ÃÄÑÁØ´Ù.
+		// ì“°ë ˆë“œë¥¼ ë§Œë“¤ê³  ì‹¤í–‰ì‹œì¼œì¤€ë‹¤.
 		setThread(new Thread(this));
-		// Imageµé ÃÊ±âÈ­
+		// Imageë“¤ ì´ˆê¸°í™”
 		backButtonImage = new ImageIcon(getClass().getClassLoader().getResource("images/backButtonImage_2.png"));
 		gamePlayButtonImage = new ImageIcon(getClass().getClassLoader().getResource("images/gamePlayButton.png"));
 		backButtonEnteredImage = new ImageIcon(
@@ -80,32 +79,32 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		gamePlayButtonEnteredImage = new ImageIcon(
 				getClass().getClassLoader().getResource("images/gamePlayButtonEntered.png"));
 
-		// ¹öÆ°µé »ı¼º
+		// ë²„íŠ¼ë“¤ ìƒì„±
 		backButton = new JButton(backButtonImage);
 		gamePlayButton = new JButton(gamePlayButtonImage);
 
-		// Àå¾Ö¹° »ı¼º
+		// ì¥ì• ë¬¼ ìƒì„±
 		obstacles = new ArrayList<Obstacle>();
-		// ÄÁÅ×ÀÌ³ÊÀÇ Å©±â°¡ º¯°æµÉ¶§ ÄÄÆ÷³ÍÆ®µéÀÇ Å©±â¿Í À§Ä¡°¡ ÀÚµ¿ÀûÀ¸·Î º¯°æµÇ´Âµ¥ ±×°É ÇØÁ¦ÇÑ´Ù
+		// ì»¨í…Œì´ë„ˆì˜ í¬ê¸°ê°€ ë³€ê²½ë ë•Œ ì»´í¬ë„ŒíŠ¸ë“¤ì˜ í¬ê¸°ì™€ ìœ„ì¹˜ê°€ ìë™ì ìœ¼ë¡œ ë³€ê²½ë˜ëŠ”ë° ê·¸ê±¸ í•´ì œí•œë‹¤
 		setLayout(null);
-		// °ÔÀÓÃ¢ Å©±â ¼³Á¤
+		// ê²Œì„ì°½ í¬ê¸° ì„¤ì •
 		setSize(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
 		setBounds(0, 0, Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
-		// °ËÁ¤»ö ¹ÙÅÁ¿¡ Èò»ö ¿ø ÀÌ¹Ç·Î °ËÁ¤»öÀ¸·Î ¼³Á¤
+		// ê²€ì •ìƒ‰ ë°”íƒ•ì— í°ìƒ‰ ì› ì´ë¯€ë¡œ ê²€ì •ìƒ‰ìœ¼ë¡œ ì„¤ì •
 		setBackground(Color.BLACK);
-		// È­¸é Ãâ·Â ¼³Á¤ ±âº»°ªÀº false ÀÌ¹Ç·Î ¼³Á¤ ÇØÁà¾ßÇÑ´Ù.
+		// í™”ë©´ ì¶œë ¥ ì„¤ì • ê¸°ë³¸ê°’ì€ false ì´ë¯€ë¡œ ì„¤ì • í•´ì¤˜ì•¼í•œë‹¤.
 		setVisible(true);
-		// backButtonÀÇ À§Ä¡ ¼³Á¤
+		// backButtonì˜ ìœ„ì¹˜ ì„¤ì •
 		buttonSet(backButton, 80, 60, 228, 57);
 		buttonSet(gamePlayButton, 600, 300, 125, 135);
 
-		// ¸Ş´º¹Ù exitButton ¼³Á¤
+		// ë©”ë‰´ë°” exitButton ì„¤ì •
 		buttonSet(insideOut.getMenubarExitButton(), 1200, 0, 64, 28);
-		// ¸Ş´º¹Ù ¼³Á¤
+		// ë©”ë‰´ë°” ì„¤ì •
 		add(insideOut.getMenubar());
-		// x,y ÁÂÇ¥¸¦ ¹Ş±â À§ÇÑ °´Ã¼ »ı¼º
+		// x,y ì¢Œí‘œë¥¼ ë°›ê¸° ìœ„í•œ ê°ì²´ ìƒì„±
 		ball = new Ball();
-		// ¿øÀ» À§ÇÑ °´Ã¼ »ı¼º
+		// ì›ì„ ìœ„í•œ ê°ì²´ ìƒì„±
 		circle = new Circle(375,100,530,530,8,Color.WHITE);
 
 		// test
@@ -115,29 +114,29 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		}
 
 		/**
-		 * backButtonÀÇ ¸¶¿ì½º ÀÌº¥Æ®¸¦ Ã³¸®ÇØÁØ´Ù.
+		 * backButtonì˜ ë§ˆìš°ìŠ¤ ì´ë²¤íŠ¸ë¥¼ ì²˜ë¦¬í•´ì¤€ë‹¤.
 		 */
 		backButton.addMouseListener(new MouseAdapter() {
 			/**
-			 * ¸¶¿ì½º°¡ ¾ÆÀÌÄÜ À§¿¡ ÀÖÀ»¶§ ÀÌº¥Æ® Ã³¸®
+			 * ë§ˆìš°ìŠ¤ê°€ ì•„ì´ì½˜ ìœ„ì— ìˆì„ë•Œ ì´ë²¤íŠ¸ ì²˜ë¦¬
 			 */
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				// ¾ÆÀÌÄÜ ÀÌ¹ÌÁö¸¦ Entered ÀÌ¹ÌÁö·Î º¯°æ
+				// ì•„ì´ì½˜ ì´ë¯¸ì§€ë¥¼ Entered ì´ë¯¸ì§€ë¡œ ë³€ê²½
 				backButton.setIcon(backButtonEnteredImage);
-				// Ä¿¼­ ÀÌ¹ÌÁöµµ HAND_CURSOR·Î º¯°æÇØ¼­ Á»´õ ¾Ë¾Æº¸±â ½±°ÔÇÑ´Ù.
+				// ì»¤ì„œ ì´ë¯¸ì§€ë„ HAND_CURSORë¡œ ë³€ê²½í•´ì„œ ì¢€ë” ì•Œì•„ë³´ê¸° ì‰½ê²Œí•œë‹¤.
 				backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
-			// ¸¶¿ì½º°¡ ¾ÆÀÌÄÜÀ» ¹ş¾î ³µÀ»¶§ ÀÌº¥Æ® Ã³¸®
+			// ë§ˆìš°ìŠ¤ê°€ ì•„ì´ì½˜ì„ ë²—ì–´ ë‚¬ì„ë•Œ ì´ë²¤íŠ¸ ì²˜ë¦¬
 			@Override
 			public void mouseExited(MouseEvent e) {
-				// ¾ÆÀÌÄÜ ÀÌ¹ÌÁö¸¦ ±âº»ÀÌ¹ÌÁ¹ º¯°æ
+				// ì•„ì´ì½˜ ì´ë¯¸ì§€ë¥¼ ê¸°ë³¸ì´ë¯¸ì¡¸ ë³€ê²½
 				backButton.setIcon(backButtonImage);
 				backButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 
-			// ¸¶¿ì½º°¡ backButton ¾ÆÀÌÄÜ ´­·¶À»¶§ ÀÌº¥Æ® Ã³¸®
+			// ë§ˆìš°ìŠ¤ê°€ backButton ì•„ì´ì½˜ ëˆŒë €ì„ë•Œ ì´ë²¤íŠ¸ ì²˜ë¦¬
 			@Override
 			public void mousePressed(MouseEvent e) {
 				isFadeOut = true;
@@ -146,44 +145,44 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		});
 
 		/**
-		 * gamePlayButtonÀÇ ¸¶¿ì½º ÀÌº¥Æ®¸¦ Ã³¸®ÇØÁØ´Ù.
+		 * gamePlayButtonì˜ ë§ˆìš°ìŠ¤ ì´ë²¤íŠ¸ë¥¼ ì²˜ë¦¬í•´ì¤€ë‹¤.
 		 */
 
 		gamePlayButton.addMouseListener(new MouseAdapter() {
 			/**
-			 * ¸¶¿ì½º°¡ ¾ÆÀÌÄÜ À§¿¡ ÀÖÀ»¶§ ÀÌº¥Æ® Ã³¸®
+			 * ë§ˆìš°ìŠ¤ê°€ ì•„ì´ì½˜ ìœ„ì— ìˆì„ë•Œ ì´ë²¤íŠ¸ ì²˜ë¦¬
 			 */
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				// ¾ÆÀÌÄÜ ÀÌ¹ÌÁö¸¦ Entered ÀÌ¹ÌÁö·Î º¯°æ
+				// ì•„ì´ì½˜ ì´ë¯¸ì§€ë¥¼ Entered ì´ë¯¸ì§€ë¡œ ë³€ê²½
 				gamePlayButton.setIcon(gamePlayButtonEnteredImage);
-				// Ä¿¼­ ÀÌ¹ÌÁöµµ HAND_CURSOR·Î º¯°æÇØ¼­ Á»´õ ¾Ë¾Æº¸±â ½±°ÔÇÑ´Ù.
+				// ì»¤ì„œ ì´ë¯¸ì§€ë„ HAND_CURSORë¡œ ë³€ê²½í•´ì„œ ì¢€ë” ì•Œì•„ë³´ê¸° ì‰½ê²Œí•œë‹¤.
 				gamePlayButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
-			// ¸¶¿ì½º°¡ ¾ÆÀÌÄÜÀ» ¹ş¾î ³µÀ»¶§ ÀÌº¥Æ® Ã³¸®
+			// ë§ˆìš°ìŠ¤ê°€ ì•„ì´ì½˜ì„ ë²—ì–´ ë‚¬ì„ë•Œ ì´ë²¤íŠ¸ ì²˜ë¦¬
 			@Override
 			public void mouseExited(MouseEvent e) {
-				// ¾ÆÀÌÄÜ ÀÌ¹ÌÁö¸¦ ±âº»ÀÌ¹ÌÁ¹ º¯°æ
+				// ì•„ì´ì½˜ ì´ë¯¸ì§€ë¥¼ ê¸°ë³¸ì´ë¯¸ì¡¸ ë³€ê²½
 				gamePlayButton.setIcon(gamePlayButtonImage);
 				gamePlayButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 
-			// ¸¶¿ì½º°¡ gamePlayButton ¾ÆÀÌÄÜ ´­·¶À»¶§ ÀÌº¥Æ® Ã³¸®
+			// ë§ˆìš°ìŠ¤ê°€ gamePlayButton ì•„ì´ì½˜ ëˆŒë €ì„ë•Œ ì´ë²¤íŠ¸ ì²˜ë¦¬
 			@Override
 			public void mousePressed(MouseEvent e) {
-				// °ÔÀÓÀÌ ½ÇÇàµÇ´Â ÀÌº¥Æ®
-				// °ÔÀÓ ÇÃ·¹ÀÌ ¹öÆ°ÀÌ »ç¶óÁ®¾ß ÇÏ¹Ç·Î false°ªÀ¸·Î ÁöÁ¤À» ÅëÇØ ¾Èº¸ÀÌ°Ô ÇÔ
+				// ê²Œì„ì´ ì‹¤í–‰ë˜ëŠ” ì´ë²¤íŠ¸
+				// ê²Œì„ í”Œë ˆì´ ë²„íŠ¼ì´ ì‚¬ë¼ì ¸ì•¼ í•˜ë¯€ë¡œ falseê°’ìœ¼ë¡œ ì§€ì •ì„ í†µí•´ ì•ˆë³´ì´ê²Œ í•¨
 				gamePlayButton.setVisible(false);
-				// ¾²·¹µå¸¦ ½ÇÇà½ÃÄÑ xÁÂÇ¥ , yÁÂÇ¥ º¯°æ ½ÃÀÛ
+				// ì“°ë ˆë“œë¥¼ ì‹¤í–‰ì‹œì¼œ xì¢Œí‘œ , yì¢Œí‘œ ë³€ê²½ ì‹œì‘
 				ball.getThread().start();
 			}
 		});
 
 	}
 
-	/** ¹öÆ° ¼ÂÆÃ ¸Ş¼Òµå ¸ğµç ¹öÆ°¸¶´Ù ¼³Á¤°ªÀ» ³Ö±â Æí¸®ÇÏµµ·Ï ¸Ş¼Òµå·Î ¸¸µé¾ú´Ù.
-	 *  JButton°ú À§Ä¡ÁÂÇ¥¿Í Å©±â¸¦ ÁöÁ¤ÇØÁÖ¸é ÀÚµ¿À¸·Î ³Ö¾îÁØ´Ù.
+	/** ë²„íŠ¼ ì…‹íŒ… ë©”ì†Œë“œ ëª¨ë“  ë²„íŠ¼ë§ˆë‹¤ ì„¤ì •ê°’ì„ ë„£ê¸° í¸ë¦¬í•˜ë„ë¡ ë©”ì†Œë“œë¡œ ë§Œë“¤ì—ˆë‹¤.
+	 *  JButtonê³¼ ìœ„ì¹˜ì¢Œí‘œì™€ í¬ê¸°ë¥¼ ì§€ì •í•´ì£¼ë©´ ìë™ìœ¼ë¡œ ë„£ì–´ì¤€ë‹¤.
 	 *
 	 * @param button
 	 * @param x
@@ -193,20 +192,20 @@ public class GameScreenPanel extends JPanel implements Runnable {
 	 */
 	public void buttonSet(JButton button, int x, int y, int width, int height) {
 		button.setBounds(x, y, width, height);
-		// ¹öÆ° Å×µÎ¸® Á¦°Å
+		// ë²„íŠ¼ í…Œë‘ë¦¬ ì œê±°
 		button.setBorderPainted(false);
-		// ´©¸£´Â ´À³¦ Á¦°Å
+		// ëˆ„ë¥´ëŠ” ëŠë‚Œ ì œê±°
 		button.setContentAreaFilled(false);
-		// ±Û¾¾ Å×µÎ¸® Á¦°Å
+		// ê¸€ì”¨ í…Œë‘ë¦¬ ì œê±°
 		button.setFocusPainted(false);
-		// ¹öÆ° Ãß°¡
+		// ë²„íŠ¼ ì¶”ê°€
 		add(button);
 	}
 
 	/**
-	 * fadeIn È¿°ú¸¦ ÁÖ±âÀ§ÇÑ ¸Ş¼Òµå temp¸¦ »ç¿ëÇÑ ÀÌÀ¯´Â fadeIn°ªÀÌ 1.0À» ³Ñ¾î°¡¸é ¿¡·¯°¡ ¹ß»ıÇÏ±â ¶§¹®¿¡ float¿¬»ê Æ¯¼º»ó
-	 * 0.1¾¿ 10¹ø Áõ°¡½ÃÅ°¸é 1.0ÀÌ ¾Æ´Ï¶ó 1.000001ÀÌ µÇ¼­ ¿¡·¯°¡ ¹ß»ıÇÑ´Ù. µû¶ó¼­ temp¸¦ Áõ°¡½ÃÅ°°í fadeIn¿¡ ´ëÀÔ½ÃÅ°´Â
-	 * ¹æ½ÄÀ» »ç¿ëÇÑ´Ù. ¿©±â¼­ temp°¡ 1º¸´Ù Ä¿Áö¸é temp¸¦ 1·Î ¼³Á¤ÇÏ°í ´ëÀÔ½ÃÄÑÁØ´Ù.
+	 * fadeIn íš¨ê³¼ë¥¼ ì£¼ê¸°ìœ„í•œ ë©”ì†Œë“œ tempë¥¼ ì‚¬ìš©í•œ ì´ìœ ëŠ” fadeInê°’ì´ 1.0ì„ ë„˜ì–´ê°€ë©´ ì—ëŸ¬ê°€ ë°œìƒí•˜ê¸° ë•Œë¬¸ì— floatì—°ì‚° íŠ¹ì„±ìƒ
+	 * 0.1ì”© 10ë²ˆ ì¦ê°€ì‹œí‚¤ë©´ 1.0ì´ ì•„ë‹ˆë¼ 1.000001ì´ ë˜ì„œ ì—ëŸ¬ê°€ ë°œìƒí•œë‹¤. ë”°ë¼ì„œ tempë¥¼ ì¦ê°€ì‹œí‚¤ê³  fadeInì— ëŒ€ì…ì‹œí‚¤ëŠ”
+	 * ë°©ì‹ì„ ì‚¬ìš©í•œë‹¤. ì—¬ê¸°ì„œ tempê°€ 1ë³´ë‹¤ ì»¤ì§€ë©´ tempë¥¼ 1ë¡œ ì„¤ì •í•˜ê³  ëŒ€ì…ì‹œì¼œì¤€ë‹¤.
 	 */
 	public void fadeIn() {
 		try {
@@ -226,9 +225,9 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		}
 	}
 	/**
-	 * fadeOut È¿°ú¸¦ ÁÖ±âÀ§ÇÑ ¸Ş¼Òµå temp¸¦ »ç¿ëÇÑ ÀÌÀ¯´Â fadeOut°ªÀÌ 0À» ³Ñ¾î°¡¸é ¿¡·¯°¡ ¹ß»ıÇÏ±â ¶§¹®¿¡ float¿¬»ê Æ¯¼º»ó
-	 * 0.1¾¿ 10¹ø °¨¼Ò½ÃÅ°¸é 1.0ÀÌ ¾Æ´Ï¶ó -0.000001ÀÌ µÇ¼­ ¿¡·¯°¡ ¹ß»ıÇÑ´Ù. µû¶ó¼­ temp¸¦ °¨¼Ò½ÃÅ°°í fadeOut¿¡ ´ëÀÔ½ÃÅ°´Â
-	 * ¹æ½ÄÀ» »ç¿ëÇÑ´Ù. ¿©±â¼­ temp°¡ 0º¸´Ù ÀÛ¾ÆÁö¸é temp¸¦ 0·Î ¼³Á¤ÇÏ°í ´ëÀÔ½ÃÄÑÁØ´Ù.
+	 * fadeOut íš¨ê³¼ë¥¼ ì£¼ê¸°ìœ„í•œ ë©”ì†Œë“œ tempë¥¼ ì‚¬ìš©í•œ ì´ìœ ëŠ” fadeOutê°’ì´ 0ì„ ë„˜ì–´ê°€ë©´ ì—ëŸ¬ê°€ ë°œìƒí•˜ê¸° ë•Œë¬¸ì— floatì—°ì‚° íŠ¹ì„±ìƒ
+	 * 0.1ì”© 10ë²ˆ ê°ì†Œì‹œí‚¤ë©´ 1.0ì´ ì•„ë‹ˆë¼ -0.000001ì´ ë˜ì„œ ì—ëŸ¬ê°€ ë°œìƒí•œë‹¤. ë”°ë¼ì„œ tempë¥¼ ê°ì†Œì‹œí‚¤ê³  fadeOutì— ëŒ€ì…ì‹œí‚¤ëŠ”
+	 * ë°©ì‹ì„ ì‚¬ìš©í•œë‹¤. ì—¬ê¸°ì„œ tempê°€ 0ë³´ë‹¤ ì‘ì•„ì§€ë©´ tempë¥¼ 0ë¡œ ì„¤ì •í•˜ê³  ëŒ€ì…ì‹œì¼œì¤€ë‹¤.
 	 */
 	public void fadeOut() {
 		try {
@@ -248,33 +247,33 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		}
 	}
 
-	/** GameScreen¿¡ °ü·ÃµÈ ÀÌ¹ÌÁö¸¦ ±×·ÁÁÖ°í
-	 *  °ÔÀÓ ½ºÅ×ÀÌÁöÀÎ ¿øÀ» ±×·ÁÁØ´Ù.
+	/** GameScreenì— ê´€ë ¨ëœ ì´ë¯¸ì§€ë¥¼ ê·¸ë ¤ì£¼ê³ 
+	 *  ê²Œì„ ìŠ¤í…Œì´ì§€ì¸ ì›ì„ ê·¸ë ¤ì¤€ë‹¤.
 	 * 
 	 */
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		// graphics¸¦ 2D·Î º¯°æ
+		// graphicsë¥¼ 2Dë¡œ ë³€ê²½
 		Graphics2D g2 = (Graphics2D) g;
-		// Åõ¸íµµ¸¦ Á¶ÀıÇÏ±â À§ÇÑ ºÎºĞ fadeValue °¡ 1.0ÀÌ¸é ºÒÅõ¸íµµ 100%, 0.1ÀÌ¸é ºÒÅõ¸íµµ°¡ 10% ÀÌ´Ù.
+		// íˆ¬ëª…ë„ë¥¼ ì¡°ì ˆí•˜ê¸° ìœ„í•œ ë¶€ë¶„ fadeValue ê°€ 1.0ì´ë©´ ë¶ˆíˆ¬ëª…ë„ 100%, 0.1ì´ë©´ ë¶ˆíˆ¬ëª…ë„ê°€ 10% ì´ë‹¤.
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, fadeValue));
-		// ¾ÈÆ¼¾Ù¸®¾î½Ì , ¿øÀÌ ±úÁöÁö ¾Ê°Ô Ãâ·Â
+		// ì•ˆí‹°ì•¨ë¦¬ì–´ì‹± , ì›ì´ ê¹¨ì§€ì§€ ì•Šê²Œ ì¶œë ¥
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		for (int i = 0; i < 36; i++) {
 			g2.drawImage(obstacles.get(i).getObstacleImage(), obstacles.get(i).getX(), obstacles.get(i).getY(), null);
 		}
-		// Èò»öÀ¸·Î ¼³Á¤
+		// í°ìƒ‰ìœ¼ë¡œ ì„¤ì •
 		g2.setColor(circle.getColor());
-		// µÎ²² ¼³Á¤
+		// ë‘ê»˜ ì„¤ì •
 		g2.setStroke(circle.getStroke());
-		// ¼ÓÀÌ ºñ¾îÀÖ´Â ¿ø , xÁÂÇ¥, yÁÂÇ¥, width, height
+		// ì†ì´ ë¹„ì–´ìˆëŠ” ì› , xì¢Œí‘œ, yì¢Œí‘œ, width, height
 		g2.drawOval(circle.getX(), circle.getY(), circle.getWidth(), circle.getHeight());
-		// ¾ÈÀÌ °¡µæ Âù ¿ø , ballÅ¬·¡½º¿¡¼­ Á¦¾î¸¦ ÅëÇØ ÁÂÇ¥°¡ º¯°æµÇ¹Ç·Î get¸Ş¼Òµå ÀÌ¿ë , ¿ì¸®°¡ Á¶Á¾ÇÒ °´Ã¼
+		// ì•ˆì´ ê°€ë“ ì°¬ ì› , ballí´ë˜ìŠ¤ì—ì„œ ì œì–´ë¥¼ í†µí•´ ì¢Œí‘œê°€ ë³€ê²½ë˜ë¯€ë¡œ getë©”ì†Œë“œ ì´ìš© , ìš°ë¦¬ê°€ ì¡°ì¢…í•  ê°ì²´
 		g2.fillOval(ball.getX(), ball.getY(), 26, 26);
 	}
 
-	/** ¾²·¹µå¸¦ ÅëÇØ À½¾ÇÁßÁö¿Í È­¸éÀüÈ¯À» ÇÑ´Ù.
+	/** ì“°ë ˆë“œë¥¼ í†µí•´ ìŒì•…ì¤‘ì§€ì™€ í™”ë©´ì „í™˜ì„ í•œë‹¤.
 	 * 
 	 */
 	@Override
@@ -295,14 +294,14 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		}
 
 	}
-    /** °ÔÀÓ È­¸éÀÇ Thread¸¦ ¾ò¾î¿À´Â ÇÔ¼ö
+    /** ê²Œì„ í™”ë©´ì˜ Threadë¥¼ ì–»ì–´ì˜¤ëŠ” í•¨ìˆ˜
      * 
      * @return thread
      */
 	public Thread getThread() {
 		return thread;
 	}
-	/** °ÔÀÓ È­¸éÀÇ Thread¸¦ ¼³Á¤ÇÏ´Â ÇÔ¼ö 
+	/** ê²Œì„ í™”ë©´ì˜ Threadë¥¼ ì„¤ì •í•˜ëŠ” í•¨ìˆ˜ 
 	 * 
 	 * @param thread
 	 */
