@@ -44,6 +44,8 @@ public class GameScreenPanel extends JPanel implements Runnable {
 	/** Ball 위치 제어를 위한 객체 */
 	private Ball ball;
 
+	/** 게임의 스테이지인 원의 제어를 위한 객체*/
+	private Circle circle;
 	/** 장애물 구현을 위한 객체 */
 	ArrayList<Obstacle> obstacles;
 
@@ -107,6 +109,8 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		add(insideOut.getMenubar());
 		// x,y 좌표를 받기 위한 객체 생성
 		ball = new Ball();
+		// 원을 위한 객체 생성
+		circle = new Circle(375,100,530,530,8,Color.WHITE);
 
 		// test
 		for (int i = 0; i < 36; i++) {
@@ -266,11 +270,11 @@ public class GameScreenPanel extends JPanel implements Runnable {
 			g2.drawImage(obstacles.get(i).getObstacleImage(), obstacles.get(i).getX(), obstacles.get(i).getY(), null);
 		}
 		// 흰색으로 설정
-		g2.setColor(Color.WHITE);
+		g2.setColor(circle.getColor());
 		// 두께 설정
-		g2.setStroke(new BasicStroke(8));
+		g2.setStroke(circle.getStroke());
 		// 속이 비어있는 원 , x좌표, y좌표, width, height
-		g2.drawOval(375, 100, 530, 530);
+		g2.drawOval(circle.getX(), circle.getY(), circle.getWidth(), circle.getHeight());
 		// 안이 가득 찬 원 , ball클래스에서 제어를 통해 좌표가 변경되므로 get메소드 이용 , 우리가 조종할 객체
 		g2.fillOval(ball.getX(), ball.getY(), 26, 26);
 	}
