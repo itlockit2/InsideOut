@@ -1,15 +1,14 @@
 package project_04;
 
-/** °ÔÀÓ ½ÇÇàÀ» À§ÇÑ MainÅ¬·¡½º ÀÌ´Ù.
- * Inside_Out °´Ã¼¸¦ ¸¸µëÀ¸·Î½á °ÔÀÓÀ» ½ÃÀÛÇÑ´Ù.
+/** ê²Œì„ ì‹¤í–‰ì„ ìœ„í•œ Mainí´ë˜ìŠ¤ ì´ë‹¤.
+ * Inside_Out ê°ì²´ë¥¼ ë§Œë“¬ìœ¼ë¡œì¨ ê²Œì„ì„ ì‹œì‘í•œë‹¤.
  * 
- * @author Yun
+ * @author Sungho Yun
  * @version 0.4
- *
  */
 public class Main {
 	
-	public static final int SCREEN_WIDTH = 1280; // 1280 x 720 »çÀÌÁî·Î Ãâ·Â
+	public static final int SCREEN_WIDTH = 1280; // 1280 x 720 ì‚¬ì´ì¦ˆë¡œ ì¶œë ¥
 	public static final int SCREEN_HEIGHT = 720;
 	
 	public static void main(String[] args) {
