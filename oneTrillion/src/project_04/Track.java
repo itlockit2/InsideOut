@@ -1,7 +1,7 @@
 package project_04;
 
-/**
- * 하나의 곡에 대한 정보를 담는 클래스 
+/** 하나의 곡에 대한 정보를 담는 클래스 
+ * 
  * @author Jimin Kim
  * @version 0.4
  */
@@ -20,8 +20,8 @@ public class Track {
 	/** 곡 제목이 출력되는 위치가 저장되어 있는 y값  */
 	private int drawY;
 	
-	/**
-	 * titleImage의 이름, StartImage의 이름, startMusic의 이름 gameMusic의 이름, 곡제목을 출력시킬 drawX, drawY값을 생성자로 받아 초기화시켜준다. 
+	/** titleImage의 이름, StartImage의 이름, startMusic의 이름 gameMusic의 이름, 곡제목을 출력시킬 drawX, drawY값을 생성자로 받아 초기화시켜준다. 
+	 * 
 	 * @param titleImage
 	 * @param startImage
 	 * @param startMusic
@@ -39,43 +39,43 @@ public class Track {
 		this.drawY = drawY;
 	}
 	
-	/**
-	 * titleImage의 이름 반환한다.
+	/** titleImage의 이름 반환한다.
+	 * 
 	 * @return titleImage
 	 */
 	public String getTitleImage() {
 		return titleImage;
 	}
-	/**
-	 * startImage의 이름 반환한다.
+	/** startImage의 이름 반환한다.
+	 * 
 	 * @return startImage
 	 */
 	public String getStartImage() {
 		return startImage;
 	}
-	/**
-	 * startMusic의 이름 반환한다.
+	/** startMusic의 이름 반환한다.
+	 * 
 	 * @return startMusic
 	 */
 	public String getStartMusic() {
 		return startMusic;
 	}
-	/**
-	 * gameMusic의 이름 반환한다.
+	/** gameMusic의 이름 반환한다.
+	 * 
 	 * @return gameMusic
 	 */
 	public String getGameMusic() {
 		return gameMusic;
 	}
-	/**
-	 * 곡 제목이 출력되는 위치가 저장되어 있는 x값 을 반환한다.
+	/** 곡 제목이 출력되는 위치가 저장되어 있는 x값 을 반환한다.
+	 * 
 	 * @return drawX
 	 */
 	public int getDrawX() {
 		return drawX;
 	}
-	/**
-	 *  곡 제목이 출력되는 위치가 저장되어 있는 y값을 반환한다.
+	/** 곡 제목이 출력되는 위치가 저장되어 있는 y값을 반환한다.
+	 *  
 	 * @return drawY
 	 */
 	public int getDrawY() {

@@ -117,7 +117,6 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 	 * 
 	 * @param InsideOut insideOut
 	 */
-
 	GameSelectScreenPanel(InsideOut insideOut) {
 		// 프레임을 매개변수로 받아 제어한다.
 		this.insideOut = insideOut;
@@ -421,7 +420,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
     
     /** GameSelectScreen의 곡에 관한 이미지를 그려주거나 투명도를 조정해 주는 paint함수 
      * 
-     * @param Graphics g
+     * @param g
      * */
    	@Override
 	public void paintComponent(Graphics g) {
@@ -469,7 +468,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 
 	  /** 자신이 플레이 하고 싶은 곡을 선택할 수 있도록 설정하기 위한 함수 
 	   * 
-	   * @param int nowSelected
+	   * @param nowSelected
 	   * */
 	public void selectTrack(int nowSelected) {
 		if (selectedMusic != null)
@@ -509,11 +508,11 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 
 	/** JButton의 위치나 다른 요소들을 제어하기 위한 함수
 	 * 
-	 * @param JButton button
-	 * @param int x
-	 * @param int y
-	 * @param int width
-	 * @param int height
+	 * @param button
+	 * @param x
+	 * @param y
+	 * @param width
+	 * @param height
 	 */
 	public void buttonSet(JButton button, int x, int y, int width, int height) {
 		button.setBounds(x, y, width, height);
@@ -536,7 +535,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
     
 	/** 곡 선택 화면의 Thread를 설정하는 함수 
 	 * 
-	 * @param Thread thread
+	 * @param thread
 	 */
 	public void setThread(Thread thread) {
 		this.thread = thread;

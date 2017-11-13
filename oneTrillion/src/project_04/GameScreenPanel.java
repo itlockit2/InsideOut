@@ -15,9 +15,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-/**
- * 게임을 진행하는 판넬이다.
- * 
+/** 게임을 진행하는 판넬이다.
+ *
  * @author SungHo Yun
  * @version 0.4
  *
@@ -57,14 +56,11 @@ public class GameScreenPanel extends JPanel implements Runnable {
 	/** Screen 제어를 위한 변수 */
 	private boolean isGameSelectScreen;
 
-	/**
-	 * 화면제어를 위한 객체 Frame인 InsideOut을 가지고 있어야 insideOut에 있는 패널 변경 메소드를 사용할수 있다.
-	 */
+	/** 화면제어를 위한 객체 Frame인 InsideOut을 가지고 있어야 insideOut에 있는 패널 변경 메소드를 사용할수 있다. */
 	private InsideOut insideOut;
 
-	/**
-	 * GameScreenPanel의 생성자로 필드값들을 초기화 시켜주고. insideOut을 매개변수로 받아 화면제어를 하고
-	 * 
+	/** GameScreenPanel의 생성자로 필드값들을 초기화 시켜주고, insideOut을 매개변수로 받아 화면제어를 한다
+	 *  
 	 * @param insideOut
 	 */
 	public GameScreenPanel(InsideOut insideOut) {
@@ -186,10 +182,9 @@ public class GameScreenPanel extends JPanel implements Runnable {
 
 	}
 
-	/**
-	 * 	/**
-	 * 버튼 셋팅 메소드 모든 버튼마다 설정값을 넣기 편리하도록 메소드로 만들었다.
-	 * JButton과 위치좌표와 크기를 지정해주면 자동으로 넣어준다.
+	/** 버튼 셋팅 메소드 모든 버튼마다 설정값을 넣기 편리하도록 메소드로 만들었다.
+	 *  JButton과 위치좌표와 크기를 지정해주면 자동으로 넣어준다.
+	 *
 	 * @param button
 	 * @param x
 	 * @param y
@@ -253,9 +248,9 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		}
 	}
 
-	/**
-	 * GameScreen에 관련된 이미지를 그려주고
-	 * 게임 스테이지인 원을 그려준다.
+	/** GameScreen에 관련된 이미지를 그려주고
+	 *  게임 스테이지인 원을 그려준다.
+	 * 
 	 */
 	@Override
 	public void paintComponent(Graphics g) {
@@ -279,8 +274,8 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		g2.fillOval(ball.getX(), ball.getY(), 26, 26);
 	}
 
-	/**
-	 * 쓰레드를 통해 음악중지와 화면전환을 한다.
+	/** 쓰레드를 통해 음악중지와 화면전환을 한다.
+	 * 
 	 */
 	@Override
 	public void run() {
@@ -309,7 +304,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 	}
 	/** 게임 화면의 Thread를 설정하는 함수 
 	 * 
-	 * @param Thread thread
+	 * @param thread
 	 */
 	public void setThread(Thread thread) {
 		this.thread = thread;

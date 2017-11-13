@@ -50,14 +50,14 @@ public class HelpScreenPanel extends JPanel implements Runnable {
 	/** Thread 객체 */
 	private Thread thread;
 
-	/**화면제어를 위한 객체 
+	/** 화면제어를 위한 객체 
 	 * Frame인 InsideOut을 가지고 있어야 insideOut에 있는 패널 변경 메소드를 사용할수 있다. */
 	private InsideOut insideOut;
 
-	/**
-	 * HelpScreenPanel의 생성자로 필드값들을 초기화 시켜주고.
+	/** HelpScreenPanel의 생성자로 필드값들을 초기화 시켜주고.
 	 * insideOut을 매개변수로 받아 화면제어를 하고
 	 * stopPoint를 매개변수로 받아 그 시점부터 노래를 시작시킨다.
+	 * 
 	 * @param insideOut
 	 * @param stopPoint
 	 */
@@ -141,9 +141,9 @@ public class HelpScreenPanel extends JPanel implements Runnable {
 	}
 	
 
-	/**
-	 * 버튼 셋팅 메소드 모든 버튼마다 설정값을 넣기 편리하도록 메소드로 만들었다.
+	/** 버튼 셋팅 메소드 모든 버튼마다 설정값을 넣기 편리하도록 메소드로 만들었다.
 	 * JButton과 위치좌표와 크기를 지정해주면 자동으로 넣어준다.
+	 * 
 	 * @param button
 	 * @param x
 	 * @param y
@@ -208,9 +208,7 @@ public class HelpScreenPanel extends JPanel implements Runnable {
 		}
 	}
 
-	/**
-	 * helpScreenBackGround 이미지를 그려준다.
-	 */
+	/** helpScreenBackGround 이미지를 그려준다. */
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -221,10 +219,7 @@ public class HelpScreenPanel extends JPanel implements Runnable {
 			g2.drawImage(helpScreenBackGround, 0, 0, null);
 		}
     
-
-	/**
-	 * 쓰레드를 통해 음악중지와 화면전환을 한다.
-	 */
+	/** 쓰레드를 통해 음악중지와 화면전환을 한다. */
 	@Override
 	public void run() {
 		// fadeIn 효과를 넣어준다.
@@ -255,9 +250,10 @@ public class HelpScreenPanel extends JPanel implements Runnable {
 	public Thread getThread() {
 		return thread;
 	}
+	
 	/** 도움말 화면의 Thread를 설정하는 함수 
 	 * 
-	 * @param Thread thread
+	 * @param thread
 	 */
 	public void setThread(Thread thread) {
 		this.thread = thread;
