@@ -1,26 +1,25 @@
 package project_04;
 
-/** ÇÏ³ªÀÇ °î¿¡ ´ëÇÑ Á¤º¸¸¦ ´ã´Â Å¬·¡½º 
- * 
+/** í•˜ë‚˜ì˜ ê³¡ì— ëŒ€í•œ ì •ë³´ë¥¼ ë‹´ëŠ” í´ë˜ìŠ¤ 
  * @author Jimin Kim
  * @version 0.4
  */
 public class Track {
  
-	/** Å¸ÀÌÆ² ÀÌ¹ÌÁöÆÄÀÏ ÀÌ¸§ */
+	/** íƒ€ì´í‹€ ì´ë¯¸ì§€íŒŒì¼ ì´ë¦„ */
 	private String titleImage;
-	/** °ÔÀÓ ¼±ÅÃ½Ã º¸¿©Áö´Â ÀÌ¹ÌÁö ÆÄÀÏ ÀÌ¸§ */
+	/** ê²Œì„ ì„ íƒì‹œ ë³´ì—¬ì§€ëŠ” ì´ë¯¸ì§€ íŒŒì¼ ì´ë¦„ */
 	private String startImage; 
-	/** °ÔÀÓ ¼±ÅÃ½Ã ½ÃÀÛÇÏ´Â À½¾Ç ÆÄÀÏ ÀÌ¸§ */
+	/** ê²Œì„ ì„ íƒì‹œ ì‹œì‘í•˜ëŠ” ìŒì•… íŒŒì¼ ì´ë¦„ */
 	private String startMusic; 
-	/** °ÔÀÓ ÁøÇà½Ã ½ÃÀÛµÇ´Â À½¾Ç ÆÄÀÏ ÀÌ¸§ */
+	/** ê²Œì„ ì§„í–‰ì‹œ ì‹œì‘ë˜ëŠ” ìŒì•… íŒŒì¼ ì´ë¦„ */
 	private String gameMusic; 
-	/** °î Á¦¸ñÀÌ Ãâ·ÂµÇ´Â À§Ä¡°¡ ÀúÀåµÇ¾î ÀÖ´Â x°ª  */
+	/** ê³¡ ì œëª©ì´ ì¶œë ¥ë˜ëŠ” ìœ„ì¹˜ê°€ ì €ì¥ë˜ì–´ ìˆëŠ” xê°’  */
 	private int drawX;
-	/** °î Á¦¸ñÀÌ Ãâ·ÂµÇ´Â À§Ä¡°¡ ÀúÀåµÇ¾î ÀÖ´Â y°ª  */
+	/** ê³¡ ì œëª©ì´ ì¶œë ¥ë˜ëŠ” ìœ„ì¹˜ê°€ ì €ì¥ë˜ì–´ ìˆëŠ” yê°’  */
 	private int drawY;
 	
-	/** titleImageÀÇ ÀÌ¸§, StartImageÀÇ ÀÌ¸§, startMusicÀÇ ÀÌ¸§ gameMusicÀÇ ÀÌ¸§, °îÁ¦¸ñÀ» Ãâ·Â½ÃÅ³ drawX, drawY°ªÀ» »ı¼ºÀÚ·Î ¹Ş¾Æ ÃÊ±âÈ­½ÃÄÑÁØ´Ù. 
+	/** titleImageì˜ ì´ë¦„, StartImageì˜ ì´ë¦„, startMusicì˜ ì´ë¦„ gameMusicì˜ ì´ë¦„, ê³¡ì œëª©ì„ ì¶œë ¥ì‹œí‚¬ drawX, drawYê°’ì„ ìƒì„±ìë¡œ ë°›ì•„ ì´ˆê¸°í™”ì‹œì¼œì¤€ë‹¤. 
 	 * 
 	 * @param titleImage
 	 * @param startImage
@@ -39,42 +38,42 @@ public class Track {
 		this.drawY = drawY;
 	}
 	
-	/** titleImageÀÇ ÀÌ¸§ ¹İÈ¯ÇÑ´Ù.
+	/** titleImageì˜ ì´ë¦„ ë°˜í™˜í•œë‹¤.
 	 * 
 	 * @return titleImage
 	 */
 	public String getTitleImage() {
 		return titleImage;
 	}
-	/** startImageÀÇ ÀÌ¸§ ¹İÈ¯ÇÑ´Ù.
+	/** startImageì˜ ì´ë¦„ ë°˜í™˜í•œë‹¤.
 	 * 
 	 * @return startImage
 	 */
 	public String getStartImage() {
 		return startImage;
 	}
-	/** startMusicÀÇ ÀÌ¸§ ¹İÈ¯ÇÑ´Ù.
+	/** startMusicì˜ ì´ë¦„ ë°˜í™˜í•œë‹¤.
 	 * 
 	 * @return startMusic
 	 */
 	public String getStartMusic() {
 		return startMusic;
 	}
-	/** gameMusicÀÇ ÀÌ¸§ ¹İÈ¯ÇÑ´Ù.
+	/** gameMusicì˜ ì´ë¦„ ë°˜í™˜í•œë‹¤.
 	 * 
 	 * @return gameMusic
 	 */
 	public String getGameMusic() {
 		return gameMusic;
 	}
-	/** °î Á¦¸ñÀÌ Ãâ·ÂµÇ´Â À§Ä¡°¡ ÀúÀåµÇ¾î ÀÖ´Â x°ª À» ¹İÈ¯ÇÑ´Ù.
+	/** ê³¡ ì œëª©ì´ ì¶œë ¥ë˜ëŠ” ìœ„ì¹˜ê°€ ì €ì¥ë˜ì–´ ìˆëŠ” xê°’ ì„ ë°˜í™˜í•œë‹¤.
 	 * 
 	 * @return drawX
 	 */
 	public int getDrawX() {
 		return drawX;
 	}
-	/** °î Á¦¸ñÀÌ Ãâ·ÂµÇ´Â À§Ä¡°¡ ÀúÀåµÇ¾î ÀÖ´Â y°ªÀ» ¹İÈ¯ÇÑ´Ù.
+	/** ê³¡ ì œëª©ì´ ì¶œë ¥ë˜ëŠ” ìœ„ì¹˜ê°€ ì €ì¥ë˜ì–´ ìˆëŠ” yê°’ì„ ë°˜í™˜í•œë‹¤.
 	 *  
 	 * @return drawY
 	 */
