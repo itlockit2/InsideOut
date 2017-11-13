@@ -25,9 +25,6 @@ public class Obstacle{
 	/** Thread 객체 */
 	private Thread thread;
 	
-	/** ball 객체 */
-	Ball ball;
-	
 	/**
 	 * 원의 반지름과 원 중심의 위치를 받아오고 라디안값을 받아와서 장애물을 구현한다. 
 	 * @param circleRadius
