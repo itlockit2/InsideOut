@@ -102,14 +102,14 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		buttonSet(insideOut.getMenubarExitButton(), 1200, 0, 64, 28);
 		// 메뉴바 설정
 		add(insideOut.getMenubar());
-		// x,y 좌표를 받기 위한 객체 생성
-		ball = new Ball();
 		// 원을 위한 객체 생성
 		circle = new Circle(375,100,530,530,8,Color.WHITE);
+		// x,y 좌표를 받기 위한 객체 생성
+		ball = new Ball(circle);
 
 		// test
 		for (int i = 0; i < 36; i++) {
-			obstacles.add(new Obstacle(ball.getRadius(), ball.getCircleX(), ball.getCircleY(), 10 * i));
+			obstacles.add(new Obstacle(ball.getRotateRadius(), ball.getCircleX(), ball.getCircleY(), 10 * i));
 			System.out.println(10 * i);
 		}
 
