@@ -1,7 +1,6 @@
 package project_04;
 
 import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
@@ -15,7 +14,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-/** 게임을 진행하는 판넬이다.
+/**
+ * 게임을 진행하는 판넬이다.
  *
  * @author SungHo Yun
  * @version 0.4
@@ -42,7 +42,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 	/** Ball 위치 제어를 위한 객체 */
 	private Ball ball;
 
-	/** 게임의 스테이지인 원의 제어를 위한 객체*/
+	/** 게임의 스테이지인 원의 제어를 위한 객체 */
 	private Circle circle;
 	/** 장애물 구현을 위한 객체 */
 	ArrayList<Obstacle> obstacles;
@@ -58,8 +58,9 @@ public class GameScreenPanel extends JPanel implements Runnable {
 	/** 화면제어를 위한 객체 Frame인 InsideOut을 가지고 있어야 insideOut에 있는 패널 변경 메소드를 사용할수 있다. */
 	private InsideOut insideOut;
 
-	/** GameScreenPanel의 생성자로 필드값들을 초기화 시켜주고, insideOut을 매개변수로 받아 화면제어를 한다
-	 *  
+	/**
+	 * GameScreenPanel의 생성자로 필드값들을 초기화 시켜주고, insideOut을 매개변수로 받아 화면제어를 한다
+	 * 
 	 * @param insideOut
 	 */
 	public GameScreenPanel(InsideOut insideOut) {
@@ -103,7 +104,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		// 메뉴바 설정
 		add(insideOut.getMenubar());
 		// 원을 위한 객체 생성
-		circle = new Circle(375,100,530,530,8,Color.WHITE);
+		circle = new Circle(375, 100, 530, 530, 8, Color.WHITE);
 		// x,y 좌표를 받기 위한 객체 생성
 		ball = new Ball(circle);
 
@@ -144,6 +145,31 @@ public class GameScreenPanel extends JPanel implements Runnable {
 			}
 		});
 
+		// 게임 실행시 볼의 전환을 제어하기 위한 MouseListener
+		addMouseListener(new MouseAdapter() {
+			// 마우스가 눌려졌을 때 이벤트 처리
+			@Override
+			public void mousePressed(MouseEvent e) {
+			    // Ball이 바깥을 돌고 있다면 
+				if(ball.isBallOutside()) {
+					// Ball이 바깥을 돌고 있는 여부에 대한 설정을 false로 만든다. 
+					ball.setBallOutside(false);
+					  // Circle과 Ball의 반지름을 줄여서 안쪽을 돌게 한다.
+				    ball.setRotateRadius(ball.getRotateRadius() - 25);
+			    // Ball이 안쪽을 돌고 있다면 isBallOutside가 false값이므로 else문을 실행한다.
+				}else {
+					// Ball이 바깥을 돌고 있는 여부에 대한 설정을 true로 만든다. 
+					ball.setBallOutside(true);
+					  // Circle과 Ball을 원래대로 설정해서 원래 위치를 돌게 한다.
+					ball.setRotateRadius(ball.getRotateRadius() + 25);
+				}
+			}
+		
+		});
+        
+		// 마우스가 이 Listener에 집중 할 수 있게 한다.
+		setFocusable(true);
+
 		/**
 		 * gamePlayButton의 마우스 이벤트를 처리해준다.
 		 */
@@ -181,8 +207,9 @@ public class GameScreenPanel extends JPanel implements Runnable {
 
 	}
 
-	/** 버튼 셋팅 메소드 모든 버튼마다 설정값을 넣기 편리하도록 메소드로 만들었다.
-	 *  JButton과 위치좌표와 크기를 지정해주면 자동으로 넣어준다.
+	/**
+	 * 버튼 셋팅 메소드 모든 버튼마다 설정값을 넣기 편리하도록 메소드로 만들었다. JButton과 위치좌표와 크기를 지정해주면 자동으로
+	 * 넣어준다.
 	 *
 	 * @param button
 	 * @param x
@@ -224,10 +251,11 @@ public class GameScreenPanel extends JPanel implements Runnable {
 			e.printStackTrace();
 		}
 	}
+
 	/**
 	 * fadeOut 효과를 주기위한 메소드 temp를 사용한 이유는 fadeOut값이 0을 넘어가면 에러가 발생하기 때문에 float연산 특성상
-	 * 0.1씩 10번 감소시키면 1.0이 아니라 -0.000001이 되서 에러가 발생한다. 따라서 temp를 감소시키고 fadeOut에 대입시키는
-	 * 방식을 사용한다. 여기서 temp가 0보다 작아지면 temp를 0로 설정하고 대입시켜준다.
+	 * 0.1씩 10번 감소시키면 1.0이 아니라 -0.000001이 되서 에러가 발생한다. 따라서 temp를 감소시키고 fadeOut에
+	 * 대입시키는 방식을 사용한다. 여기서 temp가 0보다 작아지면 temp를 0로 설정하고 대입시켜준다.
 	 */
 	public void fadeOut() {
 		try {
@@ -247,8 +275,8 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		}
 	}
 
-	/** GameScreen에 관련된 이미지를 그려주고
-	 *  게임 스테이지인 원을 그려준다.
+	/**
+	 * GameScreen에 관련된 이미지를 그려주고 게임 스테이지인 원을 그려준다.
 	 * 
 	 */
 	@Override
@@ -273,7 +301,8 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		g2.fillOval(ball.getX(), ball.getY(), ball.getRadius()*2, ball.getRadius()*2);
 	}
 
-	/** 쓰레드를 통해 음악중지와 화면전환을 한다.
+	/**
+	 * 쓰레드를 통해 음악중지와 화면전환을 한다.
 	 * 
 	 */
 	@Override
@@ -294,14 +323,18 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		}
 
 	}
-    /** 게임 화면의 Thread를 얻어오는 함수
-     * 
-     * @return thread
-     */
+
+	/**
+	 * 게임 화면의 Thread를 얻어오는 함수
+	 * 
+	 * @return thread
+	 */
 	public Thread getThread() {
 		return thread;
 	}
-	/** 게임 화면의 Thread를 설정하는 함수 
+
+	/**
+	 * 게임 화면의 Thread를 설정하는 함수
 	 * 
 	 * @param thread
 	 */

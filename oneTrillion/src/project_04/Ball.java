@@ -8,7 +8,7 @@ package project_04;
 public class Ball implements Runnable {
 
 	/** Ball을 그리기 위한 x좌표, y좌표, Ball의 radius, 원의 중심 x좌표 Ox, 원의 중심 y좌표 Oy변수, 원의 반지름 */
-	private int x, y, ballradius, circleX, circleY, circleRadius;
+	private int x, y, ballRadius, circleX, circleY, circleRadius;
 	/** Ball을 회전시키기 위해 증가시킬 변수 */
 	private double size;
 	/** Ball은 radian을 따라 회전하기 때문에 그에 대한 값을 설정할 변수*/
@@ -19,6 +19,8 @@ public class Ball implements Runnable {
 	private int adjustmentDistance;
 	/** Ball이 회전하는 반지름을 나타내는 값*/
 	private int rotateRadius;
+	// Ball의 회전위치
+	private boolean isBallOutside;
 	
 	private Circle circle;
 
@@ -28,6 +30,8 @@ public class Ball implements Runnable {
 		setThread(new Thread(this));
 		
 		this.circle = circle;
+		//
+		isBallOutside = true;
 		// Ball의 중심좌표 즉, 처음 시작좌표 x, y
 		x = 640;
 		y = 85;
@@ -35,9 +39,9 @@ public class Ball implements Runnable {
         // Ball의 중심좌표에서 Ball의 반지름 만큼인 13을 x좌표, y좌표에 각각 넣어주면 그리고자 하는 Ball을 그릴 수 있게된다.
 		adjustmentDistance = 13;
 		// 속이 빈 원의 반지름 265 + ball의 반지름 13 + 공이 살짝 떠있으므로 그에 대한 값으로 2를 주었다.
-		ballradius = 13;
+		ballRadius = 13;
 		circleRadius = circle.getWidth()/2;
-		rotateRadius = ballradius + circleRadius;
+		rotateRadius = ballRadius + circleRadius;
 		// 원의 중심 x좌표 = 375 + 265 = 640 , 속이 빈 원의 반지름은 265
 		circleX = circle.getX() + circleRadius;
 		// 원의 중심 y좌표 = 100 + 265 = 640 , 속이 빈 원의 반지름은 265
@@ -53,23 +57,25 @@ public class Ball implements Runnable {
 		// 곡이 끝날 때 까지 돌려줘야 하므로 계속 반복
 		while (true) {
 			try {
-				// 삼각함수의 라디안 값을 통해 size를 증가시키면서 Ball을 곡이 끝날 때 까지 회전시킨다.
-				// 원 중심값 + 반지름이므로 중심좌표 값을 더해야 한다.
-				// 계속 변경시킬 x좌표, y좌표
-				x = circleX + (int) (rotateRadius * Math.cos(radian));
-				y = circleY + (int) (rotateRadius * Math.sin(radian));
-				
-				// 삼각함수의 라디안 값을 통해 size를 증가시키면서 Ball을 곡이 끝날 때 까지 회전시킨다.
-				size += 1;
-				// radian 값 계산
-				radian = size / 180 * Math.PI;
-				Thread.sleep(10);
+					// 삼각함수의 라디안 값을 통해 size를 증가시키면서 Ball을 곡이 끝날 때 까지 회전시킨다.
+					// 원 중심값 + 반지름이므로 중심좌표 값을 더해야 한다.
+					// 계속 변경시킬 x좌표, y좌표
+					x = circleX + (int) (rotateRadius * Math.cos(radian));
+					y = circleY + (int) (rotateRadius * Math.sin(radian));
+					
+					// 삼각함수의 라디안 값을 통해 size를 증가시키면서 Ball을 곡이 끝날 때 까지 회전시킨다.
+					size += 1;
+					// radian 값 계산
+					radian = size / 180 * Math.PI;
+					Thread.sleep(10);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 
 		}
 	}
+	
+	
 
 
 	/** Ball의 x좌표를 얻어오는 getX 함수 
@@ -127,7 +133,7 @@ public class Ball implements Runnable {
 	 * @return radius
 	 * */	
 	public int getRadius() {
-		return ballradius;
+		return ballRadius;
 	}
 	
 	/** Ball의 CircleX(원의 중심 x좌표)를 얻어오는 함수
@@ -162,12 +168,35 @@ public class Ball implements Runnable {
 		return size;
 	}
 
-	/**
-	 * Ball이 회전하는 반지름을 얻어오는 메소드
+	/** Ball이 회전하는 반지름을 얻어오는 메소드
+	 * 
 	 * @return rotateRadius
 	 */
 	public int getRotateRadius() {
 		return rotateRadius;
+	}
+    /** Ball이 회전하는 반지름을 설정하는 메소드
+     * 
+     * @param rotateRadius
+     */
+	public void setRotateRadius(int rotateRadius) {
+		this.rotateRadius = rotateRadius;
+	}
+
+	/** Ball이 회전하는 위치에 대한 여부를 얻어오는 메소드 
+	 * 
+	 * @return isBallOutside
+	 */
+	public boolean isBallOutside() {
+		return isBallOutside;
+	}
+	
+    /** Ball이 회전하는 위치에 대한 여부를 설정하는 매소드 
+     * 
+     * @param isBallOutside
+     */
+	public void setBallOutside(boolean isBallOutside) {
+		this.isBallOutside = isBallOutside;
 	}
 
 	

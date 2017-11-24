@@ -39,7 +39,7 @@ public class Music extends Thread {
 	
 	/** 노래의 제목을 저장하는 필드값이다. */
 	private String name;
-
+    
 	/** 생성자를 통해 곡의 제목과 반복유무 시작위치를 받는다.
 	 * 
 	 * @param name
