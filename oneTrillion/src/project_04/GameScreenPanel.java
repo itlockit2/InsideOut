@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -22,6 +23,9 @@ import javax.swing.JPanel;
  */
 public class GameScreenPanel extends JPanel implements Runnable {
 
+	/** 게임 진행중 시야 제한 이벤트를 위한 이미지 */
+	private Image gameSightLimitImage;
+	
 	/** 뒤로가기 버튼 이미지를 담을 수 있는 객체 */
 	private ImageIcon backButtonImage;
 	/** 게임 시작 버튼 이미지를 담을 수 있는 객체 */
@@ -73,13 +77,17 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		// 쓰레드를 만들고 실행시켜준다.
 		setThread(new Thread(this));
 		// Image들 초기화
+		gameSightLimitImage =  new ImageIcon(
+				getClass().getClassLoader().getResource("images/sightLimitImage.png"))
+				.getImage();
 		backButtonImage = new ImageIcon(getClass().getClassLoader().getResource("images/backButtonImage_2.png"));
 		gamePlayButtonImage = new ImageIcon(getClass().getClassLoader().getResource("images/gamePlayButton.png"));
 		backButtonEnteredImage = new ImageIcon(
 				getClass().getClassLoader().getResource("images/backButtonEnteredImage_2.png"));
 		gamePlayButtonEnteredImage = new ImageIcon(
 				getClass().getClassLoader().getResource("images/gamePlayButtonEntered.png"));
-
+	
+		
 		// 버튼들 생성
 		backButton = new JButton(backButtonImage);
 		gamePlayButton = new JButton(gamePlayButtonImage);
@@ -299,6 +307,8 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		g2.drawOval(circle.getX(), circle.getY(), circle.getWidth(), circle.getHeight());
 		// 안이 가득 찬 원 , ball클래스에서 제어를 통해 좌표가 변경되므로 get메소드 이용 , 우리가 조종할 객체
 		g2.fillOval(ball.getX(), ball.getY(), ball.getRadius()*2, ball.getRadius()*2);
+		// 게임 시야를 가리는 이미지 
+	//	g2.drawImage(gameSightLimitImage, ball.getX() - 1280 , ball.getY() - 720 , null);
 	}
 
 	/**
