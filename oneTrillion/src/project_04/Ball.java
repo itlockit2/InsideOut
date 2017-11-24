@@ -19,7 +19,7 @@ public class Ball implements Runnable {
 	private int adjustmentDistance;
 	/** Ball이 회전하는 반지름을 나타내는 값*/
 	private int rotateRadius;
-	// Ball의 회전위치
+	/** Ball의 바깥쪽 회전 여부에 대한 boolean값 */
 	private boolean isBallOutside;
 	
 	private Circle circle;
