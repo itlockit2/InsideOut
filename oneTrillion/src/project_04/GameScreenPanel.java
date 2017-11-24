@@ -260,9 +260,9 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, fadeValue));
 		// 안티앨리어싱 , 원이 깨지지 않게 출력
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		for (int i = 0; i < 36; i++) {
+		/*for (int i = 0; i < 36; i++) {
 			g2.drawImage(obstacles.get(i).getObstacleImage(), obstacles.get(i).getX(), obstacles.get(i).getY(), null);
-		}
+		}*/
 		// 흰색으로 설정
 		g2.setColor(circle.getColor());
 		// 두께 설정
@@ -270,7 +270,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		// 속이 비어있는 원 , x좌표, y좌표, width, height
 		g2.drawOval(circle.getX(), circle.getY(), circle.getWidth(), circle.getHeight());
 		// 안이 가득 찬 원 , ball클래스에서 제어를 통해 좌표가 변경되므로 get메소드 이용 , 우리가 조종할 객체
-		g2.fillOval(ball.getX(), ball.getY(), 26, 26);
+		g2.fillOval(ball.getX(), ball.getY(), ball.getRadius()*2, ball.getRadius()*2);
 	}
 
 	/** 쓰레드를 통해 음악중지와 화면전환을 한다.
