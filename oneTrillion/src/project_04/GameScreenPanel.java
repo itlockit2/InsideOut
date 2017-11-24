@@ -61,19 +61,35 @@ public class GameScreenPanel extends JPanel implements Runnable {
 
 	/** 화면제어를 위한 객체 Frame인 InsideOut을 가지고 있어야 insideOut에 있는 패널 변경 메소드를 사용할수 있다. */
 	private InsideOut insideOut;
+	
+	private boolean isGamePlaying;
+	
+	private String musicTitle;
+	
+	private Music gameMusic;
+	
+	private String difficulty;
 
 	/**
 	 * GameScreenPanel의 생성자로 필드값들을 초기화 시켜주고, insideOut을 매개변수로 받아 화면제어를 한다
 	 * 
 	 * @param insideOut
 	 */
-	public GameScreenPanel(InsideOut insideOut) {
+	public GameScreenPanel(InsideOut insideOut, String musicTitle, String difficulty) {
 		// 프레임을 매개변수로 받아 제어한다.
 		this.insideOut = insideOut;
 		// fadeOut값을 false로 초기화 시켜문다
 		isFadeOut = false;
 		// isGameSelectScreen의 값을 false로 초기화 시켜준다.
 		isGameSelectScreen = false;
+		
+		isGamePlaying = false;
+		
+		this.musicTitle = musicTitle;
+		
+		gameMusic = new Music(musicTitle,false,0);
+		
+		this.difficulty = difficulty;
 		// 쓰레드를 만들고 실행시켜준다.
 		setThread(new Thread(this));
 		// Image들 초기화
@@ -118,7 +134,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 
 		// test
 		for (int i = 0; i < 36; i++) {
-			obstacles.add(new Obstacle(ball.getRotateRadius(), ball.getCircleX(), ball.getCircleY(), 10 * i));
+			obstacles.add(new Obstacle(ball, 10 * i, 500*i));
 			System.out.println(10 * i);
 		}
 
@@ -210,6 +226,8 @@ public class GameScreenPanel extends JPanel implements Runnable {
 				gamePlayButton.setVisible(false);
 				// 쓰레드를 실행시켜 x좌표 , y좌표 변경 시작
 				ball.getThread().start();
+				isGamePlaying = true;
+				gameMusic.start();
 			}
 		});
 
@@ -296,9 +314,10 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, fadeValue));
 		// 안티앨리어싱 , 원이 깨지지 않게 출력
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		/*for (int i = 0; i < 36; i++) {
+		for (int i = 0; i < 36; i++) {
+			if(obstacles.get(i).getTime() <= gameMusic.getTime())
 			g2.drawImage(obstacles.get(i).getObstacleImage(), obstacles.get(i).getX(), obstacles.get(i).getY(), null);
-		}*/
+		}
 		// 흰색으로 설정
 		g2.setColor(circle.getColor());
 		// 두께 설정

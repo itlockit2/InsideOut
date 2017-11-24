@@ -112,6 +112,9 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 	/** 프레임을 매개변수로 넘기기 위한 InsideOut 객체 */
 	private InsideOut insideOut;
 	
+	private String difficulty;
+	private String musicTitle;
+	
 	/** 곡 선택화면인 GameSelectScreen에 관한 구성 요소 및 정보를 담고 있는 생성자
 	 * 
 	 * @param InsideOut insideOut
@@ -262,6 +265,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 				// 노말 버튼 이벤트 처리
 				isFadeOut = true;
 				isNormalGameScreen = true;
+				difficulty = "normal";
 			}
 		});
 
@@ -291,12 +295,13 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 				challengeButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 
-			// 마우스가 practiceButton 아이콘 눌렀을때 이벤트 처리
+			// 마우스가 challengeButton 아이콘 눌렀을때 이벤트 처리
 			@Override
 			public void mousePressed(MouseEvent e) {
 				// 챌린지 버튼 이벤트 처리
 				isFadeOut = true;
 				isChallengeGameScreen = true;
+				difficulty = "challenge";
 			}
 		});
 
@@ -332,6 +337,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 				// 연습 버튼 이벤트 처리
 				isFadeOut = true;
 				isPracticeGameScreen = true;
+				difficulty = "practice";
 			}
 		});
 
@@ -452,7 +458,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 
 				} else if (isFadeOut && (isNormalGameScreen || isChallengeGameScreen || isPracticeGameScreen)) {
 					fadeOut();
-					insideOut.changeGameScreen();
+					insideOut.changeGameScreen(musicTitle, difficulty);
 					// 게임 화면으로  전환해야 하기 때문에 현재 실행하고 있는 음악을 종료한다.
 					selectedMusic.close();
 					return;
@@ -484,6 +490,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		selectedDrawY = trackList.get(nowSelected).getDrawY();
 		// Music 객체를 새로 만듦으로써 실행하고자 하는 곡을 무한 반복 시킨다.
 		selectedMusic = new Music(trackList.get(nowSelected).getStartMusic(), true, 0);
+		musicTitle = trackList.get(nowSelected).getGameMusic();
 		selectedMusic.start(); // 무한 재생
 	}
 

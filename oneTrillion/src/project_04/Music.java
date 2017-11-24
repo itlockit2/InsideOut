@@ -2,6 +2,7 @@ package project_04;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
+import java.time.Clock;
 
 import javazoom.jl.player.advanced.AdvancedPlayer;
 import javazoom.jl.player.advanced.PlaybackEvent;
@@ -40,6 +41,10 @@ public class Music extends Thread {
 	/** 노래의 제목을 저장하는 필드값이다. */
 	private String name;
     
+	private Clock clock;
+	
+	private long standardSecond;
+	
 	/** 생성자를 통해 곡의 제목과 반복유무 시작위치를 받는다.
 	 * 
 	 * @param name
@@ -47,7 +52,7 @@ public class Music extends Thread {
 	 * @param startPoint
 	 */
 	public Music(String name, boolean isLoop, int startPoint) {
-
+		clock = Clock.systemUTC();
 		try {
 			// name 초기화
 			this.name = name;
@@ -86,6 +91,7 @@ public class Music extends Thread {
 	/** 곡을 재생시킨다. */
 	@Override
 	public void run() {
+		standardSecond = clock.millis();
 		try {
 			// isLoop가 true이면 곡은 무한재생된다.
 			do {
@@ -103,6 +109,13 @@ public class Music extends Thread {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
+	}
+	public long getTime() {
+		long tempSecond = clock.millis();
+		if(standardSecond != 0)
+		return (tempSecond - standardSecond);
+		else
+			return -1;
 	}
 
 	/** AdvancedPlyaer를 리턴해줘서 다른 클래스에서 stop메소드를 통해 노래를 멈출수 있게끔 한다. 

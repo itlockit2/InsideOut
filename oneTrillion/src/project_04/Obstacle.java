@@ -3,7 +3,7 @@ package project_04;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
+import java.time.Clock;
 
 import javax.swing.ImageIcon;
 
@@ -25,6 +25,8 @@ public class Obstacle{
 	/** Thread 객체 */
 	private Thread thread;
 	
+	private long time;
+	
 	/** 원의 반지름과 원 중심의 위치를 받아오고 라디안값을 받아와서 장애물을 구현한다. 
 	 * 
 	 * @param circleRadius
@@ -32,11 +34,12 @@ public class Obstacle{
 	 * @param circleY
 	 * @param radian
 	 */
-	public Obstacle(int circleRadius, int circleX, int circleY, double radian) {
+	public Obstacle(Ball ball, double radian, int time) {
+		this.time = time;
 		obstacleImage = new ImageIcon(getClass().getClassLoader().getResource("images/obstacleImage.png")).getImage();
-		this.circleRadius = circleRadius;
-		this.circleX = circleX;
-		this.circleY = circleY;
+		this.circleRadius = ball.getRotateRadius();
+		this.circleX = ball.getCircleX();
+		this.circleY = ball.getCircleY();
 		this.radian = radian;
 		this.x =   obstacleImage.getWidth(null) /-2 + circleX + (int) (circleRadius * Math.cos(Math.toRadians(radian))  );
 		this.y =   obstacleImage.getHeight(null) /-2 + circleY + (int) (circleRadius * Math.sin(Math.toRadians(radian) )  );
@@ -81,5 +84,8 @@ public class Obstacle{
 		return obstacleImage;
 	}
 
+	public long getTime() {
+		return time;
+	}
 	
 }
