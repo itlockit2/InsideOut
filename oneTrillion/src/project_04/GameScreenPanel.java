@@ -283,9 +283,9 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		}
 	}
 
-	/**
-	 * GameScreen에 관련된 이미지를 그려주고 게임 스테이지인 원을 그려준다.
+	/** GameScreen에 관련된 이미지를 그려주고 게임 스테이지인 원을 그려준다.
 	 * 
+	 * @param g
 	 */
 	@Override
 	public void paintComponent(Graphics g) {
