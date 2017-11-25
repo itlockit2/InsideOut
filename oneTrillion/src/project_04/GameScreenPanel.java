@@ -132,10 +132,11 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		ball = new Ball(circle);
 
 		// test
-		for (int i = 0; i < 36; i++) {
-			obstacles.add(new Obstacle(ball, 10 * i, 500 * i));
-			System.out.println(10 * i);
-		}
+		
+			obstacles.add(new Obstacle(ball, -34, 608));
+			obstacles.add(new Obstacle(ball, 75, 1739));
+			obstacles.add(new Obstacle(ball, 300, 4035));
+		
 
 		/**
 		 * backButton의 마우스 이벤트를 처리해준다.
@@ -173,6 +174,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 			// 마우스가 눌려졌을 때 이벤트 처리
 			@Override
 			public void mousePressed(MouseEvent e) {
+				System.out.println("MusicTime : " + gameMusic.getTime() + "Radian : " + ball.getSize());
 				// Ball이 바깥을 돌고 있다면
 				if (ball.isBallOutside()) {
 					// Ball이 바깥을 돌고 있는 여부에 대한 설정을 false로 만든다.
@@ -304,7 +306,6 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		for (int i = 0; i < obstacles.size(); i++) {
 			if (obstacles.get(i).getTime() <= gameMusic.getTime()) {
 				if (ball.getRect().intersects(obstacles.get(i).getRect())) {
-					System.out.println(ball.getRect().intersects(obstacles.get(i).getRect()));
 					return true;
 				}
 			}
@@ -365,7 +366,6 @@ public class GameScreenPanel extends JPanel implements Runnable {
 					return;
 				}
 				if (isGameOver()) {
-					System.out.println("게임오버");
 				}
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
