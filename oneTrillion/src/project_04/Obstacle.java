@@ -2,8 +2,11 @@ package project_04;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.time.Clock;
 
 import javax.swing.ImageIcon;
 
@@ -27,6 +30,12 @@ public class Obstacle{
 	
 	private long time;
 	
+	private Rectangle2D rect;
+	
+	private Shape shape;
+	
+	private int rectX, rectY;
+	
 	/** 원의 반지름과 원 중심의 위치를 받아오고 라디안값을 받아와서 장애물을 구현한다. 
 	 * 
 	 * @param circleRadius
@@ -43,7 +52,11 @@ public class Obstacle{
 		this.radian = radian;
 		this.x =   obstacleImage.getWidth(null) /-2 + circleX + (int) (circleRadius * Math.cos(Math.toRadians(radian))  );
 		this.y =   obstacleImage.getHeight(null) /-2 + circleY + (int) (circleRadius * Math.sin(Math.toRadians(radian) )  );
+		this.rectX = obstacleImage.getWidth(null) /-2 + circleX + (int) ((circleRadius+10) * Math.cos(Math.toRadians(radian))  );
+		this.rectY = obstacleImage.getHeight(null) /-2 + circleY + (int) ((circleRadius+10) * Math.sin(Math.toRadians(radian) )  );
+		rect = new Rectangle2D.Double(rectX, rectY, obstacleImage.getWidth(null), obstacleImage.getHeight(null));
 		rotateImage(radian+90);
+		rotateRect(radian+90);
 	}
 	
 	/** 라디안을 받아와서 해당 라디안에 맞는 각도로 이미지를 회전시켜준다.
@@ -59,6 +72,30 @@ public class Obstacle{
 		this.obstacleImage = blankCanvas;
 	}
 	
+	public void rotateRect(double radian) {
+		AffineTransform at = AffineTransform.getRotateInstance(Math.toRadians(radian), rect.getCenterX(), rect.getCenterY());
+		Shape rotatedRect = at.createTransformedShape(rect);
+		this.shape = rotatedRect;
+	}
+	
+	
+	
+
+	public Shape getShape() {
+		return shape;
+	}
+
+	public void setShape(Shape shape) {
+		this.shape = shape;
+	}
+
+	public Rectangle2D getRect() {
+		return rect;
+	}
+
+	public void setRect(Rectangle2D rect) {
+		this.rect = rect;
+	}
 
 	/** 장애물의 구현위치중 x의 값을 받아온다. 
 	 * 
@@ -87,5 +124,15 @@ public class Obstacle{
 	public long getTime() {
 		return time;
 	}
+
+	public double getRadian() {
+		return radian;
+	}
+
+	public void setRadian(double radian) {
+		this.radian = radian;
+	}
+	
+	
 	
 }

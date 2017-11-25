@@ -9,6 +9,7 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -25,7 +26,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 
 	/** 게임 진행중 시야 제한 이벤트를 위한 이미지 */
 	private Image gameSightLimitImage;
-	
+
 	/** 뒤로가기 버튼 이미지를 담을 수 있는 객체 */
 	private ImageIcon backButtonImage;
 	/** 게임 시작 버튼 이미지를 담을 수 있는 객체 */
@@ -61,13 +62,13 @@ public class GameScreenPanel extends JPanel implements Runnable {
 
 	/** 화면제어를 위한 객체 Frame인 InsideOut을 가지고 있어야 insideOut에 있는 패널 변경 메소드를 사용할수 있다. */
 	private InsideOut insideOut;
-	
+
 	private boolean isGamePlaying;
-	
+
 	private String musicTitle;
-	
+
 	private Music gameMusic;
-	
+
 	private String difficulty;
 
 	/**
@@ -82,19 +83,18 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		isFadeOut = false;
 		// isGameSelectScreen의 값을 false로 초기화 시켜준다.
 		isGameSelectScreen = false;
-		
+
 		isGamePlaying = false;
-		
+
 		this.musicTitle = musicTitle;
-		
-		gameMusic = new Music(musicTitle,false,0);
-		
+
+		gameMusic = new Music(musicTitle, false, 0);
+
 		this.difficulty = difficulty;
 		// 쓰레드를 만들고 실행시켜준다.
 		setThread(new Thread(this));
 		// Image들 초기화
-		gameSightLimitImage =  new ImageIcon(
-				getClass().getClassLoader().getResource("images/sightLimitImage.png"))
+		gameSightLimitImage = new ImageIcon(getClass().getClassLoader().getResource("images/sightLimitImage.png"))
 				.getImage();
 		backButtonImage = new ImageIcon(getClass().getClassLoader().getResource("images/backButtonImage_2.png"));
 		gamePlayButtonImage = new ImageIcon(getClass().getClassLoader().getResource("images/gamePlayButton.png"));
@@ -102,8 +102,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 				getClass().getClassLoader().getResource("images/backButtonEnteredImage_2.png"));
 		gamePlayButtonEnteredImage = new ImageIcon(
 				getClass().getClassLoader().getResource("images/gamePlayButtonEntered.png"));
-	
-		
+
 		// 버튼들 생성
 		backButton = new JButton(backButtonImage);
 		gamePlayButton = new JButton(gamePlayButtonImage);
@@ -134,7 +133,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 
 		// test
 		for (int i = 0; i < 36; i++) {
-			obstacles.add(new Obstacle(ball, 10 * i, 500*i));
+			obstacles.add(new Obstacle(ball, 10 * i, 500 * i));
 			System.out.println(10 * i);
 		}
 
@@ -174,23 +173,23 @@ public class GameScreenPanel extends JPanel implements Runnable {
 			// 마우스가 눌려졌을 때 이벤트 처리
 			@Override
 			public void mousePressed(MouseEvent e) {
-			    // Ball이 바깥을 돌고 있다면 
-				if(ball.isBallOutside()) {
-					// Ball이 바깥을 돌고 있는 여부에 대한 설정을 false로 만든다. 
+				// Ball이 바깥을 돌고 있다면
+				if (ball.isBallOutside()) {
+					// Ball이 바깥을 돌고 있는 여부에 대한 설정을 false로 만든다.
 					ball.setBallOutside(false);
-					  // Circle과 Ball의 반지름을 줄여서 안쪽을 돌게 한다.
-				    ball.setRotateRadius(ball.getRotateRadius() - 25);
-			    // Ball이 안쪽을 돌고 있다면 isBallOutside가 false값이므로 else문을 실행한다.
-				}else {
-					// Ball이 바깥을 돌고 있는 여부에 대한 설정을 true로 만든다. 
+					// Circle과 Ball의 반지름을 줄여서 안쪽을 돌게 한다.
+					ball.setRotateRadius(ball.getRotateRadius() - 25);
+					// Ball이 안쪽을 돌고 있다면 isBallOutside가 false값이므로 else문을 실행한다.
+				} else {
+					// Ball이 바깥을 돌고 있는 여부에 대한 설정을 true로 만든다.
 					ball.setBallOutside(true);
-					  // Circle과 Ball을 원래대로 설정해서 원래 위치를 돌게 한다.
+					// Circle과 Ball을 원래대로 설정해서 원래 위치를 돌게 한다.
 					ball.setRotateRadius(ball.getRotateRadius() + 25);
 				}
 			}
-		
+
 		});
-        
+
 		// 마우스가 이 Listener에 집중 할 수 있게 한다.
 		setFocusable(true);
 
@@ -301,7 +300,20 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		}
 	}
 
-	/** GameScreen에 관련된 이미지를 그려주고 게임 스테이지인 원을 그려준다.
+	public boolean isGameOver() {
+		for (int i = 0; i < obstacles.size(); i++) {
+			if (obstacles.get(i).getTime() <= gameMusic.getTime()) {
+				if (ball.getRect().intersects(obstacles.get(i).getRect())) {
+					System.out.println(ball.getRect().intersects(obstacles.get(i).getRect()));
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * GameScreen에 관련된 이미지를 그려주고 게임 스테이지인 원을 그려준다.
 	 * 
 	 * @param g
 	 */
@@ -310,14 +322,19 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		super.paintComponent(g);
 		// graphics를 2D로 변경
 		Graphics2D g2 = (Graphics2D) g;
+
 		// 투명도를 조절하기 위한 부분 fadeValue 가 1.0이면 불투명도 100%, 0.1이면 불투명도가 10% 이다.
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, fadeValue));
 		// 안티앨리어싱 , 원이 깨지지 않게 출력
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		for (int i = 0; i < 36; i++) {
-			if(obstacles.get(i).getTime() <= gameMusic.getTime())
-			g2.drawImage(obstacles.get(i).getObstacleImage(), obstacles.get(i).getX(), obstacles.get(i).getY(), null);
+		for (int i = 0; i < obstacles.size(); i++) {
+			if (obstacles.get(i).getTime() <= gameMusic.getTime()) {
+				g2.drawImage(obstacles.get(i).getObstacleImage(), obstacles.get(i).getX(), obstacles.get(i).getY(),
+						null);
+				g2.draw(obstacles.get(i).getShape());
+			}
 		}
+		g2.draw(ball.getRect());
 		// 흰색으로 설정
 		g2.setColor(circle.getColor());
 		// 두께 설정
@@ -325,9 +342,11 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		// 속이 비어있는 원 , x좌표, y좌표, width, height
 		g2.drawOval(circle.getX(), circle.getY(), circle.getWidth(), circle.getHeight());
 		// 안이 가득 찬 원 , ball클래스에서 제어를 통해 좌표가 변경되므로 get메소드 이용 , 우리가 조종할 객체
-		g2.fillOval(ball.getX(), ball.getY(), ball.getRadius()*2, ball.getRadius()*2);
-		// 게임 시야를 가리는 이미지 
-	//	g2.drawImage(gameSightLimitImage, ball.getX() - 1280 , ball.getY() - 720 , null);
+		g2.fillOval(ball.getX(), ball.getY(), ball.getRadius() * 2, ball.getRadius() * 2);
+
+		// 게임 시야를 가리는 이미지
+		// g2.drawImage(gameSightLimitImage, ball.getX() - 1280 , ball.getY() - 720 ,
+		// null);
 	}
 
 	/**
@@ -344,6 +363,9 @@ public class GameScreenPanel extends JPanel implements Runnable {
 					fadeOut();
 					insideOut.changeGameSelectScreen();
 					return;
+				}
+				if (isGameOver()) {
+					System.out.println("게임오버");
 				}
 				Thread.sleep(10);
 			} catch (InterruptedException e) {

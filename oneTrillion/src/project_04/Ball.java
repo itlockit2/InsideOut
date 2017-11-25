@@ -1,5 +1,7 @@
 package project_04;
 
+import java.awt.geom.Rectangle2D;
+
 /** 플레이어가 실제로 플레이하게 되는 Ball을 제어(위치,회전 등)하기 위한 클래스
  * 
  * @author Jimin Kim
@@ -23,7 +25,10 @@ public class Ball implements Runnable {
 	private boolean isBallOutside;
 	
 	private Circle circle;
+	
+	private Rectangle2D rect;
 
+	private int rectX, rectY;
 	/** Ball의 중심좌표 값을 설정하기 위한 생성자 */
 	Ball(Circle circle) {
 		// 쓰레드를 만들고 객체에 넣어준다.
@@ -48,6 +53,7 @@ public class Ball implements Runnable {
 		circleY = circle.getY() + circleRadius;
 		// size의 값을 초기화 3시를 기준으로 0도 이므로 , 실제로 값을 계산할 땐 90도를 빼주어서 12시를 기준으로 0을 맞춰줘야 한다.
 		size = -90;
+		rect = new Rectangle2D.Double(this.getX(), this.getY(), ballRadius*2, ballRadius*2);
 
 	}
 
@@ -62,7 +68,9 @@ public class Ball implements Runnable {
 					// 계속 변경시킬 x좌표, y좌표
 					x = circleX + (int) (rotateRadius * Math.cos(radian));
 					y = circleY + (int) (rotateRadius * Math.sin(radian));
-					
+					rectX = circleX + (int) ((rotateRadius-10) * Math.cos(radian));
+					rectY = circleY + (int) ((rotateRadius-10) * Math.sin(radian));
+					rect.setRect(rectX-adjustmentDistance, rectY-adjustmentDistance, ballRadius*2, ballRadius*2);
 					// 삼각함수의 라디안 값을 통해 size를 증가시키면서 Ball을 곡이 끝날 때 까지 회전시킨다.
 					size += 1;
 					// radian 값 계산
@@ -77,6 +85,14 @@ public class Ball implements Runnable {
 	
 	
 
+
+	public Rectangle2D getRect() {
+		return rect;
+	}
+
+	public void setRect(Rectangle2D rect) {
+		this.rect = rect;
+	}
 
 	/** Ball의 x좌표를 얻어오는 getX 함수 
 	 * 
