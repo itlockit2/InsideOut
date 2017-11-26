@@ -49,8 +49,10 @@ public class GameScreenPanel extends JPanel implements Runnable {
 
 	/** 게임의 스테이지인 원의 제어를 위한 객체 */
 	private Circle circle;
-	/** 장애물 구현을 위한 객체 */
-	ArrayList<Obstacle> obstacles;
+	
+	private Beat beat;
+	
+	private ArrayList <Obstacle> obstacles;
 
 	/** fadeIn과 fadeOut 을 위한 변수 fade Value에 따라 투명도가 결정된다. */
 	private float fadeValue;
@@ -106,9 +108,20 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		// 버튼들 생성
 		backButton = new JButton(backButtonImage);
 		gamePlayButton = new JButton(gamePlayButtonImage);
+		
 
+		// 원을 위한 객체 생성
+		circle = new Circle(375, 100, 530, 530, 8, Color.WHITE);
+		
+		// x,y 좌표를 받기 위한 객체 생성
+		ball = new Ball(circle);
+        
+		ball.setSize(3);
+		
 		// 장애물 생성
-		obstacles = new ArrayList<Obstacle>();
+		beat = new Beat(ball, musicTitle);
+		
+		obstacles = beat.getObstacles();
 		// 컨테이너의 크기가 변경될때 컴포넌트들의 크기와 위치가 자동적으로 변경되는데 그걸 해제한다
 		setLayout(null);
 		// 게임창 크기 설정
@@ -126,17 +139,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		buttonSet(insideOut.getMenubarExitButton(), 1200, 0, 64, 28);
 		// 메뉴바 설정
 		add(insideOut.getMenubar());
-		// 원을 위한 객체 생성
-		circle = new Circle(375, 100, 530, 530, 8, Color.WHITE);
-		// x,y 좌표를 받기 위한 객체 생성
-		ball = new Ball(circle);
 
-		// test
-		
-			obstacles.add(new Obstacle(ball, -34, 608));
-			obstacles.add(new Obstacle(ball, 75, 1739));
-			obstacles.add(new Obstacle(ball, 300, 4035));
-		
 
 		/**
 		 * backButton의 마우스 이벤트를 처리해준다.
@@ -304,7 +307,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 
 	public boolean isGameOver() {
 		for (int i = 0; i < obstacles.size(); i++) {
-			if (obstacles.get(i).getTime() <= gameMusic.getTime()) {
+			if (obstacles.get(i).getStartTime() <= gameMusic.getTime() && gameMusic.getTime() <= obstacles.get(i).getEndTime()) {
 				if (ball.getRect().intersects(obstacles.get(i).getRect())) {
 					return true;
 				}
@@ -329,7 +332,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		// 안티앨리어싱 , 원이 깨지지 않게 출력
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		for (int i = 0; i < obstacles.size(); i++) {
-			if (obstacles.get(i).getTime() <= gameMusic.getTime()) {
+			if (obstacles.get(i).getStartTime() <= gameMusic.getTime() && gameMusic.getTime() <= obstacles.get(i).getEndTime()) {
 				g2.drawImage(obstacles.get(i).getObstacleImage(), obstacles.get(i).getX(), obstacles.get(i).getY(),
 						null);
 				g2.draw(obstacles.get(i).getShape());
@@ -363,6 +366,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 				if (isFadeOut && isGameSelectScreen) {
 					fadeOut();
 					insideOut.changeGameSelectScreen();
+					gameMusic.close();
 					return;
 				}
 				if (isGameOver()) {

@@ -28,7 +28,8 @@ public class Obstacle{
 	/** Thread 객체 */
 	private Thread thread;
 	
-	private long time;
+	private long startTime;
+	private long endTime;
 	
 	private Rectangle2D rect;
 	
@@ -43,8 +44,9 @@ public class Obstacle{
 	 * @param circleY
 	 * @param radian
 	 */
-	public Obstacle(Ball ball, double radian, int time) {
-		this.time = time;
+	public Obstacle(Ball ball, double radian, int startTime, int endTime) {
+		this.startTime = startTime;
+		this.endTime = endTime;
 		obstacleImage = new ImageIcon(getClass().getClassLoader().getResource("images/obstacleImage.png")).getImage();
 		this.circleRadius = ball.getRotateRadius();
 		this.circleX = ball.getCircleX();
@@ -121,8 +123,12 @@ public class Obstacle{
 		return obstacleImage;
 	}
 
-	public long getTime() {
-		return time;
+	public long getStartTime() {
+		return startTime;
+	}
+	
+	public long getEndTime() {
+		return endTime;
 	}
 
 	public double getRadian() {

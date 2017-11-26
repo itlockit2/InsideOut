@@ -57,6 +57,7 @@ public class Ball implements Runnable {
 		size = -90;
 		rect = new Rectangle2D.Double(this.getX(), this.getY(), ballRadius * 2, ballRadius * 2);
 
+		
 	}
 
 	/**
@@ -85,7 +86,7 @@ public class Ball implements Runnable {
 
 				}
 				// 삼각함수의 라디안 값을 통해 size를 증가시키면서 Ball을 곡이 끝날 때 까지 회전시킨다.
-				size += 1;
+				size += 1.0;
 				// radian 값 계산
 				radian = size / 180 * Math.PI;
 				Thread.sleep(10);
@@ -203,6 +204,14 @@ public class Ball implements Runnable {
 	 */
 	public double getSize() {
 		return size;
+	}
+	
+	/** Ball의 size를 설정하는 함수
+	 * 
+	 * @param size
+	 */
+	public void setSize(double size) {
+		this.size = size;
 	}
 
 	/**

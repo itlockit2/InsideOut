@@ -140,17 +140,20 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		
 		// 현재 선택되어진 곡의 인덱스, ArrayList 인덱스는 0번부터 시작하므로 처음 넣어준 곡의 인덱스인 0부터 시작하도록 하였다.
 		nowSelected = 0;
-
+		
 		// trackList를 통해 원하는 곡과 화면을 구현 
 		// 시작 트랙
 		trackList.add(new Track("SunburstTitleImage.png", "sunburstGameselectImage_2.png", 
 				"Tobu & Itro - Sunburst_Highlight.mp3", "Tobu & Itro - Sunburst.mp3", 420 , 180));
+		
 		// 1번 트랙
 		trackList.add(new Track("BadNewsTitleImage.png", "BadNewsImage.png",
 				"BadNewsHighLight.mp3", "Lock N Bounce - Bad News.mp3", 375 , 180));
+		
 		// 2번 트랙 
 		trackList.add(new Track("HeartBeatTitleImage.png", "HeartBeatImage.png",
 				"HeartBeatHighLight.mp3", "Krale - Heartbeat,mp3" , 375 , 170));
+		
 
 		// Main 클래스의 위치를 기반으로 해서 Resource를 얻어서 그것의 이미지값을 변수에 대입시켜준다.
 		gameSelectBackGround = new ImageIcon(
@@ -490,7 +493,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		selectedDrawY = trackList.get(nowSelected).getDrawY();
 		// Music 객체를 새로 만듦으로써 실행하고자 하는 곡을 무한 반복 시킨다.
 		selectedMusic = new Music(trackList.get(nowSelected).getStartMusic(), true, 0);
-		musicTitle = trackList.get(nowSelected).getGameMusic();
+		musicTitle = trackList.get(nowSelected).getStartMusic();
 		selectedMusic.start(); // 무한 재생
 	}
 
