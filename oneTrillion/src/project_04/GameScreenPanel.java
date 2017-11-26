@@ -70,15 +70,19 @@ public class GameScreenPanel extends JPanel implements Runnable {
 	private String musicTitle;
 
 	private Music gameMusic;
+	/** music이 종료되고 노래 선택화면으로 돌아가기 위한 지점을 위해 long값을 얻어온다. */
+	private long closedMusicTime;
 
 	private String difficulty;
+	
+	private int MusicTime ;
 
 	/**
 	 * GameScreenPanel의 생성자로 필드값들을 초기화 시켜주고, insideOut을 매개변수로 받아 화면제어를 한다
 	 * 
 	 * @param insideOut
 	 */
-	public GameScreenPanel(InsideOut insideOut, String musicTitle, String difficulty, double gameSpeed) {
+	public GameScreenPanel(InsideOut insideOut, String musicTitle, String difficulty, double gameSpeed, long closedMusicTime) {
 		// 프레임을 매개변수로 받아 제어한다.
 		this.insideOut = insideOut;
 		// fadeOut값을 false로 초기화 시켜문다
@@ -91,8 +95,11 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		this.musicTitle = musicTitle;
 
 		gameMusic = new Music(musicTitle, false, 0);
-
+   
 		this.difficulty = difficulty;
+	   	
+		this.closedMusicTime = closedMusicTime;
+ 
 		// 쓰레드를 만들고 실행시켜준다.
 		setThread(new Thread(this));
 		// Image들 초기화
@@ -367,6 +374,12 @@ public class GameScreenPanel extends JPanel implements Runnable {
 					gameMusic.close();
 					return;
 				}
+				else if( closedMusicTime == gameMusic.getTime() ) {
+					fadeOut();
+					insideOut.changeGameSelectScreen();
+					return;
+				}
+			
 				if (isGameOver()) {
 				}
 				Thread.sleep(10);

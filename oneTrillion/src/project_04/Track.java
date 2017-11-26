@@ -21,6 +21,8 @@ public class Track {
 	
 	private double gameSpeed;
 	
+	private long closedMusicTime;
+	
 	/** titleImage의 이름, StartImage의 이름, startMusic의 이름 gameMusic의 이름, 곡제목을 출력시킬 drawX, drawY값을 생성자로 받아 초기화시켜준다. 
 	 * 
 	 * @param titleImage
@@ -30,7 +32,7 @@ public class Track {
 	 * @param drawX
 	 * @param drawY
 	 */
-	public Track(String titleImage, String startImage, String startMusic, String gameMusic, int drawX, int drawY, double gameSpeed) {
+	public Track(String titleImage, String startImage, String startMusic, String gameMusic, int drawX, int drawY, double gameSpeed, long closedMusicTime) {
 		super();
 	    this.titleImage = titleImage;
 		this.startImage = startImage;
@@ -39,8 +41,9 @@ public class Track {
 		this.drawX = drawX;
 		this.drawY = drawY;
 		this.gameSpeed = gameSpeed;
+		this.closedMusicTime = closedMusicTime;
 	}
-	
+
 	/** titleImage의 이름 반환한다.
 	 * 
 	 * @return titleImage
@@ -91,5 +94,13 @@ public class Track {
 	public void setGameSpeed(double gameSpeed) {
 		this.gameSpeed = gameSpeed;
 	}	
+	
+	public long getClosedMusicTime() {
+		return closedMusicTime;
+	}
+
+	public void setClosedMusicTime(long closedMusicTime) {
+		this.closedMusicTime = closedMusicTime;
+	}
 	
 }

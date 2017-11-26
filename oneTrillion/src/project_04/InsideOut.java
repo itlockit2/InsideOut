@@ -175,11 +175,11 @@ public class InsideOut extends JFrame {
 	}
     
 	/** GameScreen(플레이어가 플레이 하게 되는 화면)으로 이동하기 위한 함수 */
-	public void changeGameScreen(String musicTitle, String difficulty, double gameSpeed) {
+	public void changeGameScreen(String musicTitle, String difficulty, double gameSpeed, long closedMusicTime) {
 		// 현재 실행되고 있는 모든 판넬을 제거한다.
 		contentpane.removeAll();
 		// 새롭게 GameScreen 판넬 객체를 만들어서 생성자를 실행
-		gameScreenPanel = new GameScreenPanel(this, musicTitle, difficulty, gameSpeed);
+		gameScreenPanel = new GameScreenPanel(this, musicTitle, difficulty, gameSpeed, closedMusicTime);
 		// Panel을 추가해준다.
 		contentpane.add(gameScreenPanel);
 		// gameScreenPanel의 Thread 실행
