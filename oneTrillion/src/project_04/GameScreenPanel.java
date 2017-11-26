@@ -75,7 +75,6 @@ public class GameScreenPanel extends JPanel implements Runnable {
 
 	private String difficulty;
 	
-	private int MusicTime ;
 
 	/**
 	 * GameScreenPanel의 생성자로 필드값들을 초기화 시켜주고, insideOut을 매개변수로 받아 화면제어를 한다
@@ -374,7 +373,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 					gameMusic.close();
 					return;
 				}
-				else if( closedMusicTime == gameMusic.getTime() ) {
+				else if( closedMusicTime <= gameMusic.getTime() ) {
 					fadeOut();
 					insideOut.changeGameSelectScreen();
 					return;

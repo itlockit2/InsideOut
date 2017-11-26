@@ -150,11 +150,11 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		
 		// 1번 트랙
 		trackList.add(new Track("BadNewsTitleImage.png", "BadNewsImage.png",
-				"BadNewsHighLight.mp3", "Lock N Bounce - Bad News.mp3", 375 , 180,1.5, 34485));
+				"BadNewsHighLight.mp3", "Lock N Bounce - Bad News.mp3", 375 , 180,1.5, 32830));
 		
 		// 2번 트랙 
 		trackList.add(new Track("HeartBeatTitleImage.png", "HeartBeatImage.png",
-				"HeartBeatHighLight.mp3", "Krale - Heartbeat,mp3" , 375 , 170,3, 24666));
+				"HeartBeatHighLight.mp3", "Krale - Heartbeat,mp3" , 375 , 170,3, 24200));
 		
 
 		// Main 클래스의 위치를 기반으로 해서 Resource를 얻어서 그것의 이미지값을 변수에 대입시켜준다.
