@@ -44,10 +44,10 @@ public class Obstacle{
 	 * @param circleY
 	 * @param radian
 	 */
-	public Obstacle(Ball ball, double radian, int startTime, int endTime) {
+	public Obstacle(Ball ball, double radian, int startTime, int endTime, String location) {
 		this.startTime = startTime;
 		this.endTime = endTime;
-		obstacleImage = new ImageIcon(getClass().getClassLoader().getResource("images/obstacleImage.png")).getImage();
+		obstacleImage = new ImageIcon(getClass().getClassLoader().getResource("images/obstacle "+ location +"Image.png")).getImage();
 		this.circleRadius = ball.getRotateRadius();
 		this.circleX = ball.getCircleX();
 		this.circleY = ball.getCircleY();

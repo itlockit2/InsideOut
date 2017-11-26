@@ -14,9 +14,9 @@ public class Beat {
 		// size 1
 		if (musicTitle.equals("Tobu & Itro - Sunburst_Highlight.mp3")) {
 		
-		obstacles.add(new Obstacle(ball, -20, 0, 1850)); // 바깥
+		obstacles.add(new Obstacle(ball, -20, 0, 1850,"Up")); // 바깥
 		obstacles.add(new Obstacle(ball, 15, 0, 1850)); // 안
-		obstacles.add(new Obstacle(ball, 55, 0, 1850)); // 바깥
+		obstacles.add(new Obstacle(ball, 55, 0, 1850,"Down")); // 바깥
 		
 		obstacles.add(new Obstacle(ball, 95, 145, 3850)); // 바깥
 		obstacles.add(new Obstacle(ball, 140, 145, 3850)); // 안
