@@ -52,7 +52,12 @@ public class GameScreenPanel extends JPanel implements Runnable {
 	
 	private Beat beat;
 	
+	private Event event;
+	
 	private ArrayList <Obstacle> obstacles;
+	
+	private ArrayList<SavePoint> savePoints;
+	
 
 	/** fadeIn과 fadeOut 을 위한 변수 fade Value에 따라 투명도가 결정된다. */
 	private float fadeValue;
@@ -125,7 +130,14 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		// 장애물 생성
 		beat = new Beat(ball, musicTitle);
 		
+		event = new Event(musicTitle);
+		
+		savePoints = event.getSavePoint();
+		
 		obstacles = beat.getObstacles();
+		
+		// 이벤트 생성
+		
 		// 컨테이너의 크기가 변경될때 컴포넌트들의 크기와 위치가 자동적으로 변경되는데 그걸 해제한다
 		setLayout(null);
 		// 게임창 크기 설정
@@ -181,7 +193,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 			// 마우스가 눌려졌을 때 이벤트 처리
 			@Override
 			public void mousePressed(MouseEvent e) {
-				System.out.println("MusicTime : " + gameMusic.getTime() + "Radian : " + ball.getSize());
+				System.out.println("x좌표 : " + e.getX() + "y좌표 : " + e.getY());
 				// Ball이 바깥을 돌고 있다면
 				if (ball.isBallOutside()) {
 					// Ball이 바깥을 돌고 있는 여부에 대한 설정을 false로 만든다.
@@ -335,6 +347,14 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, fadeValue));
 		// 안티앨리어싱 , 원이 깨지지 않게 출력
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+		for(int i = 0; i < savePoints.size() ; i++) {
+			if(savePoints.get(i).getStartTime() <= gameMusic.getTime()) {
+				g2.drawImage(savePoints.get(i).getSavePointImage(),savePoints.get(i).getX(),savePoints.get(i).getY(),150,150,null);
+				g2.draw(savePoints.get(i).getRect());
+			}
+		}
+		
 		for (int i = 0; i < obstacles.size(); i++) {
 			if (obstacles.get(i).getStartTime() <= gameMusic.getTime() && gameMusic.getTime() <= obstacles.get(i).getEndTime()) {
 				g2.drawImage(obstacles.get(i).getObstacleImage(), obstacles.get(i).getX(), obstacles.get(i).getY(),
@@ -352,6 +372,8 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		// 안이 가득 찬 원 , ball클래스에서 제어를 통해 좌표가 변경되므로 get메소드 이용 , 우리가 조종할 객체
 		g2.fillOval(ball.getX(), ball.getY(), ball.getRadius() * 2, ball.getRadius() * 2);
 
+
+		
 		// 게임 시야를 가리는 이미지
 		// g2.drawImage(gameSightLimitImage, ball.getX() - 1280 , ball.getY() - 720 ,
 		// null);
@@ -380,6 +402,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 				}
 			
 				if (isGameOver()) {
+					System.out.println("Game Over");
 				}
 				Thread.sleep(10);
 			} catch (InterruptedException e) {

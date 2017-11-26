@@ -26,9 +26,6 @@ public class Obstacle {
 	/** Ball 객체의 반지름 값 */
 	private double radian;
 
-	/** Thread 객체 */
-	private Thread thread;
-
 	private long startTime;
 	private long endTime;
 
@@ -62,10 +59,17 @@ public class Obstacle {
 		this.radian = radian;
 		this.x = obstacleImage.getWidth(null) / -2 + circleX + (int) (circleRadius * Math.cos(Math.toRadians(radian)));
 		this.y = obstacleImage.getHeight(null) / -2 + circleY + (int) (circleRadius * Math.sin(Math.toRadians(radian)));
+		if(location.equals("Up")) {
 		this.rectX = obstacleImage.getWidth(null) / -2 + circleX
 				+ (int) ((circleRadius + 10) * Math.cos(Math.toRadians(radian)));
 		this.rectY = obstacleImage.getHeight(null) / -2 + circleY
 				+ (int) ((circleRadius + 10) * Math.sin(Math.toRadians(radian)));
+		} else {
+			this.rectX = obstacleImage.getWidth(null) / -2 + circleX
+					+ (int) ((circleRadius - 10) * Math.cos(Math.toRadians(radian)));
+			this.rectY = obstacleImage.getHeight(null) / -2 + circleY
+					+ (int) ((circleRadius - 10) * Math.sin(Math.toRadians(radian)));
+		}
 		rect = new Rectangle2D.Double(rectX, rectY, obstacleImage.getWidth(null), obstacleImage.getHeight(null));
 		rotateImage(radian + 90);
 		rotateRect(radian + 90);
