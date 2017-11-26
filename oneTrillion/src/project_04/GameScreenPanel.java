@@ -342,7 +342,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		// 두께 설정
 		g2.setStroke(circle.getStroke());
 		// 속이 비어있는 원 , x좌표, y좌표, width, height
-		g2.drawOval(circle.getX(), circle.getY(), circle.getWidth()+100, circle.getHeight()+100);
+		g2.drawOval(circle.getX(), circle.getY(), circle.getWidth(), circle.getHeight());
 		// 안이 가득 찬 원 , ball클래스에서 제어를 통해 좌표가 변경되므로 get메소드 이용 , 우리가 조종할 객체
 		g2.fillOval(ball.getX(), ball.getY(), ball.getRadius() * 2, ball.getRadius() * 2);
 
