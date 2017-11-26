@@ -50,7 +50,7 @@ public class Obstacle {
 		this.startTime = startTime;
 		this.endTime = endTime;
 		obstacleImage = new ImageIcon(
-				getClass().getClassLoader().getResource("images/obstacle " + location + "Image.png")).getImage();
+				getClass().getClassLoader().getResource("images/obstacle" + location + "Image.png")).getImage();
 		if (location.equals("Up")) {
 			this.circleRadius = ball.getRotateRadius();
 		} else {
