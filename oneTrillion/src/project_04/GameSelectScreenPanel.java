@@ -114,6 +114,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 	
 	private String difficulty;
 	private String musicTitle;
+	private double gameSpeed;
 	
 	/** 곡 선택화면인 GameSelectScreen에 관한 구성 요소 및 정보를 담고 있는 생성자
 	 * 
@@ -144,15 +145,15 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		// trackList를 통해 원하는 곡과 화면을 구현 
 		// 시작 트랙
 		trackList.add(new Track("SunburstTitleImage.png", "sunburstGameselectImage_2.png", 
-				"Tobu & Itro - Sunburst_Highlight.mp3", "Tobu & Itro - Sunburst.mp3", 420 , 180));
+				"Tobu & Itro - Sunburst_Highlight.mp3", "Tobu & Itro - Sunburst.mp3", 420 , 180,1));
 		
 		// 1번 트랙
 		trackList.add(new Track("BadNewsTitleImage.png", "BadNewsImage.png",
-				"BadNewsHighLight.mp3", "Lock N Bounce - Bad News.mp3", 375 , 180));
+				"BadNewsHighLight.mp3", "Lock N Bounce - Bad News.mp3", 375 , 180,1.5));
 		
 		// 2번 트랙 
 		trackList.add(new Track("HeartBeatTitleImage.png", "HeartBeatImage.png",
-				"HeartBeatHighLight.mp3", "Krale - Heartbeat,mp3" , 375 , 170));
+				"HeartBeatHighLight.mp3", "Krale - Heartbeat,mp3" , 375 , 170,3));
 		
 
 		// Main 클래스의 위치를 기반으로 해서 Resource를 얻어서 그것의 이미지값을 변수에 대입시켜준다.
@@ -461,7 +462,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 
 				} else if (isFadeOut && (isNormalGameScreen || isChallengeGameScreen || isPracticeGameScreen)) {
 					fadeOut();
-					insideOut.changeGameScreen(musicTitle, difficulty);
+					insideOut.changeGameScreen(musicTitle, difficulty,gameSpeed);
 					// 게임 화면으로  전환해야 하기 때문에 현재 실행하고 있는 음악을 종료한다.
 					selectedMusic.close();
 					return;
@@ -494,6 +495,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		// Music 객체를 새로 만듦으로써 실행하고자 하는 곡을 무한 반복 시킨다.
 		selectedMusic = new Music(trackList.get(nowSelected).getStartMusic(), true, 0);
 		musicTitle = trackList.get(nowSelected).getStartMusic();
+		gameSpeed = trackList.get(nowSelected).getGameSpeed();
 		selectedMusic.start(); // 무한 재생
 	}
 

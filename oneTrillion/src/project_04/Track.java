@@ -19,6 +19,8 @@ public class Track {
 	/** 곡 제목이 출력되는 위치가 저장되어 있는 y값  */
 	private int drawY;
 	
+	private double gameSpeed;
+	
 	/** titleImage의 이름, StartImage의 이름, startMusic의 이름 gameMusic의 이름, 곡제목을 출력시킬 drawX, drawY값을 생성자로 받아 초기화시켜준다. 
 	 * 
 	 * @param titleImage
@@ -28,7 +30,7 @@ public class Track {
 	 * @param drawX
 	 * @param drawY
 	 */
-	public Track(String titleImage, String startImage, String startMusic, String gameMusic, int drawX, int drawY) {
+	public Track(String titleImage, String startImage, String startMusic, String gameMusic, int drawX, int drawY, double gameSpeed) {
 		super();
 	    this.titleImage = titleImage;
 		this.startImage = startImage;
@@ -36,6 +38,7 @@ public class Track {
 		this.gameMusic = gameMusic;
 		this.drawX = drawX;
 		this.drawY = drawY;
+		this.gameSpeed = gameSpeed;
 	}
 	
 	/** titleImage의 이름 반환한다.
@@ -80,6 +83,13 @@ public class Track {
 	public int getDrawY() {
 		return drawY;
 	}
-	
+
+	public double getGameSpeed() {
+		return gameSpeed;
+	}
+
+	public void setGameSpeed(double gameSpeed) {
+		this.gameSpeed = gameSpeed;
+	}	
 	
 }

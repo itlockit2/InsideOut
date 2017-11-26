@@ -30,13 +30,17 @@ public class Ball implements Runnable {
 	private Rectangle2D rect;
 
 	private int rectX, rectY;
+	
+	private double speed;
 
 	/** Ball의 중심좌표 값을 설정하기 위한 생성자 */
-	Ball(Circle circle) {
+	Ball(Circle circle, double speed) {
 		// 쓰레드를 만들고 객체에 넣어준다.
 		setThread(new Thread(this));
 
 		this.circle = circle;
+		
+		this.speed = speed;
 		//
 		isBallOutside = true;
 		// Ball의 중심좌표 즉, 처음 시작좌표 x, y
@@ -86,7 +90,7 @@ public class Ball implements Runnable {
 
 				}
 				// 삼각함수의 라디안 값을 통해 size를 증가시키면서 Ball을 곡이 끝날 때 까지 회전시킨다.
-				size += 1.0;
+				size += speed;
 				// radian 값 계산
 				radian = size / 180 * Math.PI;
 				Thread.sleep(10);

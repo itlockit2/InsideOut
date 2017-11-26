@@ -78,7 +78,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 	 * 
 	 * @param insideOut
 	 */
-	public GameScreenPanel(InsideOut insideOut, String musicTitle, String difficulty) {
+	public GameScreenPanel(InsideOut insideOut, String musicTitle, String difficulty, double gameSpeed) {
 		// 프레임을 매개변수로 받아 제어한다.
 		this.insideOut = insideOut;
 		// fadeOut값을 false로 초기화 시켜문다
@@ -114,9 +114,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		circle = new Circle(375, 100, 530, 530, 8, Color.WHITE);
 		
 		// x,y 좌표를 받기 위한 객체 생성
-		ball = new Ball(circle);
-        
-		ball.setSize(3);
+		ball = new Ball(circle, gameSpeed);
 		
 		// 장애물 생성
 		beat = new Beat(ball, musicTitle);

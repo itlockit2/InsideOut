@@ -72,7 +72,6 @@ public class Beat {
 		
 		// size 1.5
 		else if (musicTitle.equals("BadNewsHighLight.mp3")) {
-			ball.setSize(1.5); 
 			
 			obstacles.add(new Obstacle(ball, 10, 0, 1176)); // 바깥
 			
