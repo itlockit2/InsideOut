@@ -87,7 +87,6 @@ public class GameScreenPanel extends JPanel implements Runnable {
 
 	private String difficulty;
 	
-
 	/**
 	 * GameScreenPanel의 생성자로 필드값들을 초기화 시켜주고, insideOut을 매개변수로 받아 화면제어를 한다
 	 * 
@@ -257,7 +256,9 @@ public class GameScreenPanel extends JPanel implements Runnable {
 				gameMusic.start();
 			}
 		});
-
+		
+		//TEST
+		System.out.println("MusicTitle" + musicTitle);
 	}
 
 	/**
@@ -331,11 +332,11 @@ public class GameScreenPanel extends JPanel implements Runnable {
 	public boolean isGameOver() {
 		for (int i = 0; i < obstacles.size(); i++) {
 			if (obstacles.get(i).getStartTime() <= gameMusic.getTime() && gameMusic.getTime() <= obstacles.get(i).getEndTime()) {
-				if (ball.getRect().intersects(obstacles.get(i).getRect())) {
+				if (ball.getRect().intersects(obstacles.get(i).getRect()) && !difficulty.equals("practice")) {
 					gameMusic.close();
 					gameMusic = new Music(musicTitle, false, (int)startPoint);
-					gameMusic.start();
 					ball.setSize(ballRadian);
+					gameMusic.start();
 					return true;
 				}
 			}
@@ -347,10 +348,13 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		for(int i = 0 ; i < savePoints.size() ; i++) {
 			if(savePoints.get(i).getStartTime() <= gameMusic.getTime() && gameMusic.getTime() <= savePoints.get(i).getEndTime()) {
 				if(ball.getRect().intersects(savePoints.get(i).getRect())) {
+					System.out.println("Save Point 이벤트가 발생");
 					savePoints.get(i).setEndTime(gameMusic.getTime());
 					System.out.println(savePoints.get(i).getEndTime());
 					ballRadian = ball.getSize();
 					startPoint = gameMusic.getTime();
+					System.out.println("startPoint ->" +  startPoint);
+					System.out.println("saveBallRadian ->" +  ballRadian);
 				}
 			}
 		}
@@ -422,6 +426,8 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		fadeIn();
 		while (true) {
 			repaint();
+			System.out.println("MusicTime -> " + gameMusic.getTime());
+			System.out.println("ball radian -> " + ball.getSize());
 			try {
 				saveEvent();
 				if (isFadeOut && isGameSelectScreen) {
@@ -436,15 +442,11 @@ public class GameScreenPanel extends JPanel implements Runnable {
 					return;
 				}
 			
-				if (isGameOver() && !difficulty.equals("practice")) {
-					if(difficulty.equals("challenge")) {
+				if (isGameOver() && difficulty.equals("challenge")) {
 						fadeOut();
 						insideOut.changeGameSelectScreen();
 						gameMusic.close();
 						return;
-					} else {
-						//savePointEvent
-					}
 				}
 				
 				Thread.sleep(10);

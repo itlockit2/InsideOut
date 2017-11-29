@@ -1,23 +1,33 @@
 package project_04;
 
 import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.Shape;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.font.FontRenderContext;
+import java.awt.font.TextLayout;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-/** 플레이 할 곡의 선택 화면에 대한 정보를 담고있는 클래스
- *  
- *  @author Jimin Kim
- *  @version 0.4
+/**
+ * 플레이 할 곡의 선택 화면에 대한 정보를 담고있는 클래스
+ * 
+ * @author Jimin Kim
+ * @version 0.4
  */
 
 public class GameSelectScreenPanel extends JPanel implements Runnable {
@@ -25,7 +35,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 	/** 곡 선택 화면의 배경 이미지를 담는 객체 */
 	private Image gameSelectBackGround;
 	/** 곡 선택 화면의 현재 선택 된 음악 이미지를 담는 객체 */
-	private Image selectedImage; 
+	private Image selectedImage;
 	/** 곡 선택 화면의 현재 선택 된 타이틀 이미지를 담는 객체 */
 	private Image selectedTitleImage;
 	/** 타이틀 이미지의 위치를 조정하기 위한 X좌표 변수 */
@@ -84,7 +94,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 	/** practice JButton 객체 구현 */
 	private JButton practiceButton = new JButton(practiceButtonImage);
 
-	/** 화면 전환과 실행되는 Music의 제어를 위한 Thread 객체*/
+	/** 화면 전환과 실행되는 Music의 제어를 위한 Thread 객체 */
 	private Thread thread;
 
 	/** fadeIn과 밝기 조절을 위한 변수 */
@@ -100,28 +110,54 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 	private boolean isChallengeGameScreen;
 	/** PracticeGameScreen 전환을 제어할 boolean변수 */
 	private boolean isPracticeGameScreen;
-    
+
 	/** 하나의 곡에 대한 정보를 담기위한 ArrayList 객체 */
 	private ArrayList<Track> trackList = new ArrayList<Track>();
 
 	/** 현재 선택된 곡을 설정해주기 위한 변수 */
-	private int nowSelected ;
+	private int nowSelected;
 	/** 곡 선택 화면에서 현재 선택한 음악을 담기 위한 객체 */
 	private Music selectedMusic;
 
 	/** 프레임을 매개변수로 넘기기 위한 InsideOut 객체 */
 	private InsideOut insideOut;
-	
+
 	private String difficulty;
 	private String musicTitle;
 	private double gameSpeed;
 	private long closedMusicTime;
-	
-	/** 곡 선택화면인 GameSelectScreen에 관한 구성 요소 및 정보를 담고 있는 생성자
+	private double normalProgress;
+	private double challengeProgress;
+
+	FontRenderContext frc;
+	Font f;
+	TextLayout textLayout;
+	AffineTransform transform = new AffineTransform();
+	Shape outline;
+	Rectangle outlineBounds;
+
+	/**
+	 * 곡 선택화면인 GameSelectScreen에 관한 구성 요소 및 정보를 담고 있는 생성자
 	 * 
-	 * @param InsideOut insideOut
+	 * @param InsideOut
+	 *            insideOut
 	 */
 	GameSelectScreenPanel(InsideOut insideOut) {
+		// trackList를 통해 원하는 곡과 화면을 구현
+		// 시작 트랙
+		trackList.add(new Track("SunburstTitleImage.png", "sunburstGameselectImage_2.png",
+				"Tobu & Itro - Sunburst_Highlight.mp3", "Tobu & Itro - Sunburst.mp3", 420, 180, 1, 17970));
+
+		// 1번 트랙
+		trackList.add(new Track("BadNewsTitleImage.png", "BadNewsImage.png", "BadNewsHighLight.mp3",
+				"Lock N Bounce - Bad News.mp3", 375, 180, 1.5, 32830));
+
+		// 2번 트랙
+		trackList.add(new Track("HeartBeatTitleImage.png", "HeartBeatImage.png", "HeartBeatHighLight.mp3",
+				"Krale - Heartbeat,mp3", 375, 170, 3, 24200));
+		// 선택할 곡을 보여주고 들려준다. 인덱스인 nowSelected값에 따라 곡 변경이 가능함
+		selectTrack(nowSelected);
+
 		// 프레임을 매개변수로 받아 제어한다.
 		this.insideOut = insideOut;
 		// fadeOut값을 false로 초기화 시켜문다
@@ -139,28 +175,13 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		setBackground(Color.BLACK);
 		// 화면 출력 설정 기본값은 false 이므로 설정 해줘야한다.
 		setVisible(true);
-		
+
 		// 현재 선택되어진 곡의 인덱스, ArrayList 인덱스는 0번부터 시작하므로 처음 넣어준 곡의 인덱스인 0부터 시작하도록 하였다.
 		nowSelected = 0;
-		
-		// trackList를 통해 원하는 곡과 화면을 구현 
-		// 시작 트랙
-		trackList.add(new Track("SunburstTitleImage.png", "sunburstGameselectImage_2.png", 
-				"Tobu & Itro - Sunburst_Highlight.mp3", "Tobu & Itro - Sunburst.mp3", 420 , 180, 1 , 17970));
-		
-		// 1번 트랙
-		trackList.add(new Track("BadNewsTitleImage.png", "BadNewsImage.png",
-				"BadNewsHighLight.mp3", "Lock N Bounce - Bad News.mp3", 375 , 180,1.5, 32830));
-		
-		// 2번 트랙 
-		trackList.add(new Track("HeartBeatTitleImage.png", "HeartBeatImage.png",
-				"HeartBeatHighLight.mp3", "Krale - Heartbeat,mp3" , 375 , 170,3, 24200));
-		
 
 		// Main 클래스의 위치를 기반으로 해서 Resource를 얻어서 그것의 이미지값을 변수에 대입시켜준다.
 		gameSelectBackGround = new ImageIcon(
 				getClass().getClassLoader().getResource("images/gameSelectScreenImage_2.png")).getImage();
-
 
 		// 메뉴바 exitButton 설정
 		buttonSet(insideOut.getMenubarExitButton(), 1200, 0, 64, 28);
@@ -168,9 +189,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		add(insideOut.getMenubar());
 		// leftButton의 위치 설정
 		buttonSet(leftButton, 100, 310, 120, 120); // 73, 98 (원래 크기)
-		// 선택할 곡을 보여주고 들려준다. 인덱스인 nowSelected값에 따라 곡 변경이 가능함 
-		selectTrack(nowSelected);
-
+		
 
 		/**
 		 * leftButton의 마우스 이벤트를 처리해준다.
@@ -382,11 +401,12 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 
 	}
 
-	/** fadeIn 효과를 설정하기 위한 함수
+	/**
+	 * fadeIn 효과를 설정하기 위한 함수
 	 * 
-	 * temp를 사용한 이유는 fadeIn값이 1.0을 넘어가면 에러가 발생한다.
-	 * 하지만 float연산 특성상 0.1씩 10번 증가시키면 1.0이 아니라 1.000001이 되기 때문에 에러가 발생한다.
-	 * 따라서 temp를 증가시키고 fadeIn에 대입시키는 방식을 사용한다. 여기서 temp가 1보다 커지면 temp를 1로 설정하고 대입시켜준다.
+	 * temp를 사용한 이유는 fadeIn값이 1.0을 넘어가면 에러가 발생한다. 하지만 float연산 특성상 0.1씩 10번 증가시키면
+	 * 1.0이 아니라 1.000001이 되기 때문에 에러가 발생한다. 따라서 temp를 증가시키고 fadeIn에 대입시키는 방식을 사용한다.
+	 * 여기서 temp가 1보다 커지면 temp를 1로 설정하고 대입시켜준다.
 	 */
 	public void fadeIn() {
 		try {
@@ -405,12 +425,13 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 			e.printStackTrace();
 		}
 	}
-	
-	/** fadeOut 효과를 설정하기 위한 함수
+
+	/**
+	 * fadeOut 효과를 설정하기 위한 함수
 	 * 
 	 * 마찬가지로, float연산의 특성상 0이하로 내려가게 되면 0이 아닌 값이 나오기 때문에 0보다 작아지면 0으로 설정한다.
 	 */
-    public void fadeOut() {
+	public void fadeOut() {
 		try {
 			float temp = 1.0f;
 			fadeValue = 1.0f;
@@ -427,12 +448,13 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 			e.printStackTrace();
 		}
 	}
-    
-    /** GameSelectScreen의 곡에 관한 이미지를 그려주거나 투명도를 조정해 주는 paint함수 
-     * 
-     * @param g
-     * */
-   	@Override
+
+	/**
+	 * GameSelectScreen의 곡에 관한 이미지를 그려주거나 투명도를 조정해 주는 paint함수
+	 * 
+	 * @param g
+	 */
+	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		// graphics를 2D로 변경
@@ -445,9 +467,17 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		g2.drawImage(selectedTitleImage, selectedDrawX, selectedDrawY, null);
 		// 현재 진행률을 나타내기 위한 원을 그려줌
 		g2.drawImage(gameSelectBackGround, 0, 0, null);
+
+		// 안티앨리어싱 , 글자가 깨지지 않게 출력
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        
+		g2.setColor(Color.BLACK);
+		g2.setFont(new Font("Alien Encounters", Font.BOLD, 50));
+		g2.drawString(String.valueOf(normalProgress) + "%", 435, 500);
+		g2.drawString(String.valueOf(challengeProgress) + "%", 740, 500);
 	}
 
-	  /** 곡 선택 화면(GameSelectScreen)의 Thread가 실행 될 시 수행되는 함수 */
+	/** 곡 선택 화면(GameSelectScreen)의 Thread가 실행 될 시 수행되는 함수 */
 	@Override
 	public void run() {
 		fadeIn();
@@ -464,7 +494,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 				} else if (isFadeOut && (isNormalGameScreen || isChallengeGameScreen || isPracticeGameScreen)) {
 					fadeOut();
 					insideOut.changeGameScreen(musicTitle, difficulty, gameSpeed, closedMusicTime);
-					// 게임 화면으로  전환해야 하기 때문에 현재 실행하고 있는 음악을 종료한다.
+					// 게임 화면으로 전환해야 하기 때문에 현재 실행하고 있는 음악을 종료한다.
 					selectedMusic.close();
 					return;
 				}
@@ -476,29 +506,35 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 
 	}
 
-	  /** 자신이 플레이 하고 싶은 곡을 선택할 수 있도록 설정하기 위한 함수 
-	   * 
-	   * @param nowSelected
-	   * */
+	/**
+	 * 자신이 플레이 하고 싶은 곡을 선택할 수 있도록 설정하기 위한 함수
+	 * 
+	 * @param nowSelected
+	 */
 	public void selectTrack(int nowSelected) {
 		if (selectedMusic != null)
 			selectedMusic.close();
 		// 노래 선택시의 TitleImage 구현
 		selectedTitleImage = new ImageIcon(
-				getClass().getClassLoader().getResource("images/" + trackList.get(nowSelected).getTitleImage())).getImage();
+				getClass().getClassLoader().getResource("images/" + trackList.get(nowSelected).getTitleImage()))
+						.getImage();
 		// 노래 선택시의 StartImage 구현
 		selectedImage = new ImageIcon(
-				getClass().getClassLoader().getResource("images/" + trackList.get(nowSelected).getStartImage())).getImage();
-		// 현재 선택 된 곡의 타이틀 이미지의 X좌표를 얻어오는 함수 
+				getClass().getClassLoader().getResource("images/" + trackList.get(nowSelected).getStartImage()))
+						.getImage();
+		// 현재 선택 된 곡의 타이틀 이미지의 X좌표를 얻어오는 함수
 		selectedDrawX = trackList.get(nowSelected).getDrawX();
-		// 현재 선택 된 곡의 타이틀 이미지의 Y좌표를 얻어오는 함수 
+		// 현재 선택 된 곡의 타이틀 이미지의 Y좌표를 얻어오는 함수
 		selectedDrawY = trackList.get(nowSelected).getDrawY();
 		// Music 객체를 새로 만듦으로써 실행하고자 하는 곡을 무한 반복 시킨다.
 		selectedMusic = new Music(trackList.get(nowSelected).getStartMusic(), true, 0);
 		musicTitle = trackList.get(nowSelected).getStartMusic();
 		gameSpeed = trackList.get(nowSelected).getGameSpeed();
 		closedMusicTime = trackList.get(nowSelected).getClosedMusicTime();
-		selectedMusic.start(); // 무한 재생
+
+		normalProgress = InsideOut.gameData.searchNormalProgress(musicTitle);
+		challengeProgress = InsideOut.gameData.searchChallengeProgress(musicTitle);
+		selectedMusic.start(); // 무한 재
 	}
 
 	/** 곡 선택화면에서 왼쪽 버튼을 눌렀을 때의 이벤트를 처리하는 함수 */
@@ -519,7 +555,8 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		selectTrack(nowSelected);
 	}
 
-	/** JButton의 위치나 다른 요소들을 제어하기 위한 함수
+	/**
+	 * JButton의 위치나 다른 요소들을 제어하기 위한 함수
 	 * 
 	 * @param button
 	 * @param x
@@ -538,15 +575,18 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		// 버튼 추가
 		add(button);
 	}
-    /** 곡 선택 화면의 Thread를 얻어오는 함수
-     * 
-     * @return thread
-     */
+
+	/**
+	 * 곡 선택 화면의 Thread를 얻어오는 함수
+	 * 
+	 * @return thread
+	 */
 	public Thread getThread() {
 		return thread;
 	}
-    
-	/** 곡 선택 화면의 Thread를 설정하는 함수 
+
+	/**
+	 * 곡 선택 화면의 Thread를 설정하는 함수
 	 * 
 	 * @param thread
 	 */
