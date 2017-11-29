@@ -30,27 +30,26 @@ public class Beat {
 		
 		obstacles.add(new Obstacle(ball, 508, 3850, 7600, "Down")); // 안
 		obstacles.add(new Obstacle(ball, 552, 3850, 7600, "Up")); // 바깥
-		obstacles.add(new Obstacle(ball, 576, 3850, 7600, "Down")); // 안
-		obstacles.add(new Obstacle(ball, 598, 3850, 7600, "Up")); // 바깥
-		obstacles.add(new Obstacle(ball, 621, 3850, 7600, "Down")); // 안
+	//	obstacles.add(new Obstacle(ball, 576, 3850, 7600, "Down")); // 안
+		obstacles.add(new Obstacle(ball, 598, 3850, 7600, "Down")); // 바깥
+	//	obstacles.add(new Obstacle(ball, 621, 3850, 7600, "Down")); // 안
 		
-		obstacles.add(new Obstacle(ball, 657, 5735, 9103, "Down")); // 안
-		obstacles.add(new Obstacle(ball, 694, 5735, 9103, "Up")); // 바깥
-		obstacles.add(new Obstacle(ball, 739, 5735, 9103, "Down")); // 안
-		obstacles.add(new Obstacle(ball, 785, 5735, 9103, "Up")); // 바깥
+		obstacles.add(new Obstacle(ball, 657, 5735, 9600, "Down")); // 안
+		obstacles.add(new Obstacle(ball, 694, 5735, 9600, "Up")); // 바깥
+		obstacles.add(new Obstacle(ball, 739, 5735, 9600, "Down")); // 안
+		obstacles.add(new Obstacle(ball, 785, 5735, 9600, "Up")); // 바깥
 	
 		obstacles.add(new Obstacle(ball, 851, 7600, 11323, "Down")); // 안
 		obstacles.add(new Obstacle(ball, 889, 7600, 11323, "Up")); // 바깥 
 		obstacles.add(new Obstacle(ball, 932, 7600, 11323, "Down")); // 안
 		obstacles.add(new Obstacle(ball, 970, 7600, 11323, "Up")); // 바깥
 		
-		obstacles.add(new Obstacle(ball, 1021, 9103, 13300, "Up")); // 바깥
-		obstacles.add(new Obstacle(ball, 1066, 9103, 13300, "Down")); // 안
-		obstacles.add(new Obstacle(ball, 1111, 9103, 13300, "Up")); // 바깥
-		obstacles.add(new Obstacle(ball, 1155, 9103, 13300, "Down")); // 안
+		obstacles.add(new Obstacle(ball, 1021, 9600, 13300, "Up")); // 바깥
+		obstacles.add(new Obstacle(ball, 1066, 9600, 13300, "Down")); // 안
+		obstacles.add(new Obstacle(ball, 1111, 9600, 13300, "Up")); // 바깥
+		obstacles.add(new Obstacle(ball, 1155, 9600, 13300, "Down")); // 안
 		
 		obstacles.add(new Obstacle(ball, 1232, 11323, 15150, "Up")); // 바깥 
-		obstacles.add(new Obstacle(ball, 1238, 11323, 15150, "Up")); // 바깥
 		
 		obstacles.add(new Obstacle(ball, 1256, 11323, 15150, "Down")); // 바깥
 		obstacles.add(new Obstacle(ball, 1262, 11323, 15150, "Down")); // 바깥
@@ -60,7 +59,6 @@ public class Beat {
 		obstacles.add(new Obstacle(ball, 1296, 11323, 15150, "Up")); // 안
 		obstacles.add(new Obstacle(ball, 1302, 11323, 15150, "Up")); // 안
 
-		obstacles.add(new Obstacle(ball, 1320, 11323, 15150, "Down")); // 바깥
 		obstacles.add(new Obstacle(ball, 1326, 11323, 15150, "Down")); // 바깥
 
 		}

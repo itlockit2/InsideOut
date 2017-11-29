@@ -68,6 +68,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 	/** Screen 제어를 위한 변수 */
 	private boolean isGameSelectScreen;
 
+	
 	/** 화면제어를 위한 객체 Frame인 InsideOut을 가지고 있어야 insideOut에 있는 패널 변경 메소드를 사용할수 있다. */
 	private InsideOut insideOut;
 
