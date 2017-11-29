@@ -34,7 +34,7 @@ public class Ball implements Runnable {
 	private double speed;
 
 	/** Ball의 중심좌표 값을 설정하기 위한 생성자 */
-	Ball(Circle circle, double speed) {
+	Ball(Circle circle, double speed, double radian) {
 		// 쓰레드를 만들고 객체에 넣어준다.
 		setThread(new Thread(this));
 
@@ -58,7 +58,7 @@ public class Ball implements Runnable {
 		// 원의 중심 y좌표 = 100 + 265 = 640 , 속이 빈 원의 반지름은 265
 		circleY = circle.getY() + circleRadius;
 		// size의 값을 초기화 3시를 기준으로 0도 이므로 , 실제로 값을 계산할 땐 90도를 빼주어서 12시를 기준으로 0을 맞춰줘야 한다.
-		size = -90;
+		size = radian;
 		rect = new Rectangle2D.Double(this.getX(), this.getY(), ballRadius * 2, ballRadius * 2);
 
 		

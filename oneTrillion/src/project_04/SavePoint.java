@@ -16,6 +16,7 @@ public class SavePoint {
 	/** 장애물 의 구현위치 */
 	private int x, y, rectX, rectY;
 	private long startTime;
+	private long endTime;
 
 	private Rectangle2D rect;
 
@@ -31,11 +32,23 @@ public class SavePoint {
 		this.rectX = x;
 		this.rectY = y;
 		rect = new Rectangle2D.Double(rectX,rectY ,80, 80);
+		endTime = Long.MAX_VALUE;
 	}
 
 
 	
 	
+	public long getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(long endTime) {
+		this.endTime = endTime;
+	}
+
+
+
+
 	public int getX() {
 		return x;
 	}

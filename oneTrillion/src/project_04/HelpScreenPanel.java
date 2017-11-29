@@ -230,6 +230,7 @@ public class HelpScreenPanel extends JPanel implements Runnable {
 					// 음악 진행을 받아서 실행
 					introMusic.getPlayer().stop();
 					stopPoint = introMusic.getPausedOnFrame();
+					System.out.println("StopPoint : "  + stopPoint);
 					introMusic.close();
 					insideOut.changeMainScreen(stopPoint);
 					return;

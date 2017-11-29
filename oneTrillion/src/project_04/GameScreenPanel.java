@@ -3,6 +3,7 @@ package project_04;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -75,6 +76,11 @@ public class GameScreenPanel extends JPanel implements Runnable {
 	private String musicTitle;
 
 	private Music gameMusic;
+	
+	private long startPoint = 0;
+	
+	private double ballRadian = -90;
+	
 	/** music이 종료되고 노래 선택화면으로 돌아가기 위한 지점을 위해 long값을 얻어온다. */
 	private long closedMusicTime;
 
@@ -98,7 +104,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 
 		this.musicTitle = musicTitle;
 
-		gameMusic = new Music(musicTitle, false, 0);
+		gameMusic = new Music(musicTitle, false, (int)startPoint);
    
 		this.difficulty = difficulty;
 	   	
@@ -125,7 +131,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		circle = new Circle(375, 100, 530, 530, 8, Color.WHITE);
 		
 		// x,y 좌표를 받기 위한 객체 생성
-		ball = new Ball(circle, gameSpeed);
+		ball = new Ball(circle, gameSpeed,-90);
 		
 		// 장애물 생성
 		beat = new Beat(ball, musicTitle);
@@ -325,11 +331,28 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		for (int i = 0; i < obstacles.size(); i++) {
 			if (obstacles.get(i).getStartTime() <= gameMusic.getTime() && gameMusic.getTime() <= obstacles.get(i).getEndTime()) {
 				if (ball.getRect().intersects(obstacles.get(i).getRect())) {
+					gameMusic.close();
+					gameMusic = new Music(musicTitle, false, (int)startPoint);
+					gameMusic.start();
+					ball.setSize(ballRadian);
 					return true;
 				}
 			}
 		}
 		return false;
+	}
+	
+	public void saveEvent() {
+		for(int i = 0 ; i < savePoints.size() ; i++) {
+			if(savePoints.get(i).getStartTime() <= gameMusic.getTime() && gameMusic.getTime() <= savePoints.get(i).getEndTime()) {
+				if(ball.getRect().intersects(savePoints.get(i).getRect())) {
+					savePoints.get(i).setEndTime(gameMusic.getTime());
+					System.out.println(savePoints.get(i).getEndTime());
+					ballRadian = ball.getSize();
+					startPoint = gameMusic.getTime();
+				}
+			}
+		}
 	}
 
 	/**
@@ -349,7 +372,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		for(int i = 0; i < savePoints.size() ; i++) {
-			if(savePoints.get(i).getStartTime() <= gameMusic.getTime()) {
+			if(savePoints.get(i).getStartTime() <= gameMusic.getTime() && gameMusic.getTime() <= savePoints.get(i).getEndTime() && !difficulty.equals("practice") ) {
 				g2.drawImage(savePoints.get(i).getSavePointImage(),savePoints.get(i).getX(),savePoints.get(i).getY(),150,150,null);
 				g2.draw(savePoints.get(i).getRect());
 			}
@@ -371,7 +394,17 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		g2.drawOval(circle.getX(), circle.getY(), circle.getWidth(), circle.getHeight());
 		// 안이 가득 찬 원 , ball클래스에서 제어를 통해 좌표가 변경되므로 get메소드 이용 , 우리가 조종할 객체
 		g2.fillOval(ball.getX(), ball.getY(), ball.getRadius() * 2, ball.getRadius() * 2);
-
+		
+		//진행상황 출력
+		double progressTime = (double)gameMusic.getTime()/(double)closedMusicTime * 100;
+		if(progressTime < 0) {
+			progressTime = 0;
+		} else if(progressTime >100) {
+			progressTime = 100;
+		}
+		String progress = String.format("%.2f", progressTime) + "%";
+		g2.setFont(new Font("Alien Encounters",Font.BOLD,50));
+		g2.drawString(progress, 1053, 106);
 
 		
 		// 게임 시야를 가리는 이미지
@@ -389,6 +422,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		while (true) {
 			repaint();
 			try {
+				saveEvent();
 				if (isFadeOut && isGameSelectScreen) {
 					fadeOut();
 					insideOut.changeGameSelectScreen();
@@ -401,9 +435,17 @@ public class GameScreenPanel extends JPanel implements Runnable {
 					return;
 				}
 			
-				if (isGameOver()) {
-					System.out.println("Game Over");
+				if (isGameOver() && !difficulty.equals("practice")) {
+					if(difficulty.equals("challenge")) {
+						fadeOut();
+						insideOut.changeGameSelectScreen();
+						gameMusic.close();
+						return;
+					} else {
+						//savePointEvent
+					}
 				}
+				
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				e.printStackTrace();

@@ -9,7 +9,7 @@ public class Event {
 	public Event(String musicTitle) {
 		savePoints = new ArrayList<SavePoint>();
 		//if(musicTitle.equals("abcd))
-		savePoints.add(new SavePoint(429,131,5735));
+		savePoints.add(new SavePoint(611,70,5735));
 	}
 
 	public ArrayList<SavePoint> getSavePoint() {
