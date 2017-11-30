@@ -147,7 +147,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 
 		// 2번 트랙
 		trackList.add(new Track("HeartBeatTitleImage.png", "HeartBeatImage.png", "HeartBeatHighLight.mp3",
-				"Krale - Heartbeat,mp3", 375, 170, 3, 24200));
+				"Krale - Heartbeat,mp3", 375, 170, 2, 24200));
 		// 선택할 곡을 보여주고 들려준다. 인덱스인 nowSelected값에 따라 곡 변경이 가능함
 		selectTrack(nowSelected);
 
@@ -171,6 +171,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 
 		// 현재 선택되어진 곡의 인덱스, ArrayList 인덱스는 0번부터 시작하므로 처음 넣어준 곡의 인덱스인 0부터 시작하도록 하였다.
 		nowSelected = 0;
+
 
 		// Main 클래스의 위치를 기반으로 해서 Resource를 얻어서 그것의 이미지값을 변수에 대입시켜준다.
 		gameSelectBackGround = new ImageIcon(

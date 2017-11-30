@@ -27,7 +27,10 @@ public class GameScreenPanel extends JPanel implements Runnable {
 
 	/** 게임 진행중 시야 제한 이벤트를 위한 이미지 */
 	private Image gameSightLimitImage;
-
+	/** 마우스 버튼 클릭에 의해 Ball이 원 안으로 들어 갈 때 일어나는 이벤트를 위한 이미지 */
+    private Image innerCircleEventImage;
+    /** 마우스 버튼 클릭에 의해 Ball이 원 밖으로 나갈 때 일어나는 이벤트를 위한 이미지  */
+    private Image outsideCircleEventImage;
 	/** 뒤로가기 버튼 이미지를 담을 수 있는 객체 */
 	private ImageIcon backButtonImage;
 	/** 게임 시작 버튼 이미지를 담을 수 있는 객체 */
@@ -62,6 +65,9 @@ public class GameScreenPanel extends JPanel implements Runnable {
 
 	/** fadeIn과 fadeOut 을 위한 변수 fade Value에 따라 투명도가 결정된다. */
 	private float fadeValue;
+	
+	private float mousefadeValue;
+	
 	/** fadeIn과 fadeOut 을 위한 변수 isFadeOut에 FadeIn을 할건지 FadeOut을 한건지 결정된다.. */
 	private boolean isFadeOut;
 
@@ -117,6 +123,10 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		// 쓰레드를 만들고 실행시켜준다.
 		setThread(new Thread(this));
 		// Image들 초기화
+		innerCircleEventImage = new ImageIcon(getClass().getClassLoader().getResource("images/innerCircleEventImage.png"))
+				.getImage();
+		outsideCircleEventImage = new ImageIcon(getClass().getClassLoader().getResource("images/outsideCircleEventImage.png"))
+				.getImage();
 		gameSightLimitImage = new ImageIcon(getClass().getClassLoader().getResource("images/sightLimitImage.png"))
 				.getImage();
 		backButtonImage = new ImageIcon(getClass().getClassLoader().getResource("images/backButtonImage_2.png"));
@@ -125,7 +135,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 				getClass().getClassLoader().getResource("images/backButtonEnteredImage_2.png"));
 		gamePlayButtonEnteredImage = new ImageIcon(
 				getClass().getClassLoader().getResource("images/gamePlayButtonEntered.png"));
-
+        
 		// 버튼들 생성
 		backButton = new JButton(backButtonImage);
 		gamePlayButton = new JButton(gamePlayButtonImage);
@@ -318,6 +328,43 @@ public class GameScreenPanel extends JPanel implements Runnable {
 			e.printStackTrace();
 		}
 	}
+	
+	public void mouseClickedfadeInEvent() {
+		try {
+			float temp = 0;
+			
+			mousefadeValue = 0;
+			while (mousefadeValue < 1) {
+				temp += 0.2;
+				if (temp > 1) {
+					temp = 1.0f;
+				}
+				mousefadeValue = temp;
+				repaint();
+				Thread.sleep(50);
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void mouseClickedfadeOutEvent() {
+		try {
+			float temp = 1.0f;
+			mousefadeValue = 1.0f;
+			while (mousefadeValue > 0) {
+				temp -= 0.2;
+				if (temp < 0) {
+					temp = 0;
+				}
+				mousefadeValue = temp;
+				repaint();
+				Thread.sleep(50);
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * fadeOut 효과를 주기위한 메소드 temp를 사용한 이유는 fadeOut값이 0을 넘어가면 에러가 발생하기 때문에 float연산 특성상
@@ -417,7 +464,15 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		g2.setFont(new Font("Alien Encounters",Font.BOLD,50));
 		g2.drawString(progress, 1053, 106);
 
+		if(ball.isBallOutside()) {
+			g2.drawImage(innerCircleEventImage, 0, 0, null);
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, fadeValue));
+			
 		
+		} else {
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, fadeValue));
+		    g2.drawImage(outsideCircleEventImage,0 , 0 ,null);
+		}
 		// 게임 시야를 가리는 이미지
 		// g2.drawImage(gameSightLimitImage, ball.getX() - 1280 , ball.getY() - 720 ,
 		// null);
@@ -458,6 +513,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 						insideOut.changeGameSelectScreen();
 						gameMusic.close();
 						return;
+
 				}
 				
 				Thread.sleep(10);
