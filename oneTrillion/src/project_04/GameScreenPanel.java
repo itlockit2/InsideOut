@@ -191,6 +191,13 @@ public class GameScreenPanel extends JPanel implements Runnable {
 			public void mousePressed(MouseEvent e) {
 				isFadeOut = true;
 				isGameSelectScreen = true;
+				double progress = (double)gameMusic.getTime()/(double)closedMusicTime * 100;
+				if(progress < 0) {
+					progress = 0;
+				} else if(progress >100) {
+					progress = 100;
+				}
+				InsideOut.gameData.updateProgress(musicTitle, difficulty, progress);
 			}
 		});
 
