@@ -471,7 +471,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		// 안티앨리어싱 , 글자가 깨지지 않게 출력
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         
-		g2.setColor(Color.BLACK);
+		g2.setColor(Color.PINK);
 		g2.setFont(new Font("Alien Encounters", Font.BOLD, 50));
 		g2.drawString(String.valueOf(normalProgress) + "%", 435, 500);
 		g2.drawString(String.valueOf(challengeProgress) + "%", 740, 500);
