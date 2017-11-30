@@ -101,7 +101,7 @@ public class Music extends Thread {
 				 * pausedOnFrame을 이벤트를 통해서 가져올때는 1초 일때 1000 이지만 player.play 매개변수로 넣을때는 1초가
 				 * 100이므로 /10을 해줘야한다.
 				 */
-				player.play(pausedOnFrame / 20, Integer.MAX_VALUE);
+				player.play(pausedOnFrame / 26, Integer.MAX_VALUE);
 				is = getClass().getClassLoader().getResourceAsStream("music/" + name);
 				// fis를 버퍼에 담아서 읽을수 있게 한다
 				bis = new BufferedInputStream(is);
