@@ -90,20 +90,34 @@ public class DataBase {
 		return -1;
 	}
 
-	public void updateProgress(String musicTitle, String difficulty, double progress) {
+	public double getProgress(String musicTitle, String difficulty) {
+		double temp = 0;
 		try {
 			Class.forName("org.sqlite.JDBC");
 			c = DriverManager.getConnection("jdbc:sqlite:insideOut.db");
 			stmt = c.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM SONGPROGRESS WHERE MUSICTITLE=" + "'" + musicTitle + "';");
-			while(rs.next()) {
-				double temp = rs.getDouble(difficulty);
-				if(temp <progress) {
-					String sql = "UPDATE SONGPROGRESS SET " + difficulty + "=" + progress + " WHERE "
-							+ "MUSICTITLE =" + "'"+ musicTitle +"';";
-					stmt.executeUpdate(sql);
-				}
+			while (rs.next()) {
+				temp = rs.getDouble(difficulty);
 			}
+			stmt.close();
+			c.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return temp;
+	}
+
+	public void updateProgress(String musicTitle, String difficulty, double progress) {
+		try {
+			Class.forName("org.sqlite.JDBC");
+			c = DriverManager.getConnection("jdbc:sqlite:insideOut.db");
+			stmt = c.createStatement();
+			String sql = "UPDATE SONGPROGRESS SET " + difficulty + "=" + progress + " WHERE " + "MUSICTITLE =" + "'"
+					+ musicTitle + "';";
+			stmt.executeUpdate(sql);
+			stmt.close();
+			c.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

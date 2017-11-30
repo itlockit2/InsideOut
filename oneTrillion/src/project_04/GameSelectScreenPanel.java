@@ -129,13 +129,6 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 	private double normalProgress;
 	private double challengeProgress;
 
-	FontRenderContext frc;
-	Font f;
-	TextLayout textLayout;
-	AffineTransform transform = new AffineTransform();
-	Shape outline;
-	Rectangle outlineBounds;
-
 	/**
 	 * 곡 선택화면인 GameSelectScreen에 관한 구성 요소 및 정보를 담고 있는 생성자
 	 * 

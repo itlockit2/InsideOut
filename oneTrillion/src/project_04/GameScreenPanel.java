@@ -87,6 +87,10 @@ public class GameScreenPanel extends JPanel implements Runnable {
 
 	private String difficulty;
 	
+	private double progressTime;
+	
+	private String progress = "0.00%";
+	
 	/**
 	 * GameScreenPanel의 생성자로 필드값들을 초기화 시켜주고, insideOut을 매개변수로 받아 화면제어를 한다
 	 * 
@@ -197,7 +201,9 @@ public class GameScreenPanel extends JPanel implements Runnable {
 				} else if(progress >100) {
 					progress = 100;
 				}
-				InsideOut.gameData.updateProgress(musicTitle, difficulty, progress);
+				double dataProgress = InsideOut.gameData.getProgress(musicTitle, difficulty);
+				if(dataProgress < progressTime)
+				InsideOut.gameData.updateProgress(musicTitle, difficulty, progressTime);
 			}
 		});
 
@@ -408,13 +414,6 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		g2.fillOval(ball.getX(), ball.getY(), ball.getRadius() * 2, ball.getRadius() * 2);
 		
 		//진행상황 출력
-		double progressTime = (double)gameMusic.getTime()/(double)closedMusicTime * 100;
-		if(progressTime < 0) {
-			progressTime = 0;
-		} else if(progressTime >100) {
-			progressTime = 100;
-		}
-		String progress = String.format("%.2f", progressTime) + "%";
 		g2.setFont(new Font("Alien Encounters",Font.BOLD,50));
 		g2.drawString(progress, 1053, 106);
 
@@ -433,8 +432,13 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		fadeIn();
 		while (true) {
 			repaint();
-			System.out.println("MusicTime -> " + gameMusic.getTime());
-			System.out.println("ball radian -> " + ball.getSize());
+			progressTime = (double)gameMusic.getTime()/(double)closedMusicTime * 100;
+			if(progressTime < 0) {
+				progressTime = 0;
+			} else if(progressTime >100) {
+				progressTime = 100;
+			}
+			progress = String.format("%.2f", progressTime) + "%";
 			try {
 				saveEvent();
 				if (isFadeOut && isGameSelectScreen) {
