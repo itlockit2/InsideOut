@@ -154,7 +154,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 
 		// 2번 트랙
 		trackList.add(new Track("HeartBeatTitleImage.png", "HeartBeatImage.png", "HeartBeatHighLight.mp3",
-				"Krale - Heartbeat,mp3", 375, 170, 3, 24200));
+				"Krale - Heartbeat,mp3", 375, 170, 2, 24200));
 		// 선택할 곡을 보여주고 들려준다. 인덱스인 nowSelected값에 따라 곡 변경이 가능함
 		selectTrack(nowSelected);
 
