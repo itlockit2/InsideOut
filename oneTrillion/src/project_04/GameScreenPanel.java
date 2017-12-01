@@ -11,6 +11,8 @@ import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -93,11 +95,21 @@ public class GameScreenPanel extends JPanel implements Runnable {
 	private double progressTime;
 
 	private String progress = "0.00%";
-	
+
 	private String[] progressArray;
-	
+
 	private SongProgress songProgress;
+
+	//test
+	private boolean isInnerCircleEvent;
+
+	private boolean isOutsideCircleEvent;
 	
+	Timer eventTimer;
+	
+	TimerTask innerCircleEvent;
+	
+	TimerTask outsideCircleEvent;
 
 	/**
 	 * GameScreenPanel의 생성자로 필드값들을 초기화 시켜주고, insideOut을 매개변수로 받아 화면제어를 한다
@@ -124,9 +136,8 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		this.closedMusicTime = closedMusicTime;
 
 		songProgress = new SongProgress();
-		
+
 		progressArray = songProgress.getProgressArray();
-		
 		// 쓰레드를 만들고 실행시켜준다.
 		setThread(new Thread(this));
 		// Image들 초기화
@@ -181,6 +192,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		buttonSet(insideOut.getMenubarExitButton(), 1200, 0, 64, 28);
 		// 메뉴바 설정
 		add(insideOut.getMenubar());
+		
 
 		/**
 		 * backButton의 마우스 이벤트를 처리해준다.
@@ -211,23 +223,23 @@ public class GameScreenPanel extends JPanel implements Runnable {
 				isFadeOut = true;
 				isGameSelectScreen = true;
 				int index = 0;
-				if(musicTitle.equals("Tobu & Itro - Sunburst_Highlight.mp3")) {
+				if (musicTitle.equals("Tobu & Itro - Sunburst_Highlight.mp3")) {
 					index = 0;
-				} else if(musicTitle.equals("BadNewsHighLight.mp3")) {
+				} else if (musicTitle.equals("BadNewsHighLight.mp3")) {
 					index = 3;
-				} else if(musicTitle.equals("HeartBeatHighLight.mp3")) {
+				} else if (musicTitle.equals("HeartBeatHighLight.mp3")) {
 					index = 6;
 				}
-				
-				if(difficulty.equals("normal")) {
+
+				if (difficulty.equals("normal")) {
 					index += 1;
-				} else if(difficulty.equals("challenge")) {
+				} else if (difficulty.equals("challenge")) {
 					index += 2;
 				}
-				if(Double.parseDouble(progressArray[index]) < progressTime)
-				progressArray[index] = String.format("%.2f", progressTime);
-				if(!difficulty.equals("practice"))
-				songProgress.write(progressArray);
+				if (Double.parseDouble(progressArray[index]) < progressTime)
+					progressArray[index] = String.format("%.2f", progressTime);
+				if (!difficulty.equals("practice"))
+					songProgress.write(progressArray);
 			}
 		});
 
@@ -239,16 +251,34 @@ public class GameScreenPanel extends JPanel implements Runnable {
 				System.out.println("x좌표 : " + e.getX() + "y좌표 : " + e.getY());
 				// Ball이 바깥을 돌고 있다면
 				if (ball.isBallOutside()) {
+					eventTimer = new Timer();
+					innerCircleEvent = new TimerTask() {
+						@Override
+						public void run() {
+							isInnerCircleEvent = false;
+						}
+					};
+					isInnerCircleEvent = true;
 					// Ball이 바깥을 돌고 있는 여부에 대한 설정을 false로 만든다.
 					ball.setBallOutside(false);
 					// Circle과 Ball의 반지름을 줄여서 안쪽을 돌게 한다.
 					ball.setRotateRadius(ball.getRotateRadius() - 25);
+					eventTimer.schedule(innerCircleEvent, 50);
 					// Ball이 안쪽을 돌고 있다면 isBallOutside가 false값이므로 else문을 실행한다.
 				} else {
+					eventTimer = new Timer();
+					outsideCircleEvent = new TimerTask() {
+						@Override
+						public void run() {
+							isOutsideCircleEvent = false;
+						}
+					};
+					isOutsideCircleEvent = true;
 					// Ball이 바깥을 돌고 있는 여부에 대한 설정을 true로 만든다.
 					ball.setBallOutside(true);
 					// Circle과 Ball을 원래대로 설정해서 원래 위치를 돌게 한다.
 					ball.setRotateRadius(ball.getRotateRadius() + 25);
+					eventTimer.schedule(outsideCircleEvent, 50);
 				}
 			}
 
@@ -323,6 +353,24 @@ public class GameScreenPanel extends JPanel implements Runnable {
 	 * 방식을 사용한다. 여기서 temp가 1보다 커지면 temp를 1로 설정하고 대입시켜준다.
 	 */
 	public void fadeIn() {
+		try {
+			float temp = 0;
+			fadeValue = 0;
+			while (fadeValue < 1) {
+				temp += 0.1;
+				if (temp > 1) {
+					temp = 1.0f;
+				}
+				fadeValue = temp;
+				repaint();
+				Thread.sleep(50);
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void fadeIn2() {
 		try {
 			float temp = 0;
 			fadeValue = 0;
@@ -433,6 +481,17 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		}
 	}
 
+	public void innerCircleEvent() {
+		try {
+			isInnerCircleEvent = true;
+			Thread.sleep(100);
+			isInnerCircleEvent = false;
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+	}
+
 	/**
 	 * GameScreen에 관련된 이미지를 그려주고 게임 스테이지인 원을 그려준다.
 	 * 
@@ -480,12 +539,10 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		g2.setFont(new Font("Alien Encounters", Font.BOLD, 50));
 		g2.drawString(progress, 1053, 106);
 
-		if (ball.isBallOutside()) {
+		if (isInnerCircleEvent) {
 			g2.drawImage(innerCircleEventImage, 0, 0, null);
-			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, fadeValue));
 
-		} else {
-			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, fadeValue));
+		} else if(isOutsideCircleEvent) {
 			g2.drawImage(outsideCircleEventImage, 0, 0, null);
 		}
 		// 게임 시야를 가리는 이미지
