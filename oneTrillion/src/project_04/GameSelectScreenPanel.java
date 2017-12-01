@@ -126,8 +126,11 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 	private String musicTitle;
 	private double gameSpeed;
 	private long closedMusicTime;
-	private double normalProgress;
-	private double challengeProgress;
+	private String normalProgress;
+	private String challengeProgress;
+	
+	private SongProgress progress;
+	
 
 	/**
 	 * 곡 선택화면인 GameSelectScreen에 관한 구성 요소 및 정보를 담고 있는 생성자
@@ -136,6 +139,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 	 *            insideOut
 	 */
 	GameSelectScreenPanel(InsideOut insideOut) {
+		progress = new SongProgress();
 		// trackList를 통해 원하는 곡과 화면을 구현
 		// 시작 트랙
 		trackList.add(new Track("SunburstTitleImage.png", "sunburstGameselectImage_2.png",
@@ -467,8 +471,8 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
         
 		g2.setColor(Color.PINK);
 		g2.setFont(new Font("Alien Encounters", Font.BOLD, 50));
-		g2.drawString(String.valueOf(normalProgress) + "%", 435, 500);
-		g2.drawString(String.valueOf(challengeProgress) + "%", 740, 500);
+		g2.drawString(normalProgress + "%", 435, 500);
+		g2.drawString(challengeProgress + "%", 740, 500);
 	}
 
 	/** 곡 선택 화면(GameSelectScreen)의 Thread가 실행 될 시 수행되는 함수 */
@@ -526,8 +530,9 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		gameSpeed = trackList.get(nowSelected).getGameSpeed();
 		closedMusicTime = trackList.get(nowSelected).getClosedMusicTime();
 
-		normalProgress = InsideOut.gameData.searchNormalProgress(musicTitle);
-		challengeProgress = InsideOut.gameData.searchChallengeProgress(musicTitle);
+		
+		normalProgress = progress.getProgressArray()[3*nowSelected + 1];
+		challengeProgress = progress.getProgressArray()[3*nowSelected + 2];
 		selectedMusic.start(); // 무한 재
 	}
 

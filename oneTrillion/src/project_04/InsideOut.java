@@ -46,8 +46,6 @@ public class InsideOut extends JFrame {
 	/** MenuBar의 Exit버튼 객체 생성 */
 	private JButton menubarExitButton = new JButton(menubarImageBasic);
 	
-	static DataBase gameData;
-
 	/** Main함수에서 게임 실행시 처음 시작 화면(MainScreen)을 출력하기 위한 생성자 */
 	public InsideOut() {
 		// 게임이름 설정
@@ -70,7 +68,6 @@ public class InsideOut extends JFrame {
 		// 사용자가 게임창을 임의로 줄이고 하는게 불가능, true로 하면 가능
 		setResizable(false);
 		
-		gameData = new DataBase();
 
 		// 메뉴바 이미지를 추가시켜준다.
 		menubar = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("images/menubarImage.png")));
