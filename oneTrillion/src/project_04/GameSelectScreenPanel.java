@@ -468,12 +468,19 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 
 		g2.setColor(Color.PINK);
 		g2.setFont(new Font("Alien Encounters", Font.BOLD, 40));
-		if (Double.parseDouble(normalProgress) < 10) {
+		if(Double.parseDouble(normalProgress) >= 100) {
+			g2.drawString("Clear", 435, 500);
+		}
+		else if (Double.parseDouble(normalProgress) < 10) {
 			g2.drawString(normalProgress + "%", 445, 500);
 		} else {
 			g2.drawString(normalProgress + "%", 425, 500);
 		}
-		if (Double.parseDouble(challengeProgress) < 10) {
+		
+		if(Double.parseDouble(normalProgress) >= 100) {
+			g2.drawString("Clear", 740, 500);
+		}
+		else if (Double.parseDouble(challengeProgress) < 10) {
 			g2.drawString(challengeProgress + "%", 750, 500);
 		} else {
 			g2.drawString(challengeProgress + "%", 730, 500);
