@@ -128,9 +128,8 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 	private long closedMusicTime;
 	private String normalProgress;
 	private String challengeProgress;
-	
+
 	private SongProgress progress;
-	
 
 	/**
 	 * 곡 선택화면인 GameSelectScreen에 관한 구성 요소 및 정보를 담고 있는 생성자
@@ -176,7 +175,6 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		// 현재 선택되어진 곡의 인덱스, ArrayList 인덱스는 0번부터 시작하므로 처음 넣어준 곡의 인덱스인 0부터 시작하도록 하였다.
 		nowSelected = 0;
 
-
 		// Main 클래스의 위치를 기반으로 해서 Resource를 얻어서 그것의 이미지값을 변수에 대입시켜준다.
 		gameSelectBackGround = new ImageIcon(
 				getClass().getClassLoader().getResource("images/gameSelectScreenImage_2.png")).getImage();
@@ -187,7 +185,6 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		add(insideOut.getMenubar());
 		// leftButton의 위치 설정
 		buttonSet(leftButton, 100, 310, 120, 120); // 73, 98 (원래 크기)
-		
 
 		/**
 		 * leftButton의 마우스 이벤트를 처리해준다.
@@ -468,11 +465,19 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 
 		// 안티앨리어싱 , 글자가 깨지지 않게 출력
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        
+
 		g2.setColor(Color.PINK);
-		g2.setFont(new Font("Alien Encounters", Font.BOLD, 50));
-		g2.drawString(normalProgress + "%", 435, 500);
-		g2.drawString(challengeProgress + "%", 740, 500);
+		g2.setFont(new Font("Alien Encounters", Font.BOLD, 40));
+		if (Double.parseDouble(normalProgress) < 10) {
+			g2.drawString(normalProgress + "%", 445, 500);
+		} else {
+			g2.drawString(normalProgress + "%", 425, 500);
+		}
+		if (Double.parseDouble(challengeProgress) < 10) {
+			g2.drawString(challengeProgress + "%", 750, 500);
+		} else {
+			g2.drawString(challengeProgress + "%", 730, 500);
+		}
 	}
 
 	/** 곡 선택 화면(GameSelectScreen)의 Thread가 실행 될 시 수행되는 함수 */
@@ -530,9 +535,8 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		gameSpeed = trackList.get(nowSelected).getGameSpeed();
 		closedMusicTime = trackList.get(nowSelected).getClosedMusicTime();
 
-		
-		normalProgress = progress.getProgressArray()[3*nowSelected + 1];
-		challengeProgress = progress.getProgressArray()[3*nowSelected + 2];
+		normalProgress = progress.getProgressArray()[3 * nowSelected + 1];
+		challengeProgress = progress.getProgressArray()[3 * nowSelected + 2];
 		selectedMusic.start(); // 무한 재
 	}
 
