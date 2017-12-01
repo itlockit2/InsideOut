@@ -11,9 +11,9 @@ import javax.swing.ImageIcon;
 
 public class SavePoint {
 
-	/** 장애물 이미지를 위한 객체 */
+	/** 세이브 포인트 이미지를 위한 객체 */
 	private Image savePointImage;
-	/** 장애물 의 구현위치 */
+	/** 세이브 포인트 의 구현위치 */
 	private int x, y, rectX, rectY;
 	private long startTime;
 	private long endTime;
