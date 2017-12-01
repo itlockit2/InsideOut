@@ -6,7 +6,7 @@ package project_04;
  * @author Sungho Yun
  * @version 0.4
  */
-public class Main {
+public class MainMain {
 	
 	public static final int SCREEN_WIDTH = 1280; // 1280 x 720 사이즈로 출력
 	public static final int SCREEN_HEIGHT = 720;

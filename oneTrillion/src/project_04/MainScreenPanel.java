@@ -102,8 +102,8 @@ public class MainScreenPanel extends JPanel implements Runnable {
 		// 컨테이너의 크기가 변경될때 컴포넌트들의 크기와 위치가 자동적으로 변경되는데 그걸 해제한다
 		setLayout(null);
 		// 게임창 크기 설정
-		setSize(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
-		setBounds(0, 0, Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
+		setSize(MainMain.SCREEN_WIDTH, MainMain.SCREEN_HEIGHT);
+		setBounds(0, 0, MainMain.SCREEN_WIDTH, MainMain.SCREEN_HEIGHT);
 		// 게임 배경화면 색깔 검정으로 지정
 		setBackground(Color.BLACK);
 		// 화면 출력 설정 기본값은 false 이므로 설정 해줘야한다.

@@ -55,7 +55,7 @@ public class InsideOut extends JFrame {
 		// getContentPane 으로 contentpane(Panel) 정보를 얻어온다.
 		contentpane = getContentPane();
 		// 게임창 크기 설정
-		setSize(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
+		setSize(MainMain.SCREEN_WIDTH, MainMain.SCREEN_HEIGHT);
 		setResizable(false);
 		// 배경화면을 검정으로 설정해준다.
 		setBackground(Color.BLACK);

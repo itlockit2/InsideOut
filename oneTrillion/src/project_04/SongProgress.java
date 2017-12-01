@@ -13,13 +13,13 @@ public class SongProgress {
 	private File outFile;
 	private BufferedReader br;
 	private String[] progressArray;
-
+	BufferedWriter bw;
 	public SongProgress() {
 		try {
 			int index = 0;
 			progressArray = new String[9];
-			inFile = new File(getClass().getClassLoader().getResource("progress/progress.txt").toURI());
-			outFile = new File(getClass().getClassLoader().getResource("progress/progress.txt").toURI());
+			inFile =  new File("progress.txt");
+			outFile = new File("progress.txt");
 			br = new BufferedReader(new FileReader(inFile));
 			String line;
 			while ((line = br.readLine()) != null) {
@@ -32,9 +32,9 @@ public class SongProgress {
 	}
 
 	public void write(String[] progressArray) {
-		BufferedWriter bw = null;
+		bw = null;
 		try {
-			bw = new BufferedWriter(new FileWriter(outFile));
+			bw = new BufferedWriter(new FileWriter("progress.txt"));
 			for(int i = 0 ; i < progressArray.length ; i++) {
 				bw.write(progressArray[i]);
 				bw.newLine();
