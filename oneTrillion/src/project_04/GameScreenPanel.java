@@ -263,7 +263,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 					ball.setBallOutside(false);
 					// Circle과 Ball의 반지름을 줄여서 안쪽을 돌게 한다.
 					ball.setRotateRadius(ball.getRotateRadius() - 25);
-					eventTimer.schedule(innerCircleEvent, 50);
+					eventTimer.schedule(innerCircleEvent, 100);
 					// Ball이 안쪽을 돌고 있다면 isBallOutside가 false값이므로 else문을 실행한다.
 				} else {
 					eventTimer = new Timer();
@@ -278,7 +278,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 					ball.setBallOutside(true);
 					// Circle과 Ball을 원래대로 설정해서 원래 위치를 돌게 한다.
 					ball.setRotateRadius(ball.getRotateRadius() + 25);
-					eventTimer.schedule(outsideCircleEvent, 50);
+					eventTimer.schedule(outsideCircleEvent, 100);
 				}
 			}
 
