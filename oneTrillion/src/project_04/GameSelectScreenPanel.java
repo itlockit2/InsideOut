@@ -477,7 +477,7 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 			g2.drawString(normalProgress + "%", 425, 500);
 		}
 		
-		if(Double.parseDouble(normalProgress) >= 100) {
+		if(Double.parseDouble(challengeProgress) >= 100) {
 			g2.drawString("Clear", 740, 500);
 		}
 		else if (Double.parseDouble(challengeProgress) < 10) {

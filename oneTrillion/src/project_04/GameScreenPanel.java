@@ -222,24 +222,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 			public void mousePressed(MouseEvent e) {
 				isFadeOut = true;
 				isGameSelectScreen = true;
-				int index = 0;
-				if (musicTitle.equals("Tobu & Itro - Sunburst_Highlight.mp3")) {
-					index = 0;
-				} else if (musicTitle.equals("BadNewsHighLight.mp3")) {
-					index = 3;
-				} else if (musicTitle.equals("HeartBeatHighLight.mp3")) {
-					index = 6;
-				}
-
-				if (difficulty.equals("normal")) {
-					index += 1;
-				} else if (difficulty.equals("challenge")) {
-					index += 2;
-				}
-				if (Double.parseDouble(progressArray[index]) < progressTime)
-					progressArray[index] = String.format("%.2f", progressTime);
-				if (!difficulty.equals("practice"))
-					songProgress.write(progressArray);
+				saveProgress();
 			}
 		});
 
@@ -248,7 +231,6 @@ public class GameScreenPanel extends JPanel implements Runnable {
 			// 마우스가 눌려졌을 때 이벤트 처리
 			@Override
 			public void mousePressed(MouseEvent e) {
-				System.out.println("x좌표 : " + e.getX() + "y좌표 : " + e.getY());
 				// Ball이 바깥을 돌고 있다면
 				if (ball.isBallOutside()) {
 					eventTimer = new Timer();
@@ -370,22 +352,25 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		}
 	}
 	
-	public void fadeIn2() {
-		try {
-			float temp = 0;
-			fadeValue = 0;
-			while (fadeValue < 1) {
-				temp += 0.1;
-				if (temp > 1) {
-					temp = 1.0f;
-				}
-				fadeValue = temp;
-				repaint();
-				Thread.sleep(50);
-			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+	public void saveProgress() {
+		int index = 0;
+		if (musicTitle.equals("Tobu & Itro - Sunburst_Highlight.mp3")) {
+			index = 0;
+		} else if (musicTitle.equals("BadNewsHighLight.mp3")) {
+			index = 3;
+		} else if (musicTitle.equals("HeartBeatHighLight.mp3")) {
+			index = 6;
 		}
+
+		if (difficulty.equals("normal")) {
+			index += 1;
+		} else if (difficulty.equals("challenge")) {
+			index += 2;
+		}
+		if (Double.parseDouble(progressArray[index]) < progressTime)
+			progressArray[index] = String.format("%.2f", progressTime);
+		if (!difficulty.equals("practice"))
+			songProgress.write(progressArray);
 	}
 
 	public void mouseClickedfadeInEvent() {
@@ -510,7 +495,8 @@ public class GameScreenPanel extends JPanel implements Runnable {
 
 		for (int i = 0; i < savePoints.size(); i++) {
 			if (savePoints.get(i).getStartTime() <= gameMusic.getTime()
-					&& gameMusic.getTime() <= savePoints.get(i).getEndTime() && !difficulty.equals("practice")) {
+					&& gameMusic.getTime() <= savePoints.get(i).getEndTime() && !difficulty.equals("practice")
+					&& !difficulty.equals("challenge")) {
 				g2.drawImage(savePoints.get(i).getSavePointImage(), savePoints.get(i).getX(), savePoints.get(i).getY(),
 						150, 150, null);
 				g2.draw(savePoints.get(i).getRect());
@@ -546,7 +532,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 			g2.drawImage(outsideCircleEventImage, 0, 0, null);
 		}
 		
-		g2.drawImage(gameSightLimitImage, ball.getX() - 1280 , ball.getY() - 720 ,null);
+		//g2.drawImage(gameSightLimitImage, ball.getX() - 1280 , ball.getY() - 720 ,null);
 	}
 
 	/**
@@ -573,12 +559,14 @@ public class GameScreenPanel extends JPanel implements Runnable {
 					insideOut.changeGameSelectScreen();
 					return;
 				} else if (closedMusicTime <= gameMusic.getTime()) {
+					saveProgress();
 					fadeOut();
 					insideOut.changeGameSelectScreen();
 					return;
 				}
 
 				if (isGameOver() && difficulty.equals("challenge")) {
+					saveProgress();
 					fadeOut();
 					insideOut.changeGameSelectScreen();
 					gameMusic.close();

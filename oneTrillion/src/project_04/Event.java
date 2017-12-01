@@ -8,8 +8,13 @@ public class Event {
 	
 	public Event(String musicTitle) {
 		savePoints = new ArrayList<SavePoint>();
-		//if(musicTitle.equals("abcd))
+		if(musicTitle.equals("Tobu & Itro - Sunburst_Highlight.mp3")) {
 		savePoints.add(new SavePoint(611,70,5735));
+		} else if(musicTitle.equals("BadNewsHighLight.mp3")) {
+			savePoints.add(new SavePoint(611,70,5735));
+			savePoints.add(new SavePoint(611,70,15735));
+			savePoints.add(new SavePoint(611,70,25735));
+		}
 	}
 
 	public ArrayList<SavePoint> getSavePoint() {
