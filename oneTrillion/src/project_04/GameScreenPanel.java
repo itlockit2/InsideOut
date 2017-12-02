@@ -26,8 +26,7 @@ import javax.swing.JPanel;
  */
 public class GameScreenPanel extends JPanel implements Runnable {
 
-	/** 게임 진행중 시야 제한 이벤트를 위한 이미지 */
-	private Image gameSightLimitImage;
+
 	/** 마우스 버튼 클릭에 의해 Ball이 원 안으로 들어 갈 때 일어나는 이벤트를 위한 이미지 */
 	private Image innerCircleEventImage;
 	/** 마우스 버튼 클릭에 의해 Ball이 원 밖으로 나갈 때 일어나는 이벤트를 위한 이미지 */
@@ -56,17 +55,17 @@ public class GameScreenPanel extends JPanel implements Runnable {
 	private Circle circle;
 
 	private Beat beat;
-
+    // 이벤트들 
 	private Event event;
 
 	private ArrayList<Obstacle> obstacles;
 
 	private ArrayList<SavePoint> savePoints;
 
+	private ArrayList<GameSightLimit> gameSightLimitScreen;
+
 	/** fadeIn과 fadeOut 을 위한 변수 fade Value에 따라 투명도가 결정된다. */
 	private float fadeValue;
-
-	private float mousefadeValue;
 
 	/** fadeIn과 fadeOut 을 위한 변수 isFadeOut에 FadeIn을 할건지 FadeOut을 한건지 결정된다.. */
 	private boolean isFadeOut;
@@ -76,8 +75,6 @@ public class GameScreenPanel extends JPanel implements Runnable {
 
 	/** 화면제어를 위한 객체 Frame인 InsideOut을 가지고 있어야 insideOut에 있는 패널 변경 메소드를 사용할수 있다. */
 	private InsideOut insideOut;
-
-	private boolean isGamePlaying;
 
 	private String musicTitle;
 
@@ -104,11 +101,11 @@ public class GameScreenPanel extends JPanel implements Runnable {
 	private boolean isInnerCircleEvent;
 
 	private boolean isOutsideCircleEvent;
-	
+
 	Timer eventTimer;
-	
+
 	TimerTask innerCircleEvent;
-	
+
 	TimerTask outsideCircleEvent;
 
 	/**
@@ -122,10 +119,6 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		this.insideOut = insideOut;
 		// fadeOut값을 false로 초기화 시켜문다
 		isFadeOut = false;
-		// isGameSelectScreen의 값을 false로 초기화 시켜준다.
-		isGameSelectScreen = false;
-
-		isGamePlaying = false;
 
 		this.musicTitle = musicTitle;
 
@@ -145,15 +138,12 @@ public class GameScreenPanel extends JPanel implements Runnable {
 				getClass().getClassLoader().getResource("images/innerCircleEventImage.png")).getImage();
 		outsideCircleEventImage = new ImageIcon(
 				getClass().getClassLoader().getResource("images/outsideCircleEventImage.png")).getImage();
-		gameSightLimitImage = new ImageIcon(getClass().getClassLoader().getResource("images/sightLimitImage.png"))
-				.getImage();
 		backButtonImage = new ImageIcon(getClass().getClassLoader().getResource("images/backButtonImage_2.png"));
 		gamePlayButtonImage = new ImageIcon(getClass().getClassLoader().getResource("images/gamePlayButton.png"));
 		backButtonEnteredImage = new ImageIcon(
 				getClass().getClassLoader().getResource("images/backButtonEnteredImage_2.png"));
 		gamePlayButtonEnteredImage = new ImageIcon(
 				getClass().getClassLoader().getResource("images/gamePlayButtonEntered.png"));
-
 		// 버튼들 생성
 		backButton = new JButton(backButtonImage);
 		gamePlayButton = new JButton(gamePlayButtonImage);
@@ -171,7 +161,10 @@ public class GameScreenPanel extends JPanel implements Runnable {
 
 		savePoints = event.getSavePoint();
 
+		gameSightLimitScreen = event.getGameSightLimit();
+
 		obstacles = beat.getObstacles();
+
 
 		// 이벤트 생성
 
@@ -192,7 +185,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		buttonSet(insideOut.getMenubarExitButton(), 1200, 0, 64, 28);
 		// 메뉴바 설정
 		add(insideOut.getMenubar());
-		
+
 
 		/**
 		 * backButton의 마우스 이벤트를 처리해준다.
@@ -301,7 +294,6 @@ public class GameScreenPanel extends JPanel implements Runnable {
 				gamePlayButton.setVisible(false);
 				// 쓰레드를 실행시켜 x좌표 , y좌표 변경 시작
 				ball.getThread().start();
-				isGamePlaying = true;
 				gameMusic.start();
 			}
 		});
@@ -351,7 +343,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void saveProgress() {
 		int index = 0;
 		if (musicTitle.equals("Tobu & Itro - Sunburst_Highlight.mp3")) {
@@ -373,42 +365,6 @@ public class GameScreenPanel extends JPanel implements Runnable {
 			songProgress.write(progressArray);
 	}
 
-	public void mouseClickedfadeInEvent() {
-		try {
-			float temp = 0;
-
-			mousefadeValue = 0;
-			while (mousefadeValue < 1) {
-				temp += 0.2;
-				if (temp > 1) {
-					temp = 1.0f;
-				}
-				mousefadeValue = temp;
-				repaint();
-				Thread.sleep(50);
-			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void mouseClickedfadeOutEvent() {
-		try {
-			float temp = 1.0f;
-			mousefadeValue = 1.0f;
-			while (mousefadeValue > 0) {
-				temp -= 0.2;
-				if (temp < 0) {
-					temp = 0;
-				}
-				mousefadeValue = temp;
-				repaint();
-				Thread.sleep(50);
-			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
 
 	/**
 	 * fadeOut 효과를 주기위한 메소드 temp를 사용한 이유는 fadeOut값이 0을 넘어가면 에러가 발생하기 때문에 float연산 특성상
@@ -473,7 +429,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 			isInnerCircleEvent = false;
 		} catch (Exception e) {
 			e.printStackTrace();
-			
+
 		}
 	}
 
@@ -511,6 +467,15 @@ public class GameScreenPanel extends JPanel implements Runnable {
 				g2.draw(obstacles.get(i).getShape());
 			}
 		}
+
+		for (int i = 0; i < gameSightLimitScreen.size(); i++) {
+			if (gameSightLimitScreen.get(i).getStartTime() <= gameMusic.getTime()
+					&& gameMusic.getTime() <= gameSightLimitScreen.get(i).getEndTime()) {
+				g2.drawImage(gameSightLimitScreen.get(i).getGameSightLimitImage(), ball.getX() - 1280, ball.getY() - 720,
+						null);
+			}
+		}
+
 		g2.draw(ball.getRect());
 		// 흰색으로 설정
 		g2.setColor(circle.getColor());
@@ -531,8 +496,11 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		} else if(isOutsideCircleEvent) {
 			g2.drawImage(outsideCircleEventImage, 0, 0, null);
 		}
-		
-		//g2.drawImage(gameSightLimitImage, ball.getX() - 1280 , ball.getY() - 720 ,null);
+
+	/*	if(gameMusic.getTime() >= 1000 && gameMusic.getTime() <= 5000){
+			g2.drawImage(gameSightLimitImage, ball.getX() - 1280 , ball.getY() - 720 ,null);
+		}*/
+
 	}
 
 	/**
