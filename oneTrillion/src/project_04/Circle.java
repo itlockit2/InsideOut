@@ -16,7 +16,7 @@ public class Circle implements Runnable {
 	BasicStroke stroke;
 	/** 원색깔을 위한 변수이다. */
 	private Color color;
-	
+
 	/** Ball을 회전시키기 위한 Thread 객체 */
 	private Thread thread;
 
@@ -42,30 +42,55 @@ public class Circle implements Runnable {
 		this.height = radian * 2;
 		this.stroke = new BasicStroke(stroke);
 		this.color = color;
-		changeSize = 20;
+		changeSize = 0;
 	}
 
 	@Override
 	public void run() {
-		int limitedSize = radian + changeSize;
 		int initialRadian = radian;
 		while (true) {
 			try {
-			x = circleX - radian;
-			y = circleY - radian;
-			width = radian * 2;
-			height = radian * 2;
-			if (changeSize != 0)
-				radian++;
-			if (radian >= limitedSize)
-				radian = initialRadian;
-			Thread.sleep(10);
-			} catch(Exception e) {
+				int limitedSize = initialRadian + changeSize;
+				x = circleX - radian;
+				y = circleY - radian;
+				width = radian * 2;
+				height = radian * 2;
+				if (changeSize != 0)
+					radian++;
+				if (radian >= limitedSize) {
+					radian = initialRadian;
+				}
+				Thread.sleep(10);
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 	}
-	
+
+	public int getChangeSize() {
+		return changeSize;
+	}
+
+	public void setChangeSize(int changeSize) {
+		this.changeSize = changeSize;
+	}
+
+	public int getCircleX() {
+		return circleX;
+	}
+
+	public void setCircleX(int circleX) {
+		this.circleX = circleX;
+	}
+
+	public int getCircleY() {
+		return circleY;
+	}
+
+	public void setCircleY(int circleY) {
+		this.circleY = circleY;
+	}
+
 	public Thread getThread() {
 		return thread;
 	}

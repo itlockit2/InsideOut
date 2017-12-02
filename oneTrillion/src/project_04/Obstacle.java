@@ -39,7 +39,7 @@ public class Obstacle implements Runnable {
 
 	private String location;
 
-	private Ball ball;
+	private Circle circle;
 
 	private Music music;
 
@@ -51,23 +51,22 @@ public class Obstacle implements Runnable {
 	 * @param circleY
 	 * @param radian
 	 */
-	public Obstacle(Ball ball, double radian, int startTime, int endTime, String location, Music music) {
+	public Obstacle(Circle circle, double radian, int startTime, int endTime, String location, Music music) {
 		setThread(new Thread(this));
 		this.music = music;
-		this.ball = ball;
+		this.circle = circle;
 		this.location = location;
 		this.startTime = startTime;
 		this.endTime = endTime;
 		obstacleImage = new ImageIcon(
 				getClass().getClassLoader().getResource("images/obstacle" + location + "Image.png")).getImage();
 		if (location.equals("Up")) {
-			this.circleRadius = ball.getRotateRadius();
+			this.circleRadius = circle.getRadian();
 		} else {
-			this.circleRadius = ball.getRotateRadius() - 25;
+			this.circleRadius = circle.getRadian() - 25;
 		}
-
-		this.circleX = ball.getCircleX();
-		this.circleY = ball.getCircleY();
+		this.circleX = circle.getCircleX();
+		this.circleY = circle.getCircleY();
 		this.radian = radian;
 		this.x = obstacleImage.getWidth(null) / -2 + circleX + (int) (circleRadius * Math.cos(Math.toRadians(radian)));
 		this.y = obstacleImage.getHeight(null) / -2 + circleY + (int) (circleRadius * Math.sin(Math.toRadians(radian)));
@@ -111,30 +110,31 @@ public class Obstacle implements Runnable {
 	
 	public void resetLocation() {
 		if (location.equals("Up")) {
-			this.circleRadius = ball.getRotateRadius();
+			this.circleRadius = circle.getRadian() +15;
 		} else {
-			this.circleRadius = ball.getRotateRadius()-25;
+			this.circleRadius = circle.getRadian() -15;
 		}
 
-		this.circleX = ball.getCircleX();
-		this.circleY = ball.getCircleY();
+		this.circleX = circle.getCircleX();
+		this.circleY = circle.getCircleY();
 		this.x = obstacleImage.getWidth(null) / -2 + circleX
 				+ (int) (circleRadius * Math.cos(Math.toRadians(radian)));
 		this.y = obstacleImage.getHeight(null) / -2 + circleY
 				+ (int) (circleRadius * Math.sin(Math.toRadians(radian)));
 		if (location.equals("Up")) {
 			this.rectX = obstacleImage.getWidth(null) / -2 + circleX
-					+ (int) ((circleRadius + 10) * Math.cos(Math.toRadians(radian)));
+					+ (int) ((circleRadius + 20) * Math.cos(Math.toRadians(radian)));
 			this.rectY = obstacleImage.getHeight(null) / -2 + circleY
-					+ (int) ((circleRadius + 10) * Math.sin(Math.toRadians(radian)));
+					+ (int) ((circleRadius + 20) * Math.sin(Math.toRadians(radian)));
 		} else {
 			this.rectX = obstacleImage.getWidth(null) / -2 + circleX
-					+ (int) ((circleRadius - 10) * Math.cos(Math.toRadians(radian)));
+					+ (int) ((circleRadius - 20) * Math.cos(Math.toRadians(radian)));
 			this.rectY = obstacleImage.getHeight(null) / -2 + circleY
-					+ (int) ((circleRadius - 10) * Math.sin(Math.toRadians(radian)));
+					+ (int) ((circleRadius - 20) * Math.sin(Math.toRadians(radian)));
 		}
 		rect.setRect(rectX, rectY,  obstacleImage.getWidth(null),
 				obstacleImage.getHeight(null));
+		rotateRect(radian + 90);
 	}
 
 	@Override

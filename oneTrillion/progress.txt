@@ -1,9 +1,9 @@
 Tobu & Itro - Sunburst_Highlight.mp3
-100.0
-49.42
+0.0
+0.0
 BadNewsHighLight.mp3
-100.00
+0.0
 0.0
 HeartBeatHighLight.mp3
-100.00
+0.0
 0.0

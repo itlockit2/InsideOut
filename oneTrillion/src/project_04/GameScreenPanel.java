@@ -107,6 +107,8 @@ public class GameScreenPanel extends JPanel implements Runnable {
 	TimerTask innerCircleEvent;
 
 	TimerTask outsideCircleEvent;
+	
+	TimerTask circleBeatEvent;
 
 	/**
 	 * GameScreenPanel의 생성자로 필드값들을 초기화 시켜주고, insideOut을 매개변수로 받아 화면제어를 한다
@@ -155,7 +157,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		ball = new Ball(circle, gameSpeed, -90);
 
 		// 장애물 생성
-		beat = new Beat(ball, musicTitle,gameMusic);
+		beat = new Beat(circle, musicTitle,gameMusic);
 
 		event = new Event(musicTitle);
 
@@ -225,6 +227,16 @@ public class GameScreenPanel extends JPanel implements Runnable {
 			// 마우스가 눌려졌을 때 이벤트 처리
 			@Override
 			public void mousePressed(MouseEvent e) {
+					eventTimer = new Timer();
+					circleBeatEvent = new TimerTask() {
+						@Override
+						public void run() {
+						circle.setChangeSize(0);	
+						}
+					};
+					circle.setChangeSize(20);
+					eventTimer.schedule(circleBeatEvent, 100);
+				
 				// Ball이 바깥을 돌고 있다면
 				if (ball.isBallOutside()) {
 					eventTimer = new Timer();
@@ -410,13 +422,9 @@ public class GameScreenPanel extends JPanel implements Runnable {
 			if (savePoints.get(i).getStartTime() <= gameMusic.getTime()
 					&& gameMusic.getTime() <= savePoints.get(i).getEndTime()) {
 				if (ball.getRect().intersects(savePoints.get(i).getRect())) {
-					System.out.println("Save Point 이벤트가 발생");
 					savePoints.get(i).setEndTime(gameMusic.getTime());
-					System.out.println(savePoints.get(i).getEndTime());
 					ballRadian = ball.getSize();
 					startPoint = gameMusic.getTime();
-					System.out.println("startPoint ->" + startPoint);
-					System.out.println("saveBallRadian ->" + ballRadian);
 				}
 			}
 		}
@@ -455,7 +463,6 @@ public class GameScreenPanel extends JPanel implements Runnable {
 					&& !difficulty.equals("challenge")) {
 				g2.drawImage(savePoints.get(i).getSavePointImage(), savePoints.get(i).getX(), savePoints.get(i).getY(),
 						150, 150, null);
-				g2.draw(savePoints.get(i).getRect());
 			}
 		}
 
@@ -464,7 +471,6 @@ public class GameScreenPanel extends JPanel implements Runnable {
 					&& gameMusic.getTime() <= obstacles.get(i).getEndTime()) {
 				g2.drawImage(obstacles.get(i).getObstacleImage(), obstacles.get(i).getX(), obstacles.get(i).getY(),
 						null);
-				g2.draw(obstacles.get(i).getShape());
 			}
 		}
 
@@ -475,8 +481,6 @@ public class GameScreenPanel extends JPanel implements Runnable {
 						null);
 			}
 		}
-
-		g2.draw(ball.getRect());
 		// 흰색으로 설정
 		g2.setColor(circle.getColor());
 		// 두께 설정
@@ -496,11 +500,6 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		} else if(isOutsideCircleEvent) {
 			g2.drawImage(outsideCircleEventImage, 0, 0, null);
 		}
-
-	/*	if(gameMusic.getTime() >= 1000 && gameMusic.getTime() <= 5000){
-			g2.drawImage(gameSightLimitImage, ball.getX() - 1280 , ball.getY() - 720 ,null);
-		}*/
-
 	}
 
 	/**
