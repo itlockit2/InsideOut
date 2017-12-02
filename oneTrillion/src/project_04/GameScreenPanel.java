@@ -149,13 +149,13 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		gamePlayButton = new JButton(gamePlayButtonImage);
 
 		// 원을 위한 객체 생성
-		circle = new Circle(375, 100, 530, 530, 8, Color.WHITE);
+		circle = new Circle(640, 365, 265, 8, Color.WHITE);
 
 		// x,y 좌표를 받기 위한 객체 생성
 		ball = new Ball(circle, gameSpeed, -90);
 
 		// 장애물 생성
-		beat = new Beat(ball, musicTitle);
+		beat = new Beat(ball, musicTitle,gameMusic);
 
 		event = new Event(musicTitle);
 
@@ -164,6 +164,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		gameSightLimitScreen = event.getGameSightLimit();
 
 		obstacles = beat.getObstacles();
+		
 
 
 		// 이벤트 생성
@@ -236,8 +237,6 @@ public class GameScreenPanel extends JPanel implements Runnable {
 					isInnerCircleEvent = true;
 					// Ball이 바깥을 돌고 있는 여부에 대한 설정을 false로 만든다.
 					ball.setBallOutside(false);
-					// Circle과 Ball의 반지름을 줄여서 안쪽을 돌게 한다.
-					ball.setRotateRadius(ball.getRotateRadius() - 25);
 					eventTimer.schedule(innerCircleEvent, 200);
 					// Ball이 안쪽을 돌고 있다면 isBallOutside가 false값이므로 else문을 실행한다.
 				} else {
@@ -294,6 +293,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 				gamePlayButton.setVisible(false);
 				// 쓰레드를 실행시켜 x좌표 , y좌표 변경 시작
 				ball.getThread().start();
+				circle.getThread().start();
 				gameMusic.start();
 			}
 		});
@@ -512,6 +512,9 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		fadeIn();
 		while (true) {
 			repaint();
+			for(int i = 0; i< obstacles.size() ; i++) {
+				obstacles.get(i).resetLocation();
+			}
 			progressTime = (double) gameMusic.getTime() / (double) closedMusicTime * 100;
 			if (progressTime < 0) {
 				progressTime = 0;
@@ -519,6 +522,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 				progressTime = 100;
 			}
 			progress = String.format("%.2f", progressTime) + "%";
+			
 			try {
 				saveEvent();
 				if (isFadeOut && isGameSelectScreen) {

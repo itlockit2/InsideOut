@@ -16,7 +16,7 @@ import javax.swing.ImageIcon;
  * @author SungHo Yun
  * @version 0.4
  */
-public class Obstacle {
+public class Obstacle implements Runnable {
 	/** 장애물 이미지를 위한 객체 */
 	private Image obstacleImage;
 	/** 장애물 의 구현위치 */
@@ -35,6 +35,14 @@ public class Obstacle {
 
 	private int rectX, rectY;
 
+	private Thread thread;
+
+	private String location;
+
+	private Ball ball;
+
+	private Music music;
+
 	/**
 	 * 원의 반지름과 원 중심의 위치를 받아오고 라디안값을 받아와서 장애물을 구현한다.
 	 * 
@@ -43,7 +51,11 @@ public class Obstacle {
 	 * @param circleY
 	 * @param radian
 	 */
-	public Obstacle(Ball ball, double radian, int startTime, int endTime, String location) {
+	public Obstacle(Ball ball, double radian, int startTime, int endTime, String location, Music music) {
+		setThread(new Thread(this));
+		this.music = music;
+		this.ball = ball;
+		this.location = location;
 		this.startTime = startTime;
 		this.endTime = endTime;
 		obstacleImage = new ImageIcon(
@@ -51,7 +63,7 @@ public class Obstacle {
 		if (location.equals("Up")) {
 			this.circleRadius = ball.getRotateRadius();
 		} else {
-			this.circleRadius = ball.getRotateRadius() -25;
+			this.circleRadius = ball.getRotateRadius() - 25;
 		}
 
 		this.circleX = ball.getCircleX();
@@ -59,11 +71,11 @@ public class Obstacle {
 		this.radian = radian;
 		this.x = obstacleImage.getWidth(null) / -2 + circleX + (int) (circleRadius * Math.cos(Math.toRadians(radian)));
 		this.y = obstacleImage.getHeight(null) / -2 + circleY + (int) (circleRadius * Math.sin(Math.toRadians(radian)));
-		if(location.equals("Up")) {
-		this.rectX = obstacleImage.getWidth(null) / -2 + circleX
-				+ (int) ((circleRadius + 10) * Math.cos(Math.toRadians(radian)));
-		this.rectY = obstacleImage.getHeight(null) / -2 + circleY
-				+ (int) ((circleRadius + 10) * Math.sin(Math.toRadians(radian)));
+		if (location.equals("Up")) {
+			this.rectX = obstacleImage.getWidth(null) / -2 + circleX
+					+ (int) ((circleRadius + 10) * Math.cos(Math.toRadians(radian)));
+			this.rectY = obstacleImage.getHeight(null) / -2 + circleY
+					+ (int) ((circleRadius + 10) * Math.sin(Math.toRadians(radian)));
 		} else {
 			this.rectX = obstacleImage.getWidth(null) / -2 + circleX
 					+ (int) ((circleRadius - 10) * Math.cos(Math.toRadians(radian)));
@@ -95,6 +107,43 @@ public class Obstacle {
 				rect.getCenterY());
 		Shape rotatedRect = at.createTransformedShape(rect);
 		this.shape = rotatedRect;
+	}
+	
+	public void resetLocation() {
+		if (location.equals("Up")) {
+			this.circleRadius = ball.getRotateRadius();
+		} else {
+			this.circleRadius = ball.getRotateRadius()-25;
+		}
+
+		this.circleX = ball.getCircleX();
+		this.circleY = ball.getCircleY();
+		this.x = obstacleImage.getWidth(null) / -2 + circleX
+				+ (int) (circleRadius * Math.cos(Math.toRadians(radian)));
+		this.y = obstacleImage.getHeight(null) / -2 + circleY
+				+ (int) (circleRadius * Math.sin(Math.toRadians(radian)));
+		if (location.equals("Up")) {
+			this.rectX = obstacleImage.getWidth(null) / -2 + circleX
+					+ (int) ((circleRadius + 10) * Math.cos(Math.toRadians(radian)));
+			this.rectY = obstacleImage.getHeight(null) / -2 + circleY
+					+ (int) ((circleRadius + 10) * Math.sin(Math.toRadians(radian)));
+		} else {
+			this.rectX = obstacleImage.getWidth(null) / -2 + circleX
+					+ (int) ((circleRadius - 10) * Math.cos(Math.toRadians(radian)));
+			this.rectY = obstacleImage.getHeight(null) / -2 + circleY
+					+ (int) ((circleRadius - 10) * Math.sin(Math.toRadians(radian)));
+		}
+		rect.setRect(rectX, rectY,  obstacleImage.getWidth(null),
+				obstacleImage.getHeight(null));
+	}
+
+	@Override
+	public void run() {
+
+			while (true) {
+				if (startTime <= music.getTime() && music.getTime() <= endTime) {
+			}
+		} 
 	}
 
 	public Shape getShape() {
@@ -154,6 +203,14 @@ public class Obstacle {
 
 	public void setRadian(double radian) {
 		this.radian = radian;
+	}
+
+	public Thread getThread() {
+		return thread;
+	}
+
+	public void setThread(Thread thread) {
+		this.thread = thread;
 	}
 
 }

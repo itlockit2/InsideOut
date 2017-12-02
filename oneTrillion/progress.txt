@@ -5,5 +5,5 @@ BadNewsHighLight.mp3
 100.00
 0.0
 HeartBeatHighLight.mp3
-0.0
+100.00
 0.0

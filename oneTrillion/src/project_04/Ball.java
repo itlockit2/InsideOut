@@ -30,7 +30,7 @@ public class Ball implements Runnable {
 	private Rectangle2D rect;
 
 	private int rectX, rectY;
-	
+
 	private double speed;
 
 	/** Ball의 중심좌표 값을 설정하기 위한 생성자 */
@@ -39,7 +39,7 @@ public class Ball implements Runnable {
 		setThread(new Thread(this));
 
 		this.circle = circle;
-		
+
 		this.speed = speed;
 		//
 		isBallOutside = true;
@@ -61,7 +61,6 @@ public class Ball implements Runnable {
 		size = radian;
 		rect = new Rectangle2D.Double(this.getX(), this.getY(), ballRadius * 2, ballRadius * 2);
 
-		
 	}
 
 	/**
@@ -72,6 +71,11 @@ public class Ball implements Runnable {
 		// 곡이 끝날 때 까지 돌려줘야 하므로 계속 반복
 		while (true) {
 			try {
+				circleRadius = circle.getWidth() / 2;
+				if (isBallOutside)
+					rotateRadius = ballRadius + circleRadius;
+				else
+					rotateRadius = ballRadius + circleRadius -25;
 				// 삼각함수의 라디안 값을 통해 size를 증가시키면서 Ball을 곡이 끝날 때 까지 회전시킨다.
 				// 원 중심값 + 반지름이므로 중심좌표 값을 더해야 한다.
 				// 계속 변경시킬 x좌표, y좌표
@@ -209,8 +213,9 @@ public class Ball implements Runnable {
 	public double getSize() {
 		return size;
 	}
-	
-	/** Ball의 size를 설정하는 함수
+
+	/**
+	 * Ball의 size를 설정하는 함수
 	 * 
 	 * @param size
 	 */
