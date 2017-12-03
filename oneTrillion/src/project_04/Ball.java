@@ -26,8 +26,6 @@ public class Ball {
 	private double size;
 	/** Ball은 radian을 따라 회전하기 때문에 그에 대한 값을 설정할 변수 */
 	private double radian;
-	/** Ball을 회전시키기 위한 Thread 객체 */
-	private Thread thread;
 	/** Ball을 그리게 되면 leftX, topY부터 그리기 때문에 그에 대한 거리를 조절하기 위한 변수 */
 	private int adjustmentDistance;
 	/** Ball이 회전하는 반지름을 나타내는 값 */
