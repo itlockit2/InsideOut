@@ -23,27 +23,19 @@ public class Music extends Thread {
 	 */
 	private AdvancedPlayer player;
 
-	/** playerEvent를 통해 노래가 정지 했을때 정보를 가져올수 있다. */
-	private PlaybackEvent playerEvent;
-
-	/**
-	 * 한번만 재생이 되는지 무한정 재생이 되는지 결정하는 값 isLoop의 값이 True이면 반복재생 False이면 한번만 시작된다.
-	 */
+	/** 한번만 재생이 되는지 무한정 재생이 되는지 결정하는 값 isLoop의 값이 True이면 반복재생 False이면 한번만 시작된다.*/
 	private boolean isLoop;
-
 	/** 노래가 정지되었을때의 Frame 값을 저장하기 위한 변수 */
 	private int pausedOnFrame = 0;
-
 	/** InputStream을 통해 파일로부터 값을 받아온다 */
 	private InputStream is;
 	/** InputStream으로 받아온 값을 버퍼에 담는다. */
 	private BufferedInputStream bis;
-
 	/** 노래의 제목을 저장하는 필드값이다. */
 	private String name;
-
+	/** 노래의 진행 시간을 알기 위해 Clock 클래스를 사용했다. */
 	private Clock clock;
-
+	/** 노래의 진행 시간을 계산 할때 기준이 되는 시간이다. */
 	private long standardSecond;
 
 	/**
@@ -90,7 +82,7 @@ public class Music extends Thread {
 		this.interrupt();
 	}
 
-	/** 곡을 재생시킨다. */
+	/** 쓰레드를 통해 곡을 재생시키고 standardSecond를 초기화시켜준다. */
 	@Override
 	public void run() {
 		standardSecond = clock.millis();
@@ -114,6 +106,11 @@ public class Music extends Thread {
 		}
 	}
 
+	/**
+	 * getTime 메소드를 실행하게 되면 tempSecond과 쓰레드를 시작했을때의 시간인 standardSecond와의
+	 * 차이를 return값으로 반환해준다.
+	 * @return
+	 */
 	public long getTime() {
 		long tempSecond = clock.millis();
 		if (standardSecond != 0)

@@ -19,34 +19,43 @@ import javax.swing.ImageIcon;
 public class Obstacle {
 	/** 장애물 이미지를 위한 객체 */
 	private Image obstacleImage;
-	/** 장애물 의 구현위치 */
-	private int x, y;
-	/** 원중심의 위치와 반지름 */
-	private int circleX, circleY, circleRadius;
-	/** Ball 객체의 반지름 값 */
+	/** 장애물 의 구현위치의 x좌표 */
+	private int x;
+	/** 장애물 구현위치의 y좌표 */
+	private int y;
+	/** 원중심의 x좌표 */
+	private int circleX;
+	/** 원중심의 y좌표 */
+	private int circleY;
+	/** 원의 반지름 값 */
+	private int circleRadius;
+	/** 장애물이 가지고 있는 각값 */
 	private double radian;
-
+	/** obstacle이 그려지는 시작지점을 나타내는 필드값 */
 	private long startTime;
+	/** obstacle이 사라지는 지점을 나타내는 필드값*/
 	private long endTime;
-
+	/** obstacle의 피격판정을 나타내는 객체*/
 	private Rectangle2D rect;
-
+	/** Rectanngle2D를 회전하기 위한 Shape 객체 */
 	private Shape shape;
-
-	private int rectX, rectY;
-
-	private Thread thread;
-
+	/** Rectangle2D의 위치 x좌표 */
+	private int rectX;
+	/** Rectangle2D의 위치 y좌표*/
+	private int rectY;
+	/** obstacle이 바깥쪽인지 안쪽인지를 나타내는 필드값 */
 	private String location;
-
+	/** 원의 반지름에 따라 만들어져야 하므로  Circle 객체를 가지고 있어야한다.*/
 	private Circle circle;
+	
 	/**
-	 * 원의 반지름과 원 중심의 위치를 받아오고 라디안값을 받아와서 장애물을 구현한다.
-	 * 
-	 * @param circleRadius
-	 * @param circleX
-	 * @param circleY
+	 * Circle 객체를 통해서 원의 반지름을 알아내고
+	 * 장애물의 각값과 시작지점, 끝지점, 위치를 매개변수로 받아 초기화시킨다.
+	 * @param circle
 	 * @param radian
+	 * @param startTime
+	 * @param endTime
+	 * @param location
 	 */
 	public Obstacle(Circle circle, double radian, int startTime, int endTime, String location) {
 		this.circle = circle;
@@ -83,7 +92,6 @@ public class Obstacle {
 
 	/**
 	 * 라디안을 받아와서 해당 라디안에 맞는 각도로 이미지를 회전시켜준다.
-	 * 
 	 * @param radian
 	 */
 	public void rotateImage(double radian) {
@@ -96,6 +104,10 @@ public class Obstacle {
 		this.obstacleImage = blankCanvas;
 	}
 
+	/**
+	 * 라디안을 받아와서 해당 라디안에 맞는 각도로 Rectangle2D를 회전시킨다.
+	 * @param radian
+	 */
 	public void rotateRect(double radian) {
 		AffineTransform at = AffineTransform.getRotateInstance(Math.toRadians(radian), rect.getCenterX(),
 				rect.getCenterY());
@@ -103,6 +115,9 @@ public class Obstacle {
 		this.shape = rotatedRect;
 	}
 	
+	/**
+	 * 원의 반지름이 달라질 경우 resetLocation 메소드를 통해 다시 Obstacle의 구현위치를 재계산해준다.
+	 */
 	public void resetLocation() {
 		if (location.equals("Up")) {
 			this.circleRadius = circle.getRadian() +15;
@@ -132,22 +147,13 @@ public class Obstacle {
 		rotateRect(radian + 90);
 	}
 
+	/**
+	 * 장애물의 피격판정 범위인 Shape를 반환해주는 메소드.
+	 * @return
+	 */
 	public Shape getShape() {
 		return shape;
 	}
-
-	public void setShape(Shape shape) {
-		this.shape = shape;
-	}
-
-	public Rectangle2D getRect() {
-		return rect;
-	}
-
-	public void setRect(Rectangle2D rect) {
-		this.rect = rect;
-	}
-
 	/**
 	 * 장애물의 구현위치중 x의 값을 받아온다.
 	 * 
@@ -175,28 +181,25 @@ public class Obstacle {
 		return obstacleImage;
 	}
 
+	/**
+	 * 장애물의 시작지점을 리턴해주는 메소드이다.
+	 * @return
+	 */
 	public long getStartTime() {
 		return startTime;
 	}
-
+	/**
+	 * 장애물의 끝지점을 리턴해주는 메소드이다.
+	 * @return
+	 */
 	public long getEndTime() {
 		return endTime;
 	}
-
+	/**
+	 * 장애물의 각값인 라디안을 리턴해주는 메소드이다.
+	 * @return
+	 */
 	public double getRadian() {
 		return radian;
 	}
-
-	public void setRadian(double radian) {
-		this.radian = radian;
-	}
-
-	public Thread getThread() {
-		return thread;
-	}
-
-	public void setThread(Thread thread) {
-		this.thread = thread;
-	}
-
 }

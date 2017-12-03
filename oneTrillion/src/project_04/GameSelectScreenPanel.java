@@ -122,21 +122,24 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 	/** 프레임을 매개변수로 넘기기 위한 InsideOut 객체 */
 	private InsideOut insideOut;
 
+	/** 곡의 난이도가 저장되는 필드값 */
 	private String difficulty;
+	/** 곡의 타이틀 제목이 저장되는 필드값 */
 	private String musicTitle;
+	/** 해당게임의 진행 속도가 저장되는 필드값 */
 	private double gameSpeed;
+	/** 해당 곡이 끝나는 지점이 저장되는 필드값 */
 	private long closedMusicTime;
+	/** 해당 곡의 난이도를 얼만큼 진행했는지 저장되는 필드값 */
 	private double normalProgress;
+	/** 해당 곡의 난이도를 얼만큼 진행했는지 저장되는 필드값 */
 	private double challengeProgress;
-
-	
+	/** 곡의 정보를 저장하고 있는 progress.txt 파일을 관리하는 객체 */
 	private SongProgress progress;
-
+	
 	/**
-	 * 곡 선택화면인 GameSelectScreen에 관한 구성 요소 및 정보를 담고 있는 생성자
-	 * 
-	 * @param InsideOut
-	 *            insideOut
+	 * insideOut 클래스의 객체를 매개변수로 받음으로써 해당 화면제어 메소드를 실행한다.
+	 * @param insideOut
 	 */
 	GameSelectScreenPanel(InsideOut insideOut) {
 		progress = new SongProgress();
@@ -488,7 +491,10 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		}
 	}
 
-	/** 곡 선택 화면(GameSelectScreen)의 Thread가 실행 될 시 수행되는 함수 */
+
+	/**
+	 * 쓰레드를 통해 화면제어를 한다.
+	 */
 	@Override
 	public void run() {
 		fadeIn();
@@ -518,8 +524,8 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 	}
 
 	/**
-	 * 자신이 플레이 하고 싶은 곡을 선택할 수 있도록 설정하기 위한 함수
-	 * 
+	 * 곡을 선택하기 위한 함수 left버튼이나 right버튼을 누르면 
+	 * nowSelected 값을 조절함으로써 트랙을 선택한다.
 	 * @param nowSelected
 	 */
 	public void selectTrack(int nowSelected) {

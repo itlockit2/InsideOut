@@ -4,16 +4,30 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
+/**
+ * 게임 시야 제한 이벤트를 위한 클래스
+ * @author Jimin Kim
+ * @version 0.4
+ */
 public class GameSightLimit {
   
 	
 	/** 게임 진행중 시야 제한 이벤트를 위한 이미지 */
 	private Image gameSightLimitImage;
-	/** Screen 제한의 출현위치 및 시간 */
-	private int x, y;
+	/** Screen 제한의 출현위치 x좌표를 나타내는 필드값 */
+	private int x;
+	/** Screen 제한의 출현위치 y좌표를 나타내는 필드값 */
+	private int y;
+	/** 시야제한 이벤트를 시작하는 시간을 나타내는 필드값*/
 	private long startTime;
+	/** 시야제한 이벤트를 끝내는 지점을 나타내는 필드값 */
 	private long endTime;
    
+	/**
+	 * startTime과 endTime을 매개변수로 받아서 초기화 시켜준다.
+	 * @param startTime
+	 * @param endTime
+	 */
 	public GameSightLimit( int startTime, int endTime) {
       	
 		gameSightLimitImage = new ImageIcon(getClass().getClassLoader().getResource("images/sightLimitImage.png"))
@@ -30,44 +44,24 @@ public class GameSightLimit {
 			
 	}
 
+	/** 시야제한 이미지를 리턴해주는 메소드이다. */
 	public Image getGameSightLimitImage() {
 		return gameSightLimitImage;
 	}
-
-	public void setGameSightLimitImage(Image gameSightLimitImage) {
-		this.gameSightLimitImage = gameSightLimitImage;
-	}
-
+	/** 시야제한 이미지의 x좌표를 리턴해주는 메소드이다. */
 	public int getX() {
 		return x;
 	}
-
-	public void setX(int x) {
-		this.x = x;
-	}
-
+	/** 시야제한 이미지의 y좌표를 리턴해주는 메소드이다. */
 	public int getY() {
 		return y;
 	}
-
-	public void setY(int y) {
-		this.y = y;
-	}
-
+	/** 시야 제한 이미지의 시작시간을 리턴해주는 메소드이다. */
 	public long getStartTime() {
 		return startTime;
 	}
-
-	public void setStartTime(long startTime) {
-		this.startTime = startTime;
-	}
-
+	/** 시야 제한 이미지의 끝나는 지점을 리턴해주는 메소드이다. */
 	public long getEndTime() {
 		return endTime;
-	}
-
-	public void setEndTime(long endTime) {
-		this.endTime = endTime;
-	}
-	
+	}	
 }
