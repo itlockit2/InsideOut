@@ -174,7 +174,7 @@ public class Ball {
 	}
 
 	/**
-	 * Ball의 Size를 얻어오는 함수
+	 * Ball의 현재 세타값를 얻어오는 함수
 	 * 
 	 * @return size
 	 */
@@ -183,7 +183,7 @@ public class Ball {
 	}
 
 	/**
-	 * Ball의 size를 설정하는 함수
+	 * Ball의 세타값을 설정하는 함수
 	 * 
 	 * @param size
 	 */
