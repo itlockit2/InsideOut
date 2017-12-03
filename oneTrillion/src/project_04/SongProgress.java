@@ -20,6 +20,33 @@ public class SongProgress {
 			progressArray = new String[9];
 			inFile =  new File("progress.txt");
 			outFile = new File("progress.txt");
+			if(!inFile.isFile()) {
+				try {
+				bw = new BufferedWriter(new FileWriter("progress.txt"));
+				bw.write("Tobu & Itro - Sunburst_Highlight.mp3");
+				bw.newLine();
+				bw.write("0.0");
+				bw.newLine();
+				bw.write("0.0");
+				bw.newLine();
+				bw.write("BadNewsHighLight.mp3");
+				bw.newLine();
+				bw.write("0.0");
+				bw.newLine();
+				bw.write("0.0");
+				bw.newLine();
+				bw.write("HeartBeatHighLight.mp3");
+				bw.newLine();
+				bw.write("0.0");
+				bw.newLine();
+				bw.write("0.0");
+				bw.newLine();
+				bw.flush();
+				bw.close();
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
 			br = new BufferedReader(new FileReader(inFile));
 			String line;
 			while ((line = br.readLine()) != null) {

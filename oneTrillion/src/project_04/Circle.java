@@ -10,23 +10,35 @@ import java.awt.Color;
  * @version 0.4
  */
 public class Circle implements Runnable {
-	/** 원의 좌표 원의 크기 에 관한 변수이다. */
-	private int x, y, width, height, radian, circleX, circleY, changeSize;
+	/** 원이 그려지는 시작점인 x좌표를 나타내는 필드 이다. 원의중심x좌표 - 반지름이다. */
+	private int x;
+	/** 원의 그려지는 시작점인 y좌표를 나타내는 필드 이다. 원의중심y좌표 - 반지름이다/ */
+	private int y;
+	/** 원의 넓이를 나타내는 필드 이다. radian의 2배이다. */
+	private int width;
+	/** 원의 폭을 나타는 필드 이다. radian의 2배이다. */ 
+	private int height;
+	/** 원의 반지름을 나타내는 필드이다. */
+	private int radian;
+	/** 원의 중심 x좌표를 나타내는 필드이다.*/
+	private int circleX;
+	/** 원의 중심 y좌표를 나타내는 필드이다. */
+	private int circleY;
+	/** 원의 크기를 변화시킬때 사용하는 필드값이다. */
+	private int changeSize;
 	/** 원의 굴기에 관한 변수이다. */
 	BasicStroke stroke;
 	/** 원색깔을 위한 변수이다. */
 	private Color color;
-
-	/** Ball을 회전시키기 위한 Thread 객체 */
+	/** Circle의 크기를 변경시키기 위한 thread이다.*/
 	private Thread thread;
 
+
 	/**
-	 * 원의 좌표와 원의 크기 그리고 굴기와 색깔을 생성자를 통해서 초기화 시켜준다.
-	 * 
-	 * @param x
-	 * @param y
-	 * @param width
-	 * @param height
+	 * 원의 중심, 반지름, 굵기, 색깔들을 매개변수로 받아 초기화 시켜준다.
+	 * @param circleX
+	 * @param circleY
+	 * @param radian
 	 * @param stroke
 	 * @param color
 	 */
@@ -45,6 +57,10 @@ public class Circle implements Runnable {
 		changeSize = 0;
 	}
 
+	/**
+	 * 쓰레드가 시작됫을때 changeSize 값이 0이아니라면 원이 changeSize만큼 증가하고 
+	 * 한계점에 도달하면 다시 원래 원의 크기로 돌아온다.
+	 */
 	@Override
 	public void run() {
 		int initialRadian = radian;
@@ -67,152 +83,101 @@ public class Circle implements Runnable {
 		}
 	}
 
-	public int getChangeSize() {
-		return changeSize;
-	}
-
+	/**
+	 * 원의 크기를 변화시키는 정도를 설정해주는 메소드이다. 
+	 * @param changeSize
+	 */
 	public void setChangeSize(int changeSize) {
 		this.changeSize = changeSize;
 	}
 
+	/**
+	 * 원의 중심 x좌표를 반환하는 메소드이다.
+	 * @return
+	 */
 	public int getCircleX() {
 		return circleX;
 	}
-
-	public void setCircleX(int circleX) {
-		this.circleX = circleX;
-	}
-
+	
+	/**
+	 * 원의 중심 y좌표를 반환하는 메소드이다.
+	 * @return
+	 */
 	public int getCircleY() {
 		return circleY;
 	}
 
-	public void setCircleY(int circleY) {
-		this.circleY = circleY;
-	}
-
+	/**
+	 * Circle 객체의 Thread를 반환하는 메소드이다.
+	 * @return
+	 */
 	public Thread getThread() {
 		return thread;
 	}
 
+	/**
+	 * Cricle 객체의 Thread를 설정해주는 메소드이다.
+	 * @param thread
+	 */
 	public void setThread(Thread thread) {
 		this.thread = thread;
 	}
 
+	/**
+	 * 원의 반지름을 반환하는 메소드이다.
+	 * @return
+	 */
 	public int getRadian() {
 		return radian;
 	}
 
-	public void setRadian(int radian) {
-		this.radian = radian;
-	}
-
 	/**
-	 * 원의 좌표값 x 를 리턴값으로 반환한다.
-	 * 
-	 * @return x
+	 * 원이 그려지는 x좌표를 반환하는 메소드이다.
+	 * @return
 	 */
 	public int getX() {
 		return x;
 	}
 
 	/**
-	 * 원의 좌표값 x를 설정해준다.
-	 * 
-	 * @param x
-	 */
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	/**
-	 * 원의 좌표값 y를 리턴값으로 반환한다.
-	 * 
-	 * @return y
+	 * 원이 그려지는 y좌표를 설정하는 메소드이다.
+	 * @return
 	 */
 	public int getY() {
 		return y;
 	}
 
 	/**
-	 * 원의 좌표값 y를 설정해준다.
-	 * 
-	 * @param y
-	 */
-	public void setY(int y) {
-		this.y = y;
-	}
-
-	/**
-	 * 원의 가로길이를 리턴값으로 반환한다.
-	 * 
-	 * @return width
+	 * 원의 넓이를 반환하는 메소드이다.
+	 * @return
 	 */
 	public int getWidth() {
 		return width;
 	}
 
-	/**
-	 * 원의 가로길이를 설정해준다.
-	 * 
-	 * @param width
-	 */
-	public void setWidth(int width) {
-		this.width = width;
-	}
 
 	/**
-	 * 원의 세로길이를 리턴값으로 반환한다.
-	 * 
-	 * @return height
+	 * 원의 폭을 반환하는 메소드이다.
+	 * @return
 	 */
 	public int getHeight() {
 		return height;
 	}
 
 	/**
-	 * 원의 세로길이를 설정해준다.
-	 * 
-	 * @param height
-	 */
-	public void setHeight(int height) {
-		this.height = height;
-	}
-
-	/**
-	 * 원의 굴기값을 리턴값으로 반환한다.
-	 * 
-	 * @return stroke
+	 * 원의 굵기를 반환하는 메소드이다. 
+	 * @return
 	 */
 	public BasicStroke getStroke() {
 		return stroke;
 	}
 
-	/**
-	 * 원의 굵기값을 설정해준다.
-	 * 
-	 * @param stroke
-	 */
-	public void setStroke(int stroke) {
-		this.stroke = new BasicStroke(stroke);
-	}
 
 	/**
-	 * 원의 색깔을 리턴값으로 반환한다.
-	 * 
-	 * @return color
+	 * 원의 색깔을 반환하는 메소드이다.
+	 * @return
 	 */
 	public Color getColor() {
 		return color;
 	}
-
-	/**
-	 * 원의 색깔을 설정해준다.
-	 * 
-	 * @param color
-	 */
-	public void setColor(Color color) {
-		this.color = color;
-	}
-
 }

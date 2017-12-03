@@ -2,14 +2,22 @@ package project_04;
 
 import java.util.ArrayList;
 
+/**
+ * 세이브포인트와 시야제한 이벤트를 위한 클래스 이다.
+ * @author Sungho Yun
+ * @version 0.4
+ */
 public class Event {
-	/** 장애물 구현을 위한 객체 */
+	/** 세이브포인트 지점들이 ArrayList로 되어있는 필드이다. */
 	private ArrayList<SavePoint> savePoints;
-	
+	/** 게임시야제한 이벤트 지점들이 ArrayList로 되어있는 필드이다. */
 	private ArrayList<GameSightLimit> gameSightLimitScreen;
 	
 	
-
+	/**
+	 * 생성자에서 musicTitle을 매개변수로 받아 그에 맞는 이벤트들이 배열에 추가된다.
+	 * @param musicTitle
+	 */
 	public Event(String musicTitle) {
 		savePoints = new ArrayList<SavePoint>();
 		gameSightLimitScreen = new ArrayList<GameSightLimit>();
@@ -27,23 +35,18 @@ public class Event {
 			gameSightLimitScreen.add(new GameSightLimit(10000,24200));
 		}
 	}
-	
+	/**
+	 * 시야제한 지점들이 모여있는 ArrayList를 반환한다.
+	 * @return
+	 */
 	public ArrayList<GameSightLimit> getGameSightLimit() {
 		return gameSightLimitScreen;
 	}
-
-	public void setGameSightLimit(ArrayList<GameSightLimit> gameSightLimit) {
-		this.gameSightLimitScreen = gameSightLimit;
-	}
-
+	/**
+	 * 세이브포인트 지점들이 모여있는 ArrayList를 반환한다.
+	 * @return 
+	 */
 	public ArrayList<SavePoint> getSavePoint() {
 		return savePoints;
 	}
-
-	public void setSavePoint(ArrayList<SavePoint> savePoint) {
-		this.savePoints = savePoint;
-	}
-	
-	
-
 }

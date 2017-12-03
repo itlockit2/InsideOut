@@ -16,7 +16,7 @@ import javax.swing.ImageIcon;
  * @author SungHo Yun
  * @version 0.4
  */
-public class Obstacle implements Runnable {
+public class Obstacle {
 	/** 장애물 이미지를 위한 객체 */
 	private Image obstacleImage;
 	/** 장애물 의 구현위치 */
@@ -40,9 +40,6 @@ public class Obstacle implements Runnable {
 	private String location;
 
 	private Circle circle;
-
-	private Music music;
-
 	/**
 	 * 원의 반지름과 원 중심의 위치를 받아오고 라디안값을 받아와서 장애물을 구현한다.
 	 * 
@@ -51,9 +48,7 @@ public class Obstacle implements Runnable {
 	 * @param circleY
 	 * @param radian
 	 */
-	public Obstacle(Circle circle, double radian, int startTime, int endTime, String location, Music music) {
-		setThread(new Thread(this));
-		this.music = music;
+	public Obstacle(Circle circle, double radian, int startTime, int endTime, String location) {
 		this.circle = circle;
 		this.location = location;
 		this.startTime = startTime;
@@ -135,15 +130,6 @@ public class Obstacle implements Runnable {
 		rect.setRect(rectX, rectY,  obstacleImage.getWidth(null),
 				obstacleImage.getHeight(null));
 		rotateRect(radian + 90);
-	}
-
-	@Override
-	public void run() {
-
-			while (true) {
-				if (startTime <= music.getTime() && music.getTime() <= endTime) {
-			}
-		} 
 	}
 
 	public Shape getShape() {

@@ -126,9 +126,10 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 	private String musicTitle;
 	private double gameSpeed;
 	private long closedMusicTime;
-	private String normalProgress;
-	private String challengeProgress;
+	private double normalProgress;
+	private double challengeProgress;
 
+	
 	private SongProgress progress;
 
 	/**
@@ -468,19 +469,19 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 
 		g2.setColor(Color.PINK);
 		g2.setFont(new Font("Alien Encounters", Font.BOLD, 40));
-		if(Double.parseDouble(normalProgress) >= 100) {
+		if(normalProgress >= 100) {
 			g2.drawString("Clear", 435, 500);
 		}
-		else if (Double.parseDouble(normalProgress) < 10) {
+		else if (normalProgress < 10) {
 			g2.drawString(normalProgress + "%", 445, 500);
 		} else {
 			g2.drawString(normalProgress + "%", 425, 500);
 		}
 		
-		if(Double.parseDouble(challengeProgress) >= 100) {
+		if(challengeProgress >= 100) {
 			g2.drawString("Clear", 740, 500);
 		}
-		else if (Double.parseDouble(challengeProgress) < 10) {
+		else if (challengeProgress < 10) {
 			g2.drawString(challengeProgress + "%", 750, 500);
 		} else {
 			g2.drawString(challengeProgress + "%", 730, 500);
@@ -542,8 +543,8 @@ public class GameSelectScreenPanel extends JPanel implements Runnable {
 		gameSpeed = trackList.get(nowSelected).getGameSpeed();
 		closedMusicTime = trackList.get(nowSelected).getClosedMusicTime();
 
-		normalProgress = progress.getProgressArray()[3 * nowSelected + 1];
-		challengeProgress = progress.getProgressArray()[3 * nowSelected + 2];
+		normalProgress = Double.parseDouble(progress.getProgressArray()[3 * nowSelected + 1]);
+		challengeProgress = Double.parseDouble(progress.getProgressArray()[3 * nowSelected + 2]);
 		selectedMusic.start(); // 무한 재
 	}
 

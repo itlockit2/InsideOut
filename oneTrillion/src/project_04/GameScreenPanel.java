@@ -26,7 +26,6 @@ import javax.swing.JPanel;
  */
 public class GameScreenPanel extends JPanel implements Runnable {
 
-
 	/** 마우스 버튼 클릭에 의해 Ball이 원 안으로 들어 갈 때 일어나는 이벤트를 위한 이미지 */
 	private Image innerCircleEventImage;
 	/** 마우스 버튼 클릭에 의해 Ball이 원 밖으로 나갈 때 일어나는 이벤트를 위한 이미지 */
@@ -39,81 +38,74 @@ public class GameScreenPanel extends JPanel implements Runnable {
 	private ImageIcon backButtonEnteredImage;
 	/** 게임 시작 버튼에 진입했을 때의 이미지 */
 	private ImageIcon gamePlayButtonEnteredImage;
-
 	/** JButton으로 backButton 구현 */
 	private JButton backButton;
 	/** JButton으로 gamePlayButton 구현 */
 	private JButton gamePlayButton;
-
 	/** Thread 객체 */
 	private Thread thread;
-
 	/** Ball 위치 제어를 위한 객체 */
 	private Ball ball;
-
 	/** 게임의 스테이지인 원의 제어를 위한 객체 */
 	private Circle circle;
-
+	/** 장애물들의 집합인 Beat 클래스 객체 */
 	private Beat beat;
-    // 이벤트들 
+	/** 이벤트들이 모여있는 Event 클래스의 객체 */
 	private Event event;
-
+	/** 장애물들을 배열 형태로 가고 있는 필드값 */
 	private ArrayList<Obstacle> obstacles;
-
+	/** 세이브포인트 지점들을 배열 형태로 가지고 있는 필드값 */
 	private ArrayList<SavePoint> savePoints;
-
+	/** 시야 제한 이벤트 지점들을 배열 형태로 가지고 있는 필드값 */
 	private ArrayList<GameSightLimit> gameSightLimitScreen;
-
 	/** fadeIn과 fadeOut 을 위한 변수 fade Value에 따라 투명도가 결정된다. */
 	private float fadeValue;
-
 	/** fadeIn과 fadeOut 을 위한 변수 isFadeOut에 FadeIn을 할건지 FadeOut을 한건지 결정된다.. */
 	private boolean isFadeOut;
-
-	/** Screen 제어를 위한 변수 */
+	/** Screen 제어를 위한 변수 true가되면 GameSelectScreen으로 넘어간다. */
 	private boolean isGameSelectScreen;
-
 	/** 화면제어를 위한 객체 Frame인 InsideOut을 가지고 있어야 insideOut에 있는 패널 변경 메소드를 사용할수 있다. */
 	private InsideOut insideOut;
-
+	/** 게임음악 타이틀을 저장하고 있는 필드값 */
 	private String musicTitle;
-
+	/** 게임음악을객체 */
 	private Music gameMusic;
-
-	private long startPoint = 0;
-
-	private double ballRadian = -90;
-
+	/** 음악이 어디서부터 진행되는지를 의미하는 필드값 처음엔 0으로 초기화 시켜준다. */
+	private long startPoint;
+	/** 공의 Radian값을 가지고 있는 필드값 */
+	private double ballRadian;
 	/** music이 종료되고 노래 선택화면으로 돌아가기 위한 지점을 위해 long값을 얻어온다. */
 	private long closedMusicTime;
-
+	/** 난이도를 가지고 있는 필드값 */
 	private String difficulty;
-
+	/** 노래가 얼만큼 진행되고 있는지 값을 double 형태로 가지고 있는 필드값 */
 	private double progressTime;
-
-	private String progress = "0.00%";
-
+	/** 노래가 얼만큼 진행되고 있는 지를 string 형태로 가지고 있는 필드값 */
+	private String progress;
+	/** progress.txt에 저장되어 있는 값들을 배열형태로 저장되어 있는 필드값*/
 	private String[] progressArray;
-
+	/** 노래가 얼만큼 진행되고 있는지를 txt파일 형태로 관리하기 위한 객체 */
 	private SongProgress songProgress;
-
-	//test
+	/** 화면 반짝임 이벤트를 위해 공이 안으로 들어왔는지를 확인하는 boolean 필드값 */
 	private boolean isInnerCircleEvent;
-
+	/** 화면 반짝임 이벤트를 위해 공이 밖으로 들어왔는지를 확인하는 boolean 필드값 */
 	private boolean isOutsideCircleEvent;
-
+	/** Timer를 통해 화면반짝임과 원의 떨림 이벤트를 관리한다 */
 	Timer eventTimer;
-
+	/** 공이 원안으로 들어왔을때 생기는 이벤트 */
 	TimerTask innerCircleEvent;
-
+	/** 공이 원 밖으로 나갔을때 생기는 이벤트 */
 	TimerTask outsideCircleEvent;
-	
+	/** 공의 위치가 변경됫을때 생기는 이벤트 */
 	TimerTask circleBeatEvent;
 
 	/**
-	 * GameScreenPanel의 생성자로 필드값들을 초기화 시켜주고, insideOut을 매개변수로 받아 화면제어를 한다
-	 * 
+	 * 매개변수로 insideOut과 음악제목, 난이도, 게임스피드, 끝나는시간등을 받아서 초기화 시켜준다.
 	 * @param insideOut
+	 * @param musicTitle
+	 * @param difficulty
+	 * @param gameSpeed
+	 * @param closedMusicTime
 	 */
 	public GameScreenPanel(InsideOut insideOut, String musicTitle, String difficulty, double gameSpeed,
 			long closedMusicTime) {
@@ -121,17 +113,14 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		this.insideOut = insideOut;
 		// fadeOut값을 false로 초기화 시켜문다
 		isFadeOut = false;
-
+		this.startPoint = 0;
 		this.musicTitle = musicTitle;
-
+		this.ballRadian = -90;
 		gameMusic = new Music(musicTitle, false, (int) startPoint);
-
+		this.progress = "0.00%";
 		this.difficulty = difficulty;
-
 		this.closedMusicTime = closedMusicTime;
-
 		songProgress = new SongProgress();
-
 		progressArray = songProgress.getProgressArray();
 		// 쓰레드를 만들고 실행시켜준다.
 		setThread(new Thread(this));
@@ -149,28 +138,16 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		// 버튼들 생성
 		backButton = new JButton(backButtonImage);
 		gamePlayButton = new JButton(gamePlayButtonImage);
-
 		// 원을 위한 객체 생성
 		circle = new Circle(640, 365, 265, 8, Color.WHITE);
-
 		// x,y 좌표를 받기 위한 객체 생성
 		ball = new Ball(circle, gameSpeed, -90);
-
 		// 장애물 생성
-		beat = new Beat(circle, musicTitle,gameMusic);
-
+		beat = new Beat(circle, musicTitle);
 		event = new Event(musicTitle);
-
 		savePoints = event.getSavePoint();
-
 		gameSightLimitScreen = event.getGameSightLimit();
-
 		obstacles = beat.getObstacles();
-		
-
-
-		// 이벤트 생성
-
 		// 컨테이너의 크기가 변경될때 컴포넌트들의 크기와 위치가 자동적으로 변경되는데 그걸 해제한다
 		setLayout(null);
 		// 게임창 크기 설정
@@ -183,13 +160,10 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		// backButton의 위치 설정
 		buttonSet(backButton, 80, 60, 228, 57);
 		buttonSet(gamePlayButton, 600, 300, 125, 135);
-
 		// 메뉴바 exitButton 설정
 		buttonSet(insideOut.getMenubarExitButton(), 1200, 0, 64, 28);
 		// 메뉴바 설정
 		add(insideOut.getMenubar());
-
-
 		/**
 		 * backButton의 마우스 이벤트를 처리해준다.
 		 */
@@ -227,16 +201,16 @@ public class GameScreenPanel extends JPanel implements Runnable {
 			// 마우스가 눌려졌을 때 이벤트 처리
 			@Override
 			public void mousePressed(MouseEvent e) {
-					eventTimer = new Timer();
-					circleBeatEvent = new TimerTask() {
-						@Override
-						public void run() {
-						circle.setChangeSize(0);	
-						}
-					};
-					circle.setChangeSize(20);
-					eventTimer.schedule(circleBeatEvent, 100);
-				
+				eventTimer = new Timer();
+				circleBeatEvent = new TimerTask() {
+					@Override
+					public void run() {
+						circle.setChangeSize(0);
+					}
+				};
+				circle.setChangeSize(20);
+				eventTimer.schedule(circleBeatEvent, 100);
+
 				// Ball이 바깥을 돌고 있다면
 				if (ball.isBallOutside()) {
 					eventTimer = new Timer();
@@ -314,7 +288,6 @@ public class GameScreenPanel extends JPanel implements Runnable {
 	/**
 	 * 버튼 셋팅 메소드 모든 버튼마다 설정값을 넣기 편리하도록 메소드로 만들었다. JButton과 위치좌표와 크기를 지정해주면 자동으로
 	 * 넣어준다.
-	 *
 	 * @param button
 	 * @param x
 	 * @param y
@@ -356,6 +329,13 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		}
 	}
 
+	/**
+	 * 게임상황을 기록하는 progress.txt 파일에 내용을 적는 메소드이다.
+	 * 노래제목에 따라 인덱스가 결정되고 normal이면 +1 challenge면 +2를 통해
+	 * progressArray에 해당 인덱스의 값을 바꿔주고
+	 * SongProgress 클래스 안에 있는 write 메소드를 통해 
+	 * progress.txt에 있는 모든 값들을 변경시켜준다.
+	 */
 	public void saveProgress() {
 		int index = 0;
 		if (musicTitle.equals("Tobu & Itro - Sunburst_Highlight.mp3")) {
@@ -376,7 +356,6 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		if (!difficulty.equals("practice"))
 			songProgress.write(progressArray);
 	}
-
 
 	/**
 	 * fadeOut 효과를 주기위한 메소드 temp를 사용한 이유는 fadeOut값이 0을 넘어가면 에러가 발생하기 때문에 float연산 특성상
@@ -401,6 +380,13 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		}
 	}
 
+	/**
+	 * 게임오버가 발생했는지를 판단해주는 메소드
+	 * 만약 ball과 obstacle이 intersect 메소드를 통해 true가 된다면 
+	 * 이 메소드는 true를 반환하게 된다.
+	 * 만약 난이도가 practice라면 이 메소드는 항상 false를 반환한다.
+	 * @return
+	 */
 	public boolean isGameOver() {
 		for (int i = 0; i < obstacles.size(); i++) {
 			if (obstacles.get(i).getStartTime() <= gameMusic.getTime()
@@ -417,6 +403,12 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		return false;
 	}
 
+	/**
+	 * ball이 savePoint를 만났는지를 판단해주는 메소드
+	 * ball이 intersect메소드를 통해 savePoint를 만났다면 
+	 * ball의 위치값인 radian값과 음악의 현재위치가 저장되어서 
+	 * gameOver가 됫을시 그 시점부터 시작하게끔 설정한다.
+	 */
 	public void saveEvent() {
 		for (int i = 0; i < savePoints.size(); i++) {
 			if (savePoints.get(i).getStartTime() <= gameMusic.getTime()
@@ -430,21 +422,9 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		}
 	}
 
-	public void innerCircleEvent() {
-		try {
-			isInnerCircleEvent = true;
-			Thread.sleep(100);
-			isInnerCircleEvent = false;
-		} catch (Exception e) {
-			e.printStackTrace();
-
-		}
-	}
-
 	/**
-	 * GameScreen에 관련된 이미지를 그려주고 게임 스테이지인 원을 그려준다.
-	 * 
-	 * @param g
+	 * GameScreenPanel에 각종 Component들을 그려주는 메소드이다.
+	 * Ball, Circle, SavePoints, Obstacles, gameProgress등등을 그려준다.
 	 */
 	@Override
 	public void paintComponent(Graphics g) {
@@ -477,8 +457,8 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		for (int i = 0; i < gameSightLimitScreen.size(); i++) {
 			if (gameSightLimitScreen.get(i).getStartTime() <= gameMusic.getTime()
 					&& gameMusic.getTime() <= gameSightLimitScreen.get(i).getEndTime()) {
-				g2.drawImage(gameSightLimitScreen.get(i).getGameSightLimitImage(), ball.getX() - 1280, ball.getY() - 720,
-						null);
+				g2.drawImage(gameSightLimitScreen.get(i).getGameSightLimitImage(), ball.getX() - 1280,
+						ball.getY() - 720, null);
 			}
 		}
 		// 흰색으로 설정
@@ -497,21 +477,20 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		if (isInnerCircleEvent) {
 			g2.drawImage(innerCircleEventImage, 0, 0, null);
 
-		} else if(isOutsideCircleEvent) {
+		} else if (isOutsideCircleEvent) {
 			g2.drawImage(outsideCircleEventImage, 0, 0, null);
 		}
 	}
 
 	/**
-	 * 쓰레드를 통해 음악중지와 화면전환을 한다.
-	 * 
+	 * 쓰레드를 통해 현재 진행상황을 계산하고 GameClear시 화면전환을 하는 화면제어를 한다.
 	 */
 	@Override
 	public void run() {
 		fadeIn();
 		while (true) {
 			repaint();
-			for(int i = 0; i< obstacles.size() ; i++) {
+			for (int i = 0; i < obstacles.size(); i++) {
 				obstacles.get(i).resetLocation();
 			}
 			progressTime = (double) gameMusic.getTime() / (double) closedMusicTime * 100;
@@ -521,7 +500,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 				progressTime = 100;
 			}
 			progress = String.format("%.2f", progressTime) + "%";
-			
+
 			try {
 				saveEvent();
 				if (isFadeOut && isGameSelectScreen) {

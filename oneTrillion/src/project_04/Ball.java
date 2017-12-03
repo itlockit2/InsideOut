@@ -10,8 +10,18 @@ import java.awt.geom.Rectangle2D;
  */
 public class Ball implements Runnable {
 
-	/** Ball을 그리기 위한 x좌표, y좌표, Ball의 radius, 원의 중심 x좌표 Ox, 원의 중심 y좌표 Oy변수, 원의 반지름 */
-	private int x, y, ballRadius, circleX, circleY, circleRadius;
+	/** Ball을 그리기 위한 x좌표 */
+	private int x;
+	/** Ball을 그리기 위한  y좌표*/
+	private int y;
+	/** Ball의 반지름 */
+	private int ballRadius;
+	/** 원의 중심 x좌표*/
+	private int circleX;
+	/** 원의 중심 y좌표 */
+	private int circleY;
+	/** 원의 반지름*/
+	private int circleRadius;
 	/** Ball을 회전시키기 위해 증가시킬 변수 */
 	private double size;
 	/** Ball은 radian을 따라 회전하기 때문에 그에 대한 값을 설정할 변수 */
@@ -24,16 +34,24 @@ public class Ball implements Runnable {
 	private int rotateRadius;
 	/** Ball의 바깥쪽 회전 여부에 대한 boolean값 */
 	private boolean isBallOutside;
-
+	/** Ball은 원의 반지름과 중심에 따라 그려지기 때문에 Circle 객체를 가지고 있어야한다 */
 	private Circle circle;
-
+	/** Ball의 피격판정을 위한 Rectangle2D */
 	private Rectangle2D rect;
-
-	private int rectX, rectY;
-
+	/** 피격 판정의 x좌표 */
+	private int rectX;
+	/** 피격 판정의 y좌표*/
+	private int rectY;
+	/** 공이 움직이는 속도 */
 	private double speed;
 
-	/** Ball의 중심좌표 값을 설정하기 위한 생성자 */
+	/**
+	 * 공의 중심좌표를 설정하기 위한 생성자로
+	 * circle 객체와 speed 그리고 radian값을 받아 초기화 시켜준다. 
+	 * @param circle
+	 * @param speed
+	 * @param radian
+	 */
 	Ball(Circle circle, double speed, double radian) {
 		// 쓰레드를 만들고 객체에 넣어준다.
 		setThread(new Thread(this));
@@ -105,18 +123,18 @@ public class Ball implements Runnable {
 		}
 	}
 
+	/**
+	 * 피격판정인 Rectangle2D를 리턴해준다.
+	 * @return
+	 */
 	public Rectangle2D getRect() {
 		return rect;
 	}
-
-	public void setRect(Rectangle2D rect) {
-		this.rect = rect;
-	}
-
+	
 	/**
 	 * Ball의 x좌표를 얻어오는 getX 함수
 	 * 
-	 * @return x - adjustmentDistance
+	 * @return
 	 */
 	public int getX() {
 		// Ball을 그릴 때 11시 방향(leftX)을 기준으로 그려주므로 반지름인 13을 빼주어서 X좌표를 얻어온다.
@@ -124,31 +142,13 @@ public class Ball implements Runnable {
 	}
 
 	/**
-	 * Ball의 x좌표를 설정하는 setX 함수
-	 * 
-	 * @param x
-	 */
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	/**
 	 * Ball의 y좌표를 얻어오는 getY 함수
 	 * 
-	 * @return y - adjustmentDistance
+	 * @return
 	 */
 	public int getY() {
 		// Ball을 그릴 때 11시 방향을 기준(topY)으로 그려주므로 반지름인 13을 빼주어서 Y좌표를 얻어온다.
 		return y - adjustmentDistance;
-	}
-
-	/**
-	 * Ball의 y좌표를 설정하는 setY 함수
-	 * 
-	 * @param y
-	 */
-	public void setY(int y) {
-		this.y = y;
 	}
 
 	/**
