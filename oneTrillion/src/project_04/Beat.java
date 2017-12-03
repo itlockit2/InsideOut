@@ -7,14 +7,14 @@ import java.util.ArrayList;
  * @version 0.4
  */
 public class Beat {
-	/** 장애물은 원의 반지름에 따라서 움직여야 하므로 Cirlcle 객체를 가지고 있어야한다. */
+	/** 장애물은 원의 반지름에 따라서 움직여야 하므로 Circle 객체를 가지고 있어야한다. */
 	private Circle circle;
 
 	/** 장애물 구현을 위한 객체 */
 	private ArrayList<Obstacle> obstacles;
 
 	/**
-	 * 매개변수로 Cirlcle 객체와 musicTitle을 받아서 그에 맞는 비트들을 추가한다.
+	 * 매개변수로 Circle 객체와 musicTitle을 받아서 그에 맞는 비트들을 추가한다.
 	 * @param circle
 	 * @param musicTitle
 	 */
