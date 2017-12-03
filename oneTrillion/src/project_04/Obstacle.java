@@ -202,4 +202,13 @@ public class Obstacle {
 	public double getRadian() {
 		return radian;
 	}
+	/**
+	 * 장애물 피격판정을 위한 rect객체를 리턴해주는 메소드이다.
+	 * @return
+	 */
+	public Rectangle2D getRect() {
+		return rect;
+	}
+	
+	
 }
