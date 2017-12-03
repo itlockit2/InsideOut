@@ -8,7 +8,7 @@ import java.awt.geom.Rectangle2D;
  * @author Jimin Kim
  * @version 0.4
  */
-public class Ball implements Runnable {
+public class Ball {
 
 	/** Ball을 그리기 위한 x좌표 */
 	private int x;
@@ -53,8 +53,6 @@ public class Ball implements Runnable {
 	 * @param radian
 	 */
 	Ball(Circle circle, double speed, double radian) {
-		// 쓰레드를 만들고 객체에 넣어준다.
-		setThread(new Thread(this));
 
 		this.circle = circle;
 
@@ -80,47 +78,37 @@ public class Ball implements Runnable {
 		rect = new Rectangle2D.Double(this.getX(), this.getY(), ballRadius * 2, ballRadius * 2);
 
 	}
-
+	
 	/**
-	 * Thread를 실행시키면 run함수가 실행 따라서, run함수 안의 while문을 통해 Ball이 회전하고자 하는 원을 계속 회전하게
-	 * 된다.
+	 * Ball의 위치를 변경하는 메소드
 	 */
-	public void run() {
-		// 곡이 끝날 때 까지 돌려줘야 하므로 계속 반복
-		while (true) {
-			try {
-				circleRadius = circle.getWidth() / 2;
-				if (isBallOutside)
-					rotateRadius = ballRadius + circleRadius;
-				else
-					rotateRadius = ballRadius + circleRadius -25;
-				// 삼각함수의 라디안 값을 통해 size를 증가시키면서 Ball을 곡이 끝날 때 까지 회전시킨다.
-				// 원 중심값 + 반지름이므로 중심좌표 값을 더해야 한다.
-				// 계속 변경시킬 x좌표, y좌표
-				x = circleX + (int) (rotateRadius * Math.cos(radian));
-				y = circleY + (int) (rotateRadius * Math.sin(radian));
-				if (isBallOutside) {
-					rectX = circleX + (int) ((rotateRadius + 10) * Math.cos(radian));
-					rectY = circleY + (int) ((rotateRadius + 10) * Math.sin(radian));
-					rect.setRect(rectX - adjustmentDistance, rectY - adjustmentDistance, ballRadius * 2,
-							ballRadius * 2);
-				} else {
-					rectX = circleX + (int) ((rotateRadius - 10) * Math.cos(radian));
-					rectY = circleY + (int) ((rotateRadius - 10) * Math.sin(radian));
-					rect.setRect(rectX - adjustmentDistance, rectY - adjustmentDistance, ballRadius * 2,
-							ballRadius * 2);
-
-				}
-				// 삼각함수의 라디안 값을 통해 size를 증가시키면서 Ball을 곡이 끝날 때 까지 회전시킨다.
-				size += speed;
-				// radian 값 계산
-				radian = size / 180 * Math.PI;
-				Thread.sleep(10);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+	public void moveBall() {
+		circleRadius = circle.getWidth() / 2;
+		if (isBallOutside)
+			rotateRadius = ballRadius + circleRadius;
+		else
+			rotateRadius = ballRadius + circleRadius -25;
+		// 삼각함수의 라디안 값을 통해 size를 증가시키면서 Ball을 곡이 끝날 때 까지 회전시킨다.
+		// 원 중심값 + 반지름이므로 중심좌표 값을 더해야 한다.
+		// 계속 변경시킬 x좌표, y좌표
+		x = circleX + (int) (rotateRadius * Math.cos(radian));
+		y = circleY + (int) (rotateRadius * Math.sin(radian));
+		if (isBallOutside) {
+			rectX = circleX + (int) ((rotateRadius + 10) * Math.cos(radian));
+			rectY = circleY + (int) ((rotateRadius + 10) * Math.sin(radian));
+			rect.setRect(rectX - adjustmentDistance, rectY - adjustmentDistance, ballRadius * 2,
+					ballRadius * 2);
+		} else {
+			rectX = circleX + (int) ((rotateRadius - 10) * Math.cos(radian));
+			rectY = circleY + (int) ((rotateRadius - 10) * Math.sin(radian));
+			rect.setRect(rectX - adjustmentDistance, rectY - adjustmentDistance, ballRadius * 2,
+					ballRadius * 2);
 
 		}
+		// 삼각함수의 라디안 값을 통해 size를 증가시키면서 Ball을 곡이 끝날 때 까지 회전시킨다.
+		size += speed;
+		// radian 값 계산
+		radian = size / 180 * Math.PI;
 	}
 
 	/**
@@ -149,24 +137,6 @@ public class Ball implements Runnable {
 	public int getY() {
 		// Ball을 그릴 때 11시 방향을 기준(topY)으로 그려주므로 반지름인 13을 빼주어서 Y좌표를 얻어온다.
 		return y - adjustmentDistance;
-	}
-
-	/**
-	 * Ball의 Thread를 얻어오는 함수
-	 * 
-	 * @return thread
-	 */
-	public Thread getThread() {
-		return thread;
-	}
-
-	/**
-	 * Ball의 Thread를 설정하는 함수
-	 * 
-	 * @param thread
-	 */
-	public void setThread(Thread thread) {
-		this.thread = thread;
 	}
 
 	/**
