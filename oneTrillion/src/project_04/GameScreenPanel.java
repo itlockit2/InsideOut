@@ -489,6 +489,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 	public void run() {
 		fadeIn();
 		while (true) {
+			System.out.println("gameMusic time : " + gameMusic.getTime());
 			repaint();
 			for (int i = 0; i < obstacles.size(); i++) {
 				obstacles.get(i).resetLocation();
@@ -509,6 +510,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 					insideOut.changeGameSelectScreen();
 					return;
 				} else if (closedMusicTime <= gameMusic.getTime()) {
+					if(!difficulty.equals("practice"))
 					saveProgress();
 					fadeOut();
 					insideOut.changeGameSelectScreen();
