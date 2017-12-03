@@ -90,6 +90,8 @@ public class GameScreenPanel extends JPanel implements Runnable {
 	private boolean isInnerCircleEvent;
 	/** 화면 반짝임 이벤트를 위해 공이 밖으로 들어왔는지를 확인하는 boolean 필드값 */
 	private boolean isOutsideCircleEvent;
+	/** 게임이 시작했는지 확인하는 boolean 필드값 */
+	private boolean isGamePlay;
 	/** Timer를 통해 화면반짝임과 원의 떨림 이벤트를 관리한다 */
 	Timer eventTimer;
 	/** 공이 원안으로 들어왔을때 생기는 이벤트 */
@@ -281,6 +283,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 				//ball.getThread().start();
 				circle.getThread().start();
 				gameMusic.start();
+				isGamePlay = true;
 			}
 		});
 	}
@@ -489,6 +492,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 	public void run() {
 		fadeIn();
 		while (true) {
+			if(isGamePlay)
 			ball.moveBall();
 			repaint();
 			for (int i = 0; i < obstacles.size(); i++) {
