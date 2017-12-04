@@ -175,7 +175,14 @@ public class InsideOut extends JFrame {
 		setVisible(true);
 	}
     
-	/** GameScreen(플레이어가 플레이 하게 되는 화면)으로 이동하기 위한 함수 */
+	/** GameScreen(플레이어가 플레이 하게 되는 화면)으로 이동하기 위한 함수 
+	 * 
+	 * @param musicTitle
+	 * @param difficulty
+	 * @param gameSpeed
+	 * @param closedMusicTime
+	 */
+	
 	public void changeGameScreen(String musicTitle, String difficulty, double gameSpeed, long closedMusicTime) {
 		// 현재 실행되고 있는 모든 판넬을 제거한다.
 		contentpane.removeAll();
