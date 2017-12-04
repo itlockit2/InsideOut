@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 
 /** 게임을 어떻게 진행해야 하는지 알려주는 클래스
  *  
- *  @author Jimin Kim
+ *  @author Sungho Yun
  *  @version 0.4
  */
 public class HelpScreenPanel extends JPanel implements Runnable {
