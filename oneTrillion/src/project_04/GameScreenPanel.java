@@ -280,7 +280,7 @@ public class GameScreenPanel extends JPanel implements Runnable {
 				// 게임 플레이 버튼이 사라져야 하므로 false값으로 지정을 통해 안보이게 함
 				gamePlayButton.setVisible(false);
 				// 쓰레드를 실행시켜 x좌표 , y좌표 변경 시작
-				//ball.getThread().start();
+				ball.getThread().start();
 				circle.getThread().start();
 				gameMusic.start();
 				isGamePlay = true;
@@ -493,7 +493,6 @@ public class GameScreenPanel extends JPanel implements Runnable {
 		fadeIn();
 		while (true) {
 			if(isGamePlay)
-			ball.moveBall();
 			repaint();
 			for (int i = 0; i < obstacles.size(); i++) {
 				obstacles.get(i).resetLocation();

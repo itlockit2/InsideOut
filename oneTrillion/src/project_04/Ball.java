@@ -8,7 +8,7 @@ import java.awt.geom.Rectangle2D;
  * @author Jimin Kim
  * @version 0.4
  */
-public class Ball {
+public class Ball implements Runnable{
 
 	/** Ball을 그리기 위한 x좌표 */
 	private int x;
@@ -42,6 +42,8 @@ public class Ball {
 	private int rectY;
 	/** 공이 움직이는 속도 */
 	private double speed;
+	/** ball 클래스의 Thread를 통해 공을 움직인다.*/
+	Thread thread;
 
 	/**
 	 * 공의 중심좌표를 설정하기 위한 생성자로
@@ -51,7 +53,7 @@ public class Ball {
 	 * @param radian
 	 */
 	Ball(Circle circle, double speed, double radian) {
-
+		setThread(new Thread(this));
 		this.circle = circle;
 
 		this.speed = speed;
@@ -76,11 +78,13 @@ public class Ball {
 		rect = new Rectangle2D.Double(this.getX(), this.getY(), ballRadius * 2, ballRadius * 2);
 
 	}
-	
 	/**
-	 * Ball의 위치를 변경하는 메소드
+	 * Ball 클래스의 Thread를 start하게되면 공이 움직이게 된다.
 	 */
-	public void moveBall() {
+	@Override
+	public void run() {
+		while(true) {
+			try {
 		circleRadius = circle.getWidth() / 2;
 		if (isBallOutside)
 			rotateRadius = ballRadius + circleRadius;
@@ -107,6 +111,28 @@ public class Ball {
 		size += speed;
 		// radian 값 계산
 		radian = size / 180 * Math.PI;
+		Thread.sleep(10);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	
+	/**
+	 * ball 클래스의 Thread를 리턴하는 메소드
+	 * @return
+	 */
+	public Thread getThread() {
+		return thread;
+	}
+
+	/**
+	 * ball 클래스의 Thread를 설정하는 메소드
+	 * @param thread
+	 */
+	public void setThread(Thread thread) {
+		this.thread = thread;
 	}
 
 	/**

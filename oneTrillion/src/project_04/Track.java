@@ -1,4 +1,4 @@
-package project_04;
+﻿package project_04;
 
 /**
  * 하나의 곡에 대한 정보를 담는 클래스
